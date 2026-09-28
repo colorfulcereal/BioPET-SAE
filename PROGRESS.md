@@ -480,9 +480,10 @@ that the feature is absent.
 - **`mean_L4` scored highest of all 12 8M feature sets** (AU-PRC 0.8745) but was never in the
   comparison set, which was chosen as L3/L6 before the full sweep existed. Not pursued.
 
-### 11. SAE feature extraction — setup and method decisions (2026-09-28)
+### 11. SAE feature extraction and differential scoring (2026-09-28)
 
-**Status: in progress.** SAE loads and verified; extraction pass running.
+**Status: complete. Result is negative — the plan's Stage-1 score found nothing on the
+target contrast.** Details in section 12 below.
 
 #### Loading (verified)
 
@@ -556,6 +557,417 @@ SAE-reconstructed activations and survive; if reconstruction destroys the signal
 downstream feature result is meaningless. Kinase-project precedent, and it is also why
 comparisons must use a **reconstruction baseline rather than a raw baseline** — otherwise
 generic round-trip noise contaminates the causal signal.
+
+### 12. SAE differential scoring — results (2026-09-28)
+
+Artifact: `artifacts/SAE_650M_L33_differential.json`.
+Features: `data/sae_650M_L33/sae_features.npz` (847 x 10240, max- and mean-pooled).
+
+#### Extraction succeeded and the reconstruction gate passed
+
+224s on MPS. Per-residue sparsity **1.42%** (145 of 10,240 latents active per residue),
+mean reconstruction cosine **0.898**. Sanity check: the dense activations from this pass
+match the cached `max_L33` embeddings exactly (max abs diff 0.00e+00).
+
+**Gate result — the probe survives SAE round-tripping:**
+
+| representation | dim | test AU-ROC | test AU-PRC | test F1 |
+|---|---|---|---|---|
+| raw dense layer 33 | 1280 | 0.8856 | 0.8150 | 0.7419 |
+| SAE reconstruction | 1280 | 0.9068 | **0.8386** | 0.6829 |
+| SAE features | 10240 | 0.8900 | 0.8115 | 0.7222 |
+
+Reconstruction retains **102.9%** of raw test AU-PRC — slightly better, within noise. The
+sparse features match raw dense. So the SAE does not destroy the signal, and any downstream
+failure is attributable to the analysis rather than the representation.
+
+#### D7 confirmed: the plan's epsilon makes the statistic unusable on sparse features
+
+Overlap between the plan's raw `S_j` top-50 and the variance-floored version:
+
+| control tier | zero-variance latents | raw-vs-corrected overlap |
+|---|---|---|
+| 2a_PBAT | 1302 (12.7%) | **0/50** |
+| 2b_aliphatic | 1242 (12.1%) | **0/50** |
+| 3_fold_matched_esterase | 1151 (11.2%) | 12/50 |
+| 4_naive_control | 1109 (10.8%) | 30/50 |
+
+**For both hard tiers the two rankings share no latents at all.** ~12% of latents have
+exactly zero control variance, so `sigma + 1e-8` inflates them without bound and the raw
+top-50 consists entirely of latents firing in one or two sequences. Running the plan as
+written would have produced 50 artifacts and called them PET features.
+
+#### Cross-tier structure (corrected statistic, top-50 each)
+
+```
+                          2a    2b     3     4
+2a_PBAT                   50    27    27    14
+2b_aliphatic              27    50    28    12
+3_fold_matched_esterase   27    28    50    20
+4_naive_control           14    12    20    50
+```
+
+The three fold-matched tiers share ~27-28 of 50 latents with each other but only 12-20 with
+naive controls — a coherent "polyester hydrolase" feature set distinct from a "generic
+protein" one, consistent with the dense-probe tier results. 13 latents were unique to the
+2b top-50: `[813, 2133, 2359, 2846, 3026, 3350, 3361, 3390, 3628, 4336, 7150, 7370, 10081]`.
+
+Note the top 2b latents are **magnitude differences, not on/off detectors**: prevalence in
+PET 0.90-1.00 but prevalence in controls 0.23-1.00. Latent 2359 fires in 100% of both
+classes and differs only in strength (mu 0.608 vs 0.182).
+
+#### The 13 candidates are indistinguishable from random — NEGATIVE RESULT
+
+PET vs `2b_aliphatic`, trained on train, evaluated on test (train 290, test 37, 31 PET):
+
+| feature set | n_feat | test AU-ROC | pairs correct |
+|---|---|---|---|
+| 9 candidates, **selection on train only** | 9 | **0.5108** | 95/186 |
+| 13 candidates, selection saw val+test (leaky) | 13 | 0.6129 | 114/186 |
+| top-50 latents (2b tier, leaky) | 50 | 0.5699 | — |
+| all SAE latents | 10240 | 0.5860 | — |
+| **9 RANDOM latents** (200 draws) | 9 | **0.5770**, 90% range [0.333, 0.806] | — |
+| dense `max_L33` (reference) | 1280 | **0.7312** | — |
+
+**A leak was found and corrected.** The differential statistic was originally computed over
+`keep = correct` across *all* splits, so selection saw 27 val and 23 test PET sequences plus
+the test 2b controls; the chosen latents were then evaluated on test. That is circular. It
+inflated the result from **0.5108 to 0.6129** and changed **10 of the 13** candidates —
+leak-free selection yields `[3281, 3350, 3628, 3793, 4336, 6926, 8088, 10184, 10213]`, only
+3 of which appear in the original list.
+
+Leak-free, the selected latents score **0.5108 — a coin flip** — and sit at the **29th
+percentile** of the random-latent distribution, i.e. worse than a median random draw. The
+top-50 set also performs worse than random.
+
+AU-ROC here is over 31 x 6 = 186 positive-negative pairs, so 0.5108 means 95 of 186 pairs
+correctly ordered. `sae_differential.py` now defaults to `--select-on train`.
+All 10,240 sparse features underperform the 1,280 dense dimensions on the target contrast.
+(AU-PRC is uninformative here — the test 2b contrast is 31 PET vs 6 negatives, prevalence
+0.84, so everything including random scores ~0.89.)
+
+#### The ranking is also unstable to removing in-sample data
+
+| tier | top-50 overlap, all-correct vs held-out-only |
+|---|---|
+| 2b_aliphatic | **not computable — only 4 held-out controls** |
+| 3_fold_matched_esterase | 22/50 |
+| 4_naive_control | 41/50 |
+
+D9's concern was warranted: the "correct-only" set is 307 PET of which **257 are training
+sequences the probe memorised** (in-sample accuracy 257/257 at the saturated threshold).
+Dropping them changes more than half the tier-3 ranking.
+
+#### What this establishes, and what it does not
+
+**Establishes:** the research plan's Stage-1 univariate differential score, applied to these
+SAE features, does not identify PET-specific latents. Three independent signs — no better
+than random, ranking unstable to in-sample removal, sparse features underperforming dense
+ones on the target contrast.
+
+**Does not establish:** that the feature is absent from the SAE. The test 2b contrast has
+**6 negatives**; nothing concluded from it is strong. The honest statement is "this
+selection method at this sample size found nothing."
+
+The reconstruction gate passing at 102.9% matters here: the failure is in the *selection
+method and sample size*, not in the SAE destroying the signal.
+
+#### Implication for next steps
+
+Univariate selection was always the weak part of the plan, and the kinase project reached
+the same conclusion by a different route — its single-latent tests looked null until
+**greedy, conditioned** selection revealed a real distributed effect. Supervised selection
+against the probe (L1 over SAE features, or gradient x activation attribution on the
+PET logit) is the indicated replacement, with greedy sequential ablation for validation.
+
+### 13. SAE feature interpretation — the main scientific result (2026-09-28)
+
+Artifact: **`artifacts/SAE_Feature_Interpretation.md`**. Task changed to **PET (320) vs
+everything else (491)** per user direction; tiers retained only for interpretation.
+
+#### Supervised selection works where the differential score did not
+
+Three selection methods on train only (L1 at C=0.1 giving exactly 50 non-zero; univariate
+AU-ROC; variance-floored differential). They agree only partially — L1 ∩ univariate = 26,
+all three = 14 — so validation decided. All three top-50 sets land at test AU-ROC ~0.85,
+AU-PRC ~0.75, at the **93rd percentile** of 50 random latents: better than random but not
+past the 95th.
+
+#### The signal is concentrated, not distributed
+
+| k (top by train univariate AU-ROC) | test AU-ROC | test AU-PRC | % of full |
+|---|---|---|---|
+| **1** | 0.8878 | 0.7655 | **94.3%** |
+| 10 | 0.8515 | 0.7852 | 96.8% |
+| 50 | 0.8529 | 0.7522 | 92.7% |
+| 10240 | 0.8900 | 0.8115 | 100% |
+
+**One latent recovers 94% of the full model.** Drop-one-out from the top-50 moves AU-PRC by
+at most 0.022 — massive redundancy. This is the **opposite** of the sibling kinase project,
+where recognition was distributed and no single latent mattered.
+
+#### Six latents validate on held-out data (raw activation, no classifier)
+
+| latent | train | val | test | held-out |
+|---|---|---|---|---|
+| **9529** | 0.9938 | 0.9418 | **0.9160** | **0.9282** |
+| 411 | 0.9918 | 0.9397 | 0.9103 | 0.9199 |
+| 2661 | 0.9874 | 0.9174 | 0.9129 | 0.9142 |
+| 7734 | 0.9917 | 0.9165 | 0.8975 | 0.9053 |
+| 5271 | 0.9938 | 0.9124 | 0.8904 | 0.8991 |
+| 2473 | 0.9982 | 0.9095 | 0.8878 | 0.8991 |
+
+**Latent 9529 alone reaches test AU-ROC 0.9160** — above dense `max_L33` (0.8856), the full
+10,240-latent probe (0.8900) and BLASTp (0.8778). The best single number in the project.
+
+Multiple-comparison check clears: best achievable by *any* of the 10,240 latents is 0.9222,
+99.9th percentile 0.8958, so 9529 sits above the 99.9th percentile and 6 of 12
+train-selected latents beat the 99th. Validation was necessary though — roughly half the
+top-12 by train AU-ROC collapse on held-out data (3255: 0.991 → 0.576; 2359: 0.988 → 0.467).
+
+#### Five of six latents map onto the Ser-Asp-His catalytic triad
+
+Per-residue activations recomputed to locate each peak:
+
+```
+9529   NRLAVAGHSMGGGGA   next residue S 40/40   -> catalytic SERINE (nucleophile elbow GxSxG)
+411    LANDRVPTMVISGQA ┐ peaks ~6 residues apart
+2661   PTMVISGQADTVVTP ┘ -> catalytic ASPARTATE region
+2473   ATTESVYLEVAGADH ┐ peaks ~7 residues apart
+7734   YLEVAGADHGFMVGR ┘ -> catalytic HISTIDINE (A-G-A-D-H-G), next residue H 40/40
+5271   PNIPNKIIGKYSVAW   C-terminal, no consistent motif — unassigned
+```
+
+The pairwise overlap explains the redundancy: these are **three views of one catalytic
+apparatus**, not six independent detectors.
+
+Latent 9529 is unambiguous — the residue after its peak is **S in 100% of PET**, 98% of 2b,
+41% of class-3 esterases; the peak lands on a `GxSxG` in **316/320 (99%)** of PET versus
+**127/527 (24%)** of non-PET.
+
+#### Validated against UniProt curated active sites: 32/32
+
+The triad positions derived from latent peaks were checked against UniProt `ACT_SITE`
+annotations. 9 of 31 accessions carry them, covering 32 residues; **all 32 are recovered
+within +/-1**. Exact matches include IsPETase (S160 D206 H237), LCC (S165 D210 H242) and
+Est119 (S169 D215 H247).
+
+PDB `SITE` records are **not** usable for this — they are software-generated
+ligand-binding sites present in only 9 of 29 files. UniProt `ACT_SITE` covers only 9 of 31
+entries, so the latent-derived assignment fills in the remaining 23 rather than duplicating
+existing annotation.
+
+Numbering must be reconciled by alignment: UniProt numbers IsPETase full-length (S160),
+PDB 5XFY numbers from the mature protein (S131), and three Thermobifida entries are
+truncated constructs offset 38-39 residues from their UniProt record. An initial
+validation run scored 23/32 purely because substring matching failed on those three
+variants; proper alignment gives 3/3 for each.
+
+#### THE FINDING: it detects the fold, not the substrate
+
+| latent | PET | 2b aliph. | 2a PBAT | 3 esterase | 4 naive | PET/2b |
+|---|---|---|---|---|---|---|
+| 9529 | 0.950 | 0.715 | 0.560 | 0.237 | 0.030 | 1.33 |
+| 2473 | 0.953 | 0.407 | 0.217 | 0.156 | 0.031 | 2.34 |
+| 7734 | 0.872 | 0.482 | 0.264 | 0.181 | 0.022 | 1.81 |
+
+Every latent shows the same monotone gradient — **PET > 2b > 2a > esterase > naive** — which
+is an ordering in *how canonically alpha/beta-hydrolase-like* a protein is, not a PET axis.
+
+The strongest non-PET activators settle it:
+
+```
+BPS0038  2b_aliphatic  1.004   GRVGTSGHSQGGGGS
+BPS0021  2b_aliphatic  0.952   DKFAVSGWSMGGGGA
+PET consensus          ~1.02   NRLAVAGHSMGGGGA
+```
+
+`GWSMGGGGA` vs `GHSMGGGGA` — same motif, one position different, fires just as hard. It
+**cannot** distinguish PETases from aliphatic-polyester cutinases, and never could: they
+share the nucleophile elbow. It scores 0.92 only because 76% of the negative set lacks the
+motif entirely.
+
+#### This single feature explains every prior result
+
+| observation | explanation |
+|---|---|
+| dense probe ~0.89 AU-ROC overall | the fold signal is strong and easy |
+| near-perfect vs `4_naive_control` | non-esterases have no nucleophile elbow |
+| ~0.64-0.70 vs `2b_aliphatic` at **every** scale, and for BLAST | those enzymes have the same motif |
+| 8M → 650M fixed the phylum shortcut but not F1 | scale sharpened the fold detector, never the bottleneck |
+| L1 sparsity on dense embeddings hurt | the fold signal is spread across correlated dimensions |
+| the differential score found nothing on `2b` | no PET-specific latent exists at this layer to find |
+
+**The model is an excellent serine-hydrolase detector and not a PET detector.** Same shape
+of result as the kinase project, reached independently: its top latents also mapped onto
+textbook catalytic motifs (P-loop, HRD) rather than anything substrate-specific.
+
+#### Limits
+
+One layer, one SAE (middle layers 9/18/24 untested and may carry structural rather than
+sequence-level features); max-pooling discards position; **no causal test** — these are
+correlational and the kinase precedent is greedy sequential ablation against a
+reconstruction baseline; `5271` unassigned; and `3_fold_matched_esterase` is more
+heterogeneous than intended (only 41% have a catalytic serine at the peak), which inflates
+how well a fold detector separates the classes.
+
+### 14. Task redefined: polyester-degrader classifier — the headline result (2026-09-28)
+
+Artifacts: **`EDA_polyester_task.md`**, **`ESM2_650M_Polyester_Run.md`**,
+**`BLAST_vs_ESM2_650M_Polyester.md`**.
+
+#### Why
+
+The PET-only classifier plateaued at ~0.68 AU-ROC against other polyester degraders at both
+model scales and for BLAST. Section 13 explains why: the strongest features locate the
+Ser-Asp-His catalytic triad, which PETases and cutinases share almost exactly. Most
+"PETases" *are* cutinases assayed on PET — LCC is Leaf-branch Compost **Cutinase**, Cut190
+and TfCut are cutinases, and 20 of the 320 PET-class enzymes are named cutinase outright.
+The PET/non-PET line runs through one protein family and is drawn by which substrate
+someone happened to test.
+
+**New labels: polyester degrader (388 = PET 320 + PBAT 20 + aliphatic 48) vs non-degrader
+(423 = esterase 185 + naive 238).** PHA (36) held out as a generalisation probe. The split
+is unchanged — only labels moved, so the verified 40% identity bound still holds.
+
+#### Clean run, not a relabelling of old results
+
+Sweep, hyperparameter selection and threshold were all redone on this task. **Selection was
+switched from val AU-PRC to val log-loss**, because AU-PRC saturates here: several cells tie
+at 0.9995 and C=1/eta=1e-1 reaches a perfect 1.0000 — the corner where log-loss is 2.72,
+i.e. unconverged and miscalibrated. AU-PRC selection would have chosen exactly that cell.
+Selected: 650M `max_L33`, **C=1e-2, eta0=1e-4**.
+
+#### Results
+
+| | test AU-ROC | test AU-PRC | P | R | F1 |
+|---|---|---|---|---|---|
+| **ESM-2 650M `max_L33`** | **0.9681** [0.921, 0.997] | **0.9526** [0.857, 0.996] | 0.830 | 0.929 | 0.876 |
+| BLASTp @ e≤3.16e-2 | 0.9040 | 0.7552 | 0.833 | 0.952 | 0.889 |
+| amino-acid composition (floor) | 0.7020 | 0.6737 | | | |
+| *PET-only task, for contrast* | *0.8856* | *0.8150* | *0.742* | *0.742* | *0.742* |
+
+`TP=39 FP=8 FN=3 TN=54`. Recall by tier: PET 30/31, PBAT 3/5, aliphatic 6/6 — all three
+substrate classes, not carried by the PET majority. **All 8 false positives are
+fold-matched esterases; zero are naive controls.**
+
+#### FIRST SIGNIFICANT WIN OVER BLAST
+
+Paired bootstrap over the 66 test homology components:
+
+| metric | delta (probe − BLAST) | 95% CI | verdict |
+|---|---|---|---|
+| AU-ROC | **+0.0603** | [+0.0058, +0.1237] | **SIGNIFICANT** |
+| AU-PRC | **+0.1708** | [+0.0136, +0.2722] | **SIGNIFICANT** |
+
+Against the PET task, where AU-ROC was +0.0074 [−0.0959, +0.1232] and AU-PRC −0.0412
+[−0.1899, +0.0756] — both non-significant, BLAST ahead on AU-PRC.
+
+At the *operating point* the two are equivalent (identical 8 false positives, BLAST one TP
+ahead). The win is in ranking quality.
+
+#### Validation vs test, and what the comparison actually shows
+
+| | VAL probe | VAL BLASTp | TEST probe | TEST BLASTp |
+|---|---|---|---|---|
+| AU-ROC | 0.9976 | 0.9910 | **0.9681** | 0.9040 |
+| AU-PRC | 0.9954 | 0.9895 | **0.9526** | 0.7552 |
+| Precision | 0.9773 | 0.9545 | 0.8298 | 0.8333 |
+| Recall | 1.0000 | 0.9767 | 0.9286 | 0.9524 |
+| TP/FP/FN | 43/1/0 | 42/2/1 | 39/8/3 | 40/8/2 |
+
+**On validation the methods are nearly tied (+0.006 AU-PRC); on test the probe leads by
++0.197.** The gap *widens* on held-out data because BLASTp degrades far more
+(−0.234 AU-PRC val→test, against the probe's −0.043).
+
+**Diagnosed cause — test drew harder negatives, not more remote positives.** Test positives
+are actually closer to the BLAST database (median e-value 3.7e-15 vs val 1e-09). But 8 of 62
+test negatives clear BLASTp's cutoff against only 2 of 76 in val. Both methods make 8 false
+positives; BLASTp scatters them among its top hits while the probe keeps them near its
+boundary.
+
+**This tempers the claim.** The paired bootstrap resamples within test and cannot account
+for split composition. The defensible statement is *"the probe degrades more gracefully as
+negatives get harder"*, not *"uniformly better"*.
+
+#### The precision question
+
+At the operating point BLASTp shows precision 0.8333 vs the probe's 0.8298. That 0.0035 is
+**one sequence** — both make exactly 8 false positives; BLASTp catches one more true
+positive so its denominator is 48 not 47. Posed properly as a trade-off:
+
+| precision required | probe recall | BLASTp recall | enzymes returned (of 42) |
+|---|---|---|---|
+| ≥ 95% | 59.5% | 2.4% | 25 vs 1 |
+| ≥ 90% | **78.6%** | 2.4% | **33 vs 1** |
+| ≥ 85% | 92.9% | 2.4% | 39 vs 1 |
+| ≥ 80% | 97.6% | 95.2% | 41 vs 40 |
+
+**BLASTp plateaus near 84% precision and cannot be pushed higher** — its top-ranked hits
+already contain homologous esterases, so tightening the cutoff removes true positives first.
+
+#### Train/val/test for the probe
+
+| | TRAIN | VAL | TEST |
+|---|---|---|---|
+| AU-ROC | 1.0000 | 0.9976 | 0.9681 |
+| AU-PRC | 1.0000 | 0.9954 | 0.9526 |
+| Precision | 0.9619 | 0.9773 | 0.8298 |
+| Recall | 1.0000 | 1.0000 | 0.9286 |
+
+Train AU-ROC is exactly 1.0000 (separable regime) but the train→test gap is only −0.032.
+**Ranking transfers, the threshold does not**: AU-ROC/AU-PRC fall −0.029/−0.043 val→test
+while precision falls −0.148, because 0.1455 was fitted where negatives were easier and val
+prevalence (0.361) differs from test (0.404). The val column is not unbiased — it selected
+C, eta0 and the threshold.
+
+**Figure:** `https://claude.ai/artifact/S1rzDp1cJYxA39xSTPZteE` — PR curves, both splits,
+operating points marked.
+
+#### Generalisation to an unseen lineage
+
+| | PHA depolymerases flagged |
+|---|---|
+| ESM-2 650M | **30/36 (83%)** |
+| BLASTp | 28/36 (78%) |
+
+PHA depolymerases were excluded from training and from the BLAST database and are a
+separate enzyme lineage. Recognising them is evidence the model learned "polyester
+hydrolase" as a property rather than memorising the cutinase family — and it cannot be
+passed by flagging everything, since the same model returns 0/36 on non-esterase controls.
+
+#### The confound also improved
+
+| task | positives Actinomycetota | negatives | gap |
+|---|---|---|---|
+| PET only | 72.6% | 66.0% | +6.6 pts |
+| any polyester | 66.0% | 70.4% | **−4.4 pts** |
+
+Adding PBAT and aliphatic degraders (mostly Pseudomonadota and Bacillota) dilutes the
+actinomycete dominance. An Actinomycetota-only classifier now scores AU-ROC 0.5842. This
+matters because taxonomy was the 8M probe's single largest error mode (section 10).
+
+#### Honest framing
+
+The model did not improve — **the question changed to one the representation can answer.**
+The new task is also genuinely easier: the composition floor is 0.7020. The defensible
+claim is the lift over floor plus the significant margin over BLAST, not the raw 0.968.
+
+**Caveat carried in all three documents:** the test sequences are the PET task's test set
+relabelled. Split, identity bound and all tuning were redone, but these sequences are not
+virgin — their behaviour under a different labelling has been observed.
+
+#### The two claims, now cleanly separated
+
+```
+"detects polyester-degrading enzymes"   AU-ROC 0.968, beats BLAST on both metrics (significant)
+"detects PET specifically"              AU-ROC ~0.68, no method clears it
+```
+
+Both measured, and the SAE explains the gap: the latents find the catalytic triad every
+polyester hydrolase shares. This also resolves the cutinase objection — under the new
+labels cutinases are *positives*, so validating the triad-finder on them is coherent rather
+than contradictory.
 
 ---
 
@@ -673,6 +1085,30 @@ Controls:
 
 ---
 
+### 14b. Why BLASTp's test PR curve is a flat shelf (2026-09-28)
+
+Follow-up to the PR-curve figure. BLASTp's test curve sits at **0.844 precision from recall
+0.05 to 0.95** with no high-precision region. Diagnosed by walking down its ranking: ranks 2,
+3 and 5 are tier-3 fold-matched esterases (P86325 e=1e-74, Q47M62 e=3e-74, Q01470 e=4e-55),
+interleaved with genuine PET hydrolases at ranks 1 and 4. Six of 62 test negatives beat
+BLASTp's own median positive (e ≤ 3.7e-15).
+
+Because the contamination is at the *top* of the ranking, no threshold can remove it —
+tightening the cutoff strips true positives off the bottom first. That is the shelf.
+
+First-error rank by split/method: val BLAST 41 (93.0% recall already reached), val probe 36
+(81.4%), **test BLAST 2 (2.4%)**, test probe 25 (57.1%). This is the mechanism behind the
+0.9895 → 0.7552 val→test AU-PRC drop for BLAST.
+
+The probe scores 4 of the 6 correctly (0.187–0.313) and is caught by the same two hardest
+cases (0.525, 0.522) — evidence it reads signal beyond raw homology, and an honest statement
+of where that signal runs out. Recorded in `artifacts/BLAST_vs_ESM2_650M_Polyester.md`
+("Reading the shape of the BLASTp test curve"). Figure itself is correct as drawn; no change.
+
+*Caveat:* six sequences in one split. Explains the gap's mechanism, not its magnitude.
+
+---
+
 ## Current status (checkpoint, 2026-09-28)
 
 Dataset built and verified; dense-embedding baselines complete at two model scales with a
@@ -682,8 +1118,18 @@ No SAE work yet.
 **Assembled set: 847 sequences.** 320 `1_pet`, 68 `2_other_polyester`, 185
 `3_fold_matched_esterase`, 238 `4_naive_control`, 36 `heldout_pha`, 118 excluded.
 
-**Best test result to date: BLASTp @ e-value 3.16e-2, F1 0.800** (P 0.828, R 0.774).
-Neither ESM-2 scale beats it, and no pairwise difference is statistically significant.
+**Headline: polyester-degrader classifier, test AU-ROC 0.9681 / AU-PRC 0.9526, beating
+BLASTp significantly on both (paired bootstrap over homology components). Generalises to a
+held-out enzyme lineage at 83%.** See section 14.
+
+**Best single interpretable feature: SAE latent 9529 alone, AU-ROC 0.9160 on the PET task** — a catalytic-serine detector, above
+dense (0.8856), the full SAE probe (0.8900) and BLASTp (0.8778). **Best test F1: BLASTp
+0.800.** No pairwise difference between methods is statistically significant.
+
+**Main scientific result (section 13):** the model's best feature is an interpretable
+nucleophile-elbow detector. It detects the alpha/beta-hydrolase fold, not PET specificity,
+which explains the ~0.68 ceiling on the `2b_aliphatic` contrast across every model scale
+and BLAST.
 
 **Artifacts** (all numbers reproducible, each with a machine-readable `.json`):
 
@@ -694,6 +1140,13 @@ Neither ESM-2 scale beats it, and no pairwise difference is statistically signif
 | `artifacts/ESM2_650M_Dense_Run.md` | 650M layer 33: same four tables |
 | `artifacts/BLAST_vs_ESM2_8M.md` | BLAST baseline, e-value sweep, 8M error analysis, rebalancing |
 | `artifacts/BLAST_vs_ESM2_650M.md` | BLAST vs 650M, paired bootstrap method, 650M error analysis |
+| `artifacts/SAE_Feature_Interpretation.md` | SAE latents, catalytic-triad mapping |
+| `artifacts/EDA_polyester_task.md` | **polyester labels, confound floors** |
+| `artifacts/ESM2_650M_Polyester_Run.md` | **the headline classifier** |
+| `artifacts/BLAST_vs_ESM2_650M_Polyester.md` | **the significant win over BLAST** |
+| `https://claude.ai/artifact/KcdU4xp1QUSvuWzrL4pGwS` | 3D structure viewer, 32 PETases |
+| `https://claude.ai/artifact/S1rzDp1cJYxA39xSTPZteE` | **PR curves, val vs test, vs BLASTp** |
+| `artifacts/pr_curves.html` | source for the curve figure |
 
 **Data artifacts:**
 

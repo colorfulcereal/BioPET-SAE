@@ -1,5 +1,13 @@
 # ESM-2 650M Dense Run — Linear Probe Results (layer 33)
 
+> **Task framing: PET-only (superseded).** This document evaluates the original
+> **PET vs. everything else** classifier. The project's headline task was later redefined to
+> **polyester degrader vs. non-degrader** (any of PET, PBAT, aliphatic polyester), which
+> reclassifies cutinases as positives and is the framing all current results use.
+> Current equivalents: `EDA_polyester_task.md`, `ESM2_650M_Polyester_Run.md`,
+> `BLAST_vs_ESM2_650M_Polyester.md`. Numbers below remain valid *for the PET-only task* and
+> are retained as the record of how the task came to be redefined.
+
 Generated 2026-09-28. Binary PET-vs-rest linear probe on dense ESM-2 650M embeddings.
 Structured to match `ESM2_8M_Dense_Run.md` so the two are directly comparable.
 

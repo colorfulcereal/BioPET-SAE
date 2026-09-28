@@ -1,0 +1,43 @@
+{
+  "composition": {
+    "1_pet": {
+      "train": 257,
+      "val": 32,
+      "test": 31
+    },
+    "2a_PBAT": {
+      "train": 13,
+      "val": 2,
+      "test": 5
+    },
+    "2b_aliphatic": {
+      "train": 33,
+      "val": 9,
+      "test": 6
+    },
+    "3_fold_matched_esterase": {
+      "train": 119,
+      "val": 40,
+      "test": 26
+    },
+    "4_naive_control": {
+      "train": 166,
+      "val": 36,
+      "test": 36
+    }
+  },
+  "OLD task (PET only)": {
+    "pos_actino": 0.646875,
+    "neg_actino": 0.6089613034623218
+  },
+  "NEW task (any polyester)": {
+    "pos_actino": 0.5360824742268041,
+    "neg_actino": 0.7044917257683215
+  },
+  "baselines": {
+    "aa_composition": 0.8925994979405815,
+    "length": 0.5822670663644561,
+    "phylum": 0.5842046257707587,
+    "prevalence": 0.4784217016029593
+  }
+}

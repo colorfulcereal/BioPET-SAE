@@ -1,5 +1,13 @@
 # BLASTp vs ESM-2 650M Probe (layer 33)
 
+> **Task framing: PET-only (superseded).** This document evaluates the original
+> **PET vs. everything else** classifier. The project's headline task was later redefined to
+> **polyester degrader vs. non-degrader** (any of PET, PBAT, aliphatic polyester), which
+> reclassifies cutinases as positives and is the framing all current results use.
+> Current equivalents: `EDA_polyester_task.md`, `ESM2_650M_Polyester_Run.md`,
+> `BLAST_vs_ESM2_650M_Polyester.md`. Numbers below remain valid *for the PET-only task* and
+> are retained as the record of how the task came to be redefined.
+
 Generated 2026-09-28. Companion to `ESM2_650M_Dense_Run.md`, and the 650M counterpart of
 `BLAST_vs_ESM2_8M.md`. Same split, same test sequences, matched tuning protocol.
 
@@ -125,12 +133,12 @@ Decision threshold 0.0030, carried from val.
 
 | accession | score | tier | phylum | BLAST e-value | protein / substrates |
 |---|---|---|---|---|---|
-| BPS0038 | 0.776 | 2b_aliphatic | Pseudomonadota | 1e-17 | HP PBS|PHA |
+| BPS0038 | 0.776 | 2b_aliphatic | Pseudomonadota | 1e-17 | HP PBS\|PHA |
 | O33363 | 0.008 | 3_fold_matched_esterase | Actinomycetota | 2.6 | GDSL lipase Rv0518 (EC 3.1.1.-)  |
 | A0QWG6 | 0.008 | 4_naive_control | Actinomycetota | 0.48 | Phosphatidyl-myo-inositol mannosyl  |
 | P9WGK9 | 0.006 | 4_naive_control | Actinomycetota | 0.33 | Sensor histidine kinase MtrB (EC 2  |
-| BPS0062 | 0.005 | 2a_PBAT | Bacillota | 0.005 | JW45_1534 PBAT|PHA|PLA|PUR |
-| BPS0025 | 0.005 | 2b_aliphatic | - | 0.009 | Lipase PCL|PES|PHBV|PHO |
+| BPS0062 | 0.005 | 2a_PBAT | Bacillota | 0.005 | JW45_1534 PBAT\|PHA\|PLA\|PUR |
+| BPS0025 | 0.005 | 2b_aliphatic | - | 0.009 | Lipase PCL\|PES\|PHBV\|PHO |
 | P22637 | 0.004 | 4_naive_control | Actinomycetota | 0.17 | Cholesterol oxidase (CHOD) (EC 1.1  |
 | O32232 | 0.004 | 3_fold_matched_esterase | Bacillota | 0.067 | Carboxylesterase (EC 3.1.1.1)  |
 

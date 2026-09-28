@@ -1,0 +1,414 @@
+{
+  "latents": {
+    "9529": {
+      "by_class": {
+        "1_pet": 0.9501022100448608,
+        "2b_aliphatic": 0.7153928875923157,
+        "2a_PBAT": 0.5601263642311096,
+        "3_fold_matched_esterase": 0.23734863102436066,
+        "4_naive_control": 0.03021465800702572
+      },
+      "above_half": {
+        "1_pet": [
+          318,
+          320
+        ],
+        "2b_aliphatic": [
+          42,
+          48
+        ],
+        "2a_PBAT": [
+          13,
+          20
+        ],
+        "3_fold_matched_esterase": [
+          50,
+          185
+        ],
+        "4_naive_control": [
+          1,
+          238
+        ]
+      },
+      "next_residue": {
+        "S": 40
+      },
+      "top_windows": [
+        [
+          "NRLAVAGHSMGGGGA",
+          11
+        ],
+        [
+          "NRLAVSGHSMGGGGA",
+          10
+        ],
+        [
+          "SRLAVAGHSMGGGGA",
+          4
+        ]
+      ],
+      "on_gxsxg_pet": [
+        316,
+        320
+      ],
+      "on_gxsxg_non": [
+        127,
+        527
+      ],
+      "auroc_train": 0.9937813723300458,
+      "auroc_val": 0.9418103448275862,
+      "auroc_test": 0.9160406539991163,
+      "auroc_heldout": 0.9281746031746031
+    },
+    "411": {
+      "by_class": {
+        "1_pet": 0.8351917266845703,
+        "2b_aliphatic": 0.40291929244995117,
+        "2a_PBAT": 0.2685658633708954,
+        "3_fold_matched_esterase": 0.17234894633293152,
+        "4_naive_control": 0.043963473290205
+      },
+      "above_half": {
+        "1_pet": [
+          298,
+          320
+        ],
+        "2b_aliphatic": [
+          20,
+          48
+        ],
+        "2a_PBAT": [
+          2,
+          20
+        ],
+        "3_fold_matched_esterase": [
+          37,
+          185
+        ],
+        "4_naive_control": [
+          1,
+          238
+        ]
+      },
+      "next_residue": {
+        "M": 21,
+        "L": 17,
+        "V": 1
+      },
+      "top_windows": [
+        [
+          "LANDRVPTMVISGQA",
+          4
+        ],
+        [
+          "LATDRVPTMVFSGQA",
+          4
+        ],
+        [
+          "LANDRVPTMIISGQA",
+          3
+        ]
+      ],
+      "on_gxsxg_pet": [
+        0,
+        320
+      ],
+      "on_gxsxg_non": [
+        1,
+        527
+      ],
+      "auroc_train": 0.9917594366793233,
+      "auroc_val": 0.939655172413793,
+      "auroc_test": 0.9102960671674768,
+      "auroc_heldout": 0.9199404761904761
+    },
+    "2661": {
+      "by_class": {
+        "1_pet": 0.8835500478744507,
+        "2b_aliphatic": 0.4531278610229492,
+        "2a_PBAT": 0.21274280548095703,
+        "3_fold_matched_esterase": 0.17940232157707214,
+        "4_naive_control": 0.02638586424291134
+      },
+      "above_half": {
+        "1_pet": [
+          298,
+          320
+        ],
+        "2b_aliphatic": [
+          21,
+          48
+        ],
+        "2a_PBAT": [
+          2,
+          20
+        ],
+        "3_fold_matched_esterase": [
+          36,
+          185
+        ],
+        "4_naive_control": [
+          1,
+          238
+        ]
+      },
+      "next_residue": {
+        "A": 32,
+        "R": 3,
+        "N": 3
+      },
+      "top_windows": [
+        [
+          "PTMIFSGQADTVVTP",
+          8
+        ],
+        [
+          "PTMVISGQADTVVTP",
+          6
+        ],
+        [
+          "PTMVFSGQADTVVTP",
+          6
+        ]
+      ],
+      "on_gxsxg_pet": [
+        0,
+        320
+      ],
+      "on_gxsxg_non": [
+        5,
+        527
+      ],
+      "auroc_train": 0.9874216793821341,
+      "auroc_val": 0.9173850574712643,
+      "auroc_test": 0.9129474149359258,
+      "auroc_heldout": 0.9141865079365079
+    },
+    "5271": {
+      "by_class": {
+        "1_pet": 0.7653549909591675,
+        "2b_aliphatic": 0.42802050709724426,
+        "2a_PBAT": 0.26852697134017944,
+        "3_fold_matched_esterase": 0.15640966594219208,
+        "4_naive_control": 0.0314292348921299
+      },
+      "above_half": {
+        "1_pet": [
+          294,
+          320
+        ],
+        "2b_aliphatic": [
+          19,
+          48
+        ],
+        "2a_PBAT": [
+          3,
+          20
+        ],
+        "3_fold_matched_esterase": [
+          31,
+          185
+        ],
+        "4_naive_control": [
+          1,
+          238
+        ]
+      },
+      "next_residue": {
+        "A": 15,
+        "G": 13,
+        "I": 4
+      },
+      "top_windows": [
+        [
+          "PNIPNKIIGKYSVAW",
+          10
+        ],
+        [
+          "VGRSNPVMVRTMLPF",
+          2
+        ],
+        [
+          "PNISNTVIAKYSISW",
+          2
+        ]
+      ],
+      "on_gxsxg_pet": [
+        0,
+        320
+      ],
+      "on_gxsxg_non": [
+        2,
+        527
+      ],
+      "auroc_train": 0.9937931277698755,
+      "auroc_val": 0.9123563218390804,
+      "auroc_test": 0.8904109589041096,
+      "auroc_heldout": 0.8991071428571428
+    },
+    "2473": {
+      "by_class": {
+        "1_pet": 0.9527430534362793,
+        "2b_aliphatic": 0.40654608607292175,
+        "2a_PBAT": 0.2170402556657791,
+        "3_fold_matched_esterase": 0.15587349236011505,
+        "4_naive_control": 0.031016064807772636
+      },
+      "above_half": {
+        "1_pet": [
+          296,
+          320
+        ],
+        "2b_aliphatic": [
+          21,
+          48
+        ],
+        "2a_PBAT": [
+          2,
+          20
+        ],
+        "3_fold_matched_esterase": [
+          32,
+          185
+        ],
+        "4_naive_control": [
+          1,
+          238
+        ]
+      },
+      "next_residue": {
+        "E": 32,
+        "Q": 7,
+        "V": 1
+      },
+      "top_windows": [
+        [
+          "ATTESVYLEVAGADH",
+          7
+        ],
+        [
+          "TTTESVYLEVAGADH",
+          3
+        ],
+        [
+          "ATTESVYVEVAGADH",
+          2
+        ]
+      ],
+      "on_gxsxg_pet": [
+        0,
+        320
+      ],
+      "on_gxsxg_non": [
+        2,
+        527
+      ],
+      "auroc_train": 0.9982484394653627,
+      "auroc_val": 0.9094827586206897,
+      "auroc_test": 0.8877596111356606,
+      "auroc_heldout": 0.8991071428571428
+    },
+    "7734": {
+      "by_class": {
+        "1_pet": 0.8723875284194946,
+        "2b_aliphatic": 0.4824909269809723,
+        "2a_PBAT": 0.2643381953239441,
+        "3_fold_matched_esterase": 0.18135851621627808,
+        "4_naive_control": 0.022496191784739494
+      },
+      "above_half": {
+        "1_pet": [
+          297,
+          320
+        ],
+        "2b_aliphatic": [
+          22,
+          48
+        ],
+        "2a_PBAT": [
+          4,
+          20
+        ],
+        "3_fold_matched_esterase": [
+          40,
+          185
+        ],
+        "4_naive_control": [
+          1,
+          238
+        ]
+      },
+      "next_residue": {
+        "H": 40
+      },
+      "top_windows": [
+        [
+          "YLEVAGADHGFMVGR",
+          22
+        ],
+        [
+          "YLEVAGGDHGFMVGR",
+          10
+        ],
+        [
+          "YLEIAGGDHGFPVGR",
+          2
+        ]
+      ],
+      "on_gxsxg_pet": [
+        2,
+        320
+      ],
+      "on_gxsxg_non": [
+        3,
+        527
+      ],
+      "auroc_train": 0.9916536377208554,
+      "auroc_val": 0.9164870689655172,
+      "auroc_test": 0.8974812196199734,
+      "auroc_heldout": 0.9053075396825396
+    }
+  },
+  "k_sweep": {
+    "1": [
+      0.8877596111356606,
+      0.7654639067764768
+    ],
+    "5": [
+      0.8722934158197084,
+      0.778852331372569
+    ],
+    "10": [
+      0.8515245249668583,
+      0.7851725489365082
+    ],
+    "25": [
+      0.8705258506407423,
+      0.7817249979223372
+    ],
+    "50": [
+      0.8528501988510827,
+      0.7522423007601814
+    ],
+    "100": [
+      0.8236853733981442,
+      0.7066390669180203
+    ],
+    "500": [
+      0.8347326557666814,
+      0.7249894883409506
+    ],
+    "2500": [
+      0.8223596995139195,
+      0.7242178323706705
+    ],
+    "10240": [
+      0.889969067609368,
+      0.8114976790396728
+    ]
+  },
+  "best_any_latent_test": 0.9222271321254971,
+  "pct999": 0.895791427308885,
+  "pct99": 0.770486080424216,
+  "pct95": 0.6672779496243921
+}

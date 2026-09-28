@@ -1,0 +1,2053 @@
+{
+  "layer": 33,
+  "window": 7,
+  "latents": {
+    "9529": {
+      "n_top_seqs": 30,
+      "n_pet_in_top": 29,
+      "pet_fraction_in_top": 0.967,
+      "mean_activation_pet": 0.9501022100448608,
+      "mean_activation_nonpet": 0.2389485090970993,
+      "prevalence_pet": 1.0,
+      "prevalence_nonpet": 0.7324478178368121,
+      "centre_residues": [
+        [
+          "H",
+          27
+        ],
+        [
+          "T",
+          1
+        ],
+        [
+          "I",
+          1
+        ],
+        [
+          "W",
+          1
+        ]
+      ],
+      "motif_hits_in_top_windows": {
+        "GxSxG (nucleophile elbow)": 30,
+        "GGG": 27
+      },
+      "mean_relative_position": 0.423,
+      "position_frequencies": [
+        [
+          [
+            "N",
+            0.567
+          ],
+          [
+            "S",
+            0.3
+          ],
+          [
+            "A",
+            0.067
+          ]
+        ],
+        [
+          [
+            "R",
+            0.933
+          ],
+          [
+            "K",
+            0.033
+          ],
+          [
+            "Q",
+            0.033
+          ]
+        ],
+        [
+          [
+            "L",
+            0.867
+          ],
+          [
+            "V",
+            0.033
+          ],
+          [
+            "I",
+            0.033
+          ]
+        ],
+        [
+          [
+            "A",
+            0.8
+          ],
+          [
+            "G",
+            0.133
+          ],
+          [
+            "Y",
+            0.033
+          ]
+        ],
+        [
+          [
+            "V",
+            0.933
+          ],
+          [
+            "A",
+            0.067
+          ]
+        ],
+        [
+          [
+            "A",
+            0.4
+          ],
+          [
+            "S",
+            0.3
+          ],
+          [
+            "I",
+            0.167
+          ]
+        ],
+        [
+          [
+            "G",
+            1.0
+          ]
+        ],
+        [
+          [
+            "H",
+            0.9
+          ],
+          [
+            "T",
+            0.033
+          ],
+          [
+            "I",
+            0.033
+          ]
+        ],
+        [
+          [
+            "S",
+            1.0
+          ]
+        ],
+        [
+          [
+            "M",
+            0.933
+          ],
+          [
+            "Q",
+            0.033
+          ],
+          [
+            "S",
+            0.033
+          ]
+        ],
+        [
+          [
+            "G",
+            1.0
+          ]
+        ],
+        [
+          [
+            "G",
+            1.0
+          ]
+        ],
+        [
+          [
+            "G",
+            0.9
+          ],
+          [
+            "E",
+            0.033
+          ],
+          [
+            "I",
+            0.033
+          ]
+        ],
+        [
+          [
+            "G",
+            0.933
+          ],
+          [
+            "T",
+            0.033
+          ],
+          [
+            "H",
+            0.033
+          ]
+        ],
+        [
+          [
+            "A",
+            0.7
+          ],
+          [
+            "T",
+            0.2
+          ],
+          [
+            "V",
+            0.067
+          ]
+        ]
+      ],
+      "windows": [
+        {
+          "seq_id": "BPS0200",
+          "class": "1_pet",
+          "activation": 1.0425012111663818,
+          "position": 159,
+          "rel_position": 0.508,
+          "window": "SKVAVCGHSQGGEGA",
+          "centre": "H"
+        },
+        {
+          "seq_id": "BPS0143",
+          "class": "1_pet",
+          "activation": 1.0290802717208862,
+          "position": 177,
+          "rel_position": 0.417,
+          "window": "ARLGVIGHSMGGGGV",
+          "centre": "H"
+        },
+        {
+          "seq_id": "BPS0085",
+          "class": "1_pet",
+          "activation": 1.0286732912063599,
+          "position": 181,
+          "rel_position": 0.383,
+          "window": "NRLAVSGHSMGGGGA",
+          "centre": "H"
+        },
+        {
+          "seq_id": "BPS0365",
+          "class": "1_pet",
+          "activation": 1.0271211862564087,
+          "position": 114,
+          "rel_position": 0.445,
+          "window": "NQIGVAGTSMGGITT",
+          "centre": "T"
+        },
+        {
+          "seq_id": "BPS0147",
+          "class": "1_pet",
+          "activation": 1.0265220403671265,
+          "position": 137,
+          "rel_position": 0.326,
+          "window": "NRLAVAGHSMGGGGA",
+          "centre": "H"
+        },
+        {
+          "seq_id": "BPS0165",
+          "class": "1_pet",
+          "activation": 1.0260086059570312,
+          "position": 154,
+          "rel_position": 0.383,
+          "window": "SRLAVAGHSMGGGGA",
+          "centre": "H"
+        },
+        {
+          "seq_id": "BPS0171",
+          "class": "1_pet",
+          "activation": 1.0250097513198853,
+          "position": 128,
+          "rel_position": 0.34,
+          "window": "ARLGVIGHSMGGGGV",
+          "centre": "H"
+        },
+        {
+          "seq_id": "BPS0154",
+          "class": "1_pet",
+          "activation": 1.0245293378829956,
+          "position": 142,
+          "rel_position": 0.342,
+          "window": "NRLAVAGHSMGGGGA",
+          "centre": "H"
+        },
+        {
+          "seq_id": "BPS0431",
+          "class": "heldout_pha",
+          "activation": 1.0221667289733887,
+          "position": 163,
+          "rel_position": 0.601,
+          "window": "DRLYATGISSGGYHS",
+          "centre": "I"
+        },
+        {
+          "seq_id": "BPS0081",
+          "class": "1_pet",
+          "activation": 1.021989345550537,
+          "position": 196,
+          "rel_position": 0.402,
+          "window": "NRLAVSGHSMGGGGA",
+          "centre": "H"
+        },
+        {
+          "seq_id": "BPS0159",
+          "class": "1_pet",
+          "activation": 1.0212290287017822,
+          "position": 128,
+          "rel_position": 0.313,
+          "window": "NRLAVSGHSMGGGGA",
+          "centre": "H"
+        },
+        {
+          "seq_id": "BPS0190",
+          "class": "1_pet",
+          "activation": 1.0190117359161377,
+          "position": 187,
+          "rel_position": 0.586,
+          "window": "KRLGAIGWSMGGGGA",
+          "centre": "W"
+        },
+        {
+          "seq_id": "BPS0181",
+          "class": "1_pet",
+          "activation": 1.0185612440109253,
+          "position": 178,
+          "rel_position": 0.528,
+          "window": "NRTAVIGHSMGGGGA",
+          "centre": "H"
+        },
+        {
+          "seq_id": "BPS0120",
+          "class": "1_pet",
+          "activation": 1.0184099674224854,
+          "position": 163,
+          "rel_position": 0.365,
+          "window": "NRLAVSGHSMGGGGA",
+          "centre": "H"
+        },
+        {
+          "seq_id": "BPS0157",
+          "class": "1_pet",
+          "activation": 1.017440915107727,
+          "position": 128,
+          "rel_position": 0.311,
+          "window": "SRLAVAGHSMGGGGA",
+          "centre": "H"
+        }
+      ]
+    },
+    "411": {
+      "n_top_seqs": 30,
+      "n_pet_in_top": 29,
+      "pet_fraction_in_top": 0.967,
+      "mean_activation_pet": 0.8351917266845703,
+      "mean_activation_nonpet": 0.17231842875480652,
+      "prevalence_pet": 1.0,
+      "prevalence_nonpet": 0.7988614800759013,
+      "centre_residues": [
+        [
+          "T",
+          29
+        ],
+        [
+          "P",
+          1
+        ]
+      ],
+      "motif_hits_in_top_windows": {
+        "HG (oxyanion hole)": 1
+      },
+      "mean_relative_position": 0.554,
+      "position_frequencies": [
+        [
+          [
+            "L",
+            0.6
+          ],
+          [
+            "W",
+            0.2
+          ],
+          [
+            "F",
+            0.1
+          ]
+        ],
+        [
+          [
+            "S",
+            0.4
+          ],
+          [
+            "A",
+            0.4
+          ],
+          [
+            "R",
+            0.067
+          ]
+        ],
+        [
+          [
+            "T",
+            0.333
+          ],
+          [
+            "N",
+            0.333
+          ],
+          [
+            "S",
+            0.267
+          ]
+        ],
+        [
+          [
+            "D",
+            0.367
+          ],
+          [
+            "V",
+            0.233
+          ],
+          [
+            "L",
+            0.2
+          ]
+        ],
+        [
+          [
+            "R",
+            0.633
+          ],
+          [
+            "Q",
+            0.133
+          ],
+          [
+            "T",
+            0.1
+          ]
+        ],
+        [
+          [
+            "V",
+            0.933
+          ],
+          [
+            "A",
+            0.033
+          ],
+          [
+            "T",
+            0.033
+          ]
+        ],
+        [
+          [
+            "P",
+            1.0
+          ]
+        ],
+        [
+          [
+            "T",
+            0.967
+          ],
+          [
+            "P",
+            0.033
+          ]
+        ],
+        [
+          [
+            "M",
+            0.567
+          ],
+          [
+            "L",
+            0.367
+          ],
+          [
+            "V",
+            0.033
+          ]
+        ],
+        [
+          [
+            "I",
+            0.5
+          ],
+          [
+            "V",
+            0.367
+          ],
+          [
+            "L",
+            0.067
+          ]
+        ],
+        [
+          [
+            "I",
+            0.433
+          ],
+          [
+            "F",
+            0.267
+          ],
+          [
+            "M",
+            0.133
+          ]
+        ],
+        [
+          [
+            "S",
+            0.4
+          ],
+          [
+            "G",
+            0.367
+          ],
+          [
+            "A",
+            0.167
+          ]
+        ],
+        [
+          [
+            "G",
+            0.533
+          ],
+          [
+            "A",
+            0.333
+          ],
+          [
+            "C",
+            0.1
+          ]
+        ],
+        [
+          [
+            "Q",
+            0.433
+          ],
+          [
+            "E",
+            0.2
+          ],
+          [
+            "R",
+            0.167
+          ]
+        ],
+        [
+          [
+            "A",
+            0.367
+          ],
+          [
+            "N",
+            0.167
+          ],
+          [
+            "D",
+            0.167
+          ]
+        ]
+      ],
+      "windows": [
+        {
+          "seq_id": "BPS0317",
+          "class": "1_pet",
+          "activation": 0.9692674875259399,
+          "position": 183,
+          "rel_position": 0.663,
+          "window": "WSTVGVPTLVLGGQN",
+          "centre": "T"
+        },
+        {
+          "seq_id": "BPS0107",
+          "class": "1_pet",
+          "activation": 0.9568795561790466,
+          "position": 225,
+          "rel_position": 0.495,
+          "window": "LSTLRVPTVIMGARD",
+          "centre": "T"
+        },
+        {
+          "seq_id": "BPS0396",
+          "class": "1_pet",
+          "activation": 0.952917754650116,
+          "position": 113,
+          "rel_position": 0.608,
+          "window": "AWRIKVPTLLIYGEL",
+          "centre": "T"
+        },
+        {
+          "seq_id": "BPS0356",
+          "class": "1_pet",
+          "activation": 0.952652096748352,
+          "position": 168,
+          "rel_position": 0.646,
+          "window": "WRNNRVPTLIVGAEN",
+          "centre": "T"
+        },
+        {
+          "seq_id": "BPS0159",
+          "class": "1_pet",
+          "activation": 0.9506242275238037,
+          "position": 167,
+          "rel_position": 0.408,
+          "window": "LANDRVPTMVISGQA",
+          "centre": "T"
+        },
+        {
+          "seq_id": "BPS0116",
+          "class": "1_pet",
+          "activation": 0.9493389129638672,
+          "position": 202,
+          "rel_position": 0.45,
+          "window": "LASNQVPTMVISGQA",
+          "centre": "T"
+        },
+        {
+          "seq_id": "BPS0166",
+          "class": "1_pet",
+          "activation": 0.9480620622634888,
+          "position": 168,
+          "rel_position": 0.419,
+          "window": "LNGMRVPTMLLAGQH",
+          "centre": "T"
+        },
+        {
+          "seq_id": "Q50681",
+          "class": "3_fold_matched_esterase",
+          "activation": 0.9480403661727905,
+          "position": 347,
+          "rel_position": 0.805,
+          "window": "HISADAPPFFVLHGR",
+          "centre": "P"
+        },
+        {
+          "seq_id": "BPS0163",
+          "class": "1_pet",
+          "activation": 0.9468895792961121,
+          "position": 172,
+          "rel_position": 0.428,
+          "window": "LSTLRVPTMIMGARD",
+          "centre": "T"
+        },
+        {
+          "seq_id": "BPS0342",
+          "class": "1_pet",
+          "activation": 0.9460440278053284,
+          "position": 170,
+          "rel_position": 0.646,
+          "window": "FSSVTVPTLIFACEN",
+          "centre": "T"
+        },
+        {
+          "seq_id": "BPS0224",
+          "class": "1_pet",
+          "activation": 0.9459092020988464,
+          "position": 199,
+          "rel_position": 0.655,
+          "window": "LSTLRVPTMIVSARD",
+          "centre": "T"
+        },
+        {
+          "seq_id": "BPS0133",
+          "class": "1_pet",
+          "activation": 0.9426109790802002,
+          "position": 180,
+          "rel_position": 0.417,
+          "window": "LANDRVPTMVISGQA",
+          "centre": "T"
+        },
+        {
+          "seq_id": "BPS0157",
+          "class": "1_pet",
+          "activation": 0.9410241842269897,
+          "position": 167,
+          "rel_position": 0.406,
+          "window": "LATDRVPTMVFSGQA",
+          "centre": "T"
+        },
+        {
+          "seq_id": "BPS0090",
+          "class": "1_pet",
+          "activation": 0.940148115158081,
+          "position": 220,
+          "rel_position": 0.471,
+          "window": "LANDRVPTMVISGQA",
+          "centre": "T"
+        },
+        {
+          "seq_id": "BPS0351",
+          "class": "1_pet",
+          "activation": 0.9395202994346619,
+          "position": 167,
+          "rel_position": 0.64,
+          "window": "WSNVQVPTLIIGADL",
+          "centre": "T"
+        }
+      ]
+    },
+    "2661": {
+      "n_top_seqs": 30,
+      "n_pet_in_top": 30,
+      "pet_fraction_in_top": 1.0,
+      "mean_activation_pet": 0.8835500478744507,
+      "mean_activation_nonpet": 0.17935891449451447,
+      "prevalence_pet": 1.0,
+      "prevalence_nonpet": 0.7855787476280834,
+      "centre_residues": [
+        [
+          "Q",
+          29
+        ],
+        [
+          "T",
+          1
+        ]
+      ],
+      "motif_hits_in_top_windows": {},
+      "mean_relative_position": 0.517,
+      "position_frequencies": [
+        [
+          [
+            "P",
+            1.0
+          ]
+        ],
+        [
+          [
+            "T",
+            0.967
+          ],
+          [
+            "S",
+            0.033
+          ]
+        ],
+        [
+          [
+            "M",
+            0.967
+          ],
+          [
+            "L",
+            0.033
+          ]
+        ],
+        [
+          [
+            "V",
+            0.467
+          ],
+          [
+            "I",
+            0.467
+          ],
+          [
+            "L",
+            0.067
+          ]
+        ],
+        [
+          [
+            "F",
+            0.5
+          ],
+          [
+            "I",
+            0.367
+          ],
+          [
+            "L",
+            0.067
+          ]
+        ],
+        [
+          [
+            "S",
+            0.8
+          ],
+          [
+            "A",
+            0.167
+          ],
+          [
+            "G",
+            0.033
+          ]
+        ],
+        [
+          [
+            "G",
+            1.0
+          ]
+        ],
+        [
+          [
+            "Q",
+            0.967
+          ],
+          [
+            "T",
+            0.033
+          ]
+        ],
+        [
+          [
+            "A",
+            0.867
+          ],
+          [
+            "R",
+            0.067
+          ],
+          [
+            "N",
+            0.033
+          ]
+        ],
+        [
+          [
+            "D",
+            1.0
+          ]
+        ],
+        [
+          [
+            "T",
+            0.933
+          ],
+          [
+            "G",
+            0.067
+          ]
+        ],
+        [
+          [
+            "V",
+            0.867
+          ],
+          [
+            "T",
+            0.133
+          ]
+        ],
+        [
+          [
+            "V",
+            1.0
+          ]
+        ],
+        [
+          [
+            "T",
+            1.0
+          ]
+        ],
+        [
+          [
+            "P",
+            1.0
+          ]
+        ]
+      ],
+      "windows": [
+        {
+          "seq_id": "BPS0159",
+          "class": "1_pet",
+          "activation": 1.0428715944290161,
+          "position": 173,
+          "rel_position": 0.423,
+          "window": "PTMVISGQADTVVTP",
+          "centre": "Q"
+        },
+        {
+          "seq_id": "BPS0339",
+          "class": "1_pet",
+          "activation": 1.0421276092529297,
+          "position": 175,
+          "rel_position": 0.658,
+          "window": "PTMVIAGQRDGTVTP",
+          "centre": "Q"
+        },
+        {
+          "seq_id": "BPS0164",
+          "class": "1_pet",
+          "activation": 1.0388703346252441,
+          "position": 195,
+          "rel_position": 0.485,
+          "window": "PTMIISGQNDTVVTP",
+          "centre": "Q"
+        },
+        {
+          "seq_id": "BPS0138",
+          "class": "1_pet",
+          "activation": 1.0386607646942139,
+          "position": 226,
+          "rel_position": 0.531,
+          "window": "PTMIISGQADTVVTP",
+          "centre": "Q"
+        },
+        {
+          "seq_id": "BPS0133",
+          "class": "1_pet",
+          "activation": 1.037782073020935,
+          "position": 186,
+          "rel_position": 0.431,
+          "window": "PTMVISGQADTVVTP",
+          "centre": "Q"
+        },
+        {
+          "seq_id": "BPS0118",
+          "class": "1_pet",
+          "activation": 1.037514567375183,
+          "position": 207,
+          "rel_position": 0.462,
+          "window": "PTMVISGQADTVVTP",
+          "centre": "Q"
+        },
+        {
+          "seq_id": "BPS0090",
+          "class": "1_pet",
+          "activation": 1.0373073816299438,
+          "position": 226,
+          "rel_position": 0.484,
+          "window": "PTMVISGQADTVVTP",
+          "centre": "Q"
+        },
+        {
+          "seq_id": "BPS0157",
+          "class": "1_pet",
+          "activation": 1.0367927551269531,
+          "position": 173,
+          "rel_position": 0.421,
+          "window": "PTMVFSGQADTVVTP",
+          "centre": "Q"
+        },
+        {
+          "seq_id": "BPS0233",
+          "class": "1_pet",
+          "activation": 1.0354634523391724,
+          "position": 212,
+          "rel_position": 0.702,
+          "window": "PTLLLAGQKDTTVTP",
+          "centre": "Q"
+        },
+        {
+          "seq_id": "BPS0098",
+          "class": "1_pet",
+          "activation": 1.0344045162200928,
+          "position": 225,
+          "rel_position": 0.486,
+          "window": "PTMVFSGQADTVVTP",
+          "centre": "Q"
+        },
+        {
+          "seq_id": "BPS0086",
+          "class": "1_pet",
+          "activation": 1.0342457294464111,
+          "position": 231,
+          "rel_position": 0.489,
+          "window": "PTMVFSGQADTVVTP",
+          "centre": "Q"
+        },
+        {
+          "seq_id": "BPS0123",
+          "class": "1_pet",
+          "activation": 1.0341774225234985,
+          "position": 226,
+          "rel_position": 0.509,
+          "window": "PSMLLAGQRDGTVTP",
+          "centre": "Q"
+        },
+        {
+          "seq_id": "BPS0120",
+          "class": "1_pet",
+          "activation": 1.0337226390838623,
+          "position": 208,
+          "rel_position": 0.465,
+          "window": "PTMVFSGQADTVVTP",
+          "centre": "Q"
+        },
+        {
+          "seq_id": "BPS0105",
+          "class": "1_pet",
+          "activation": 1.0336670875549316,
+          "position": 226,
+          "rel_position": 0.495,
+          "window": "PTMIISGQADTVVTP",
+          "centre": "Q"
+        },
+        {
+          "seq_id": "BPS0187",
+          "class": "1_pet",
+          "activation": 1.032941222190857,
+          "position": 226,
+          "rel_position": 0.7,
+          "window": "PTMIFSGQADTVVTP",
+          "centre": "Q"
+        }
+      ]
+    },
+    "5271": {
+      "n_top_seqs": 30,
+      "n_pet_in_top": 28,
+      "pet_fraction_in_top": 0.933,
+      "mean_activation_pet": 0.7653549909591675,
+      "mean_activation_nonpet": 0.16055257618427277,
+      "prevalence_pet": 0.996875,
+      "prevalence_nonpet": 0.7552182163187856,
+      "centre_residues": [
+        [
+          "I",
+          12
+        ],
+        [
+          "M",
+          10
+        ],
+        [
+          "E",
+          3
+        ],
+        [
+          "W",
+          1
+        ],
+        [
+          "H",
+          1
+        ],
+        [
+          "Q",
+          1
+        ]
+      ],
+      "motif_hits_in_top_windows": {},
+      "mean_relative_position": 0.823,
+      "position_frequencies": [
+        [
+          [
+            "P",
+            0.7
+          ],
+          [
+            "A",
+            0.067
+          ],
+          [
+            "N",
+            0.067
+          ]
+        ],
+        [
+          [
+            "N",
+            0.433
+          ],
+          [
+            "T",
+            0.2
+          ],
+          [
+            "Q",
+            0.133
+          ]
+        ],
+        [
+          [
+            "I",
+            0.267
+          ],
+          [
+            "T",
+            0.167
+          ],
+          [
+            "S",
+            0.133
+          ]
+        ],
+        [
+          [
+            "P",
+            0.367
+          ],
+          [
+            "S",
+            0.333
+          ],
+          [
+            "A",
+            0.133
+          ]
+        ],
+        [
+          [
+            "N",
+            0.8
+          ],
+          [
+            "A",
+            0.067
+          ],
+          [
+            "G",
+            0.033
+          ]
+        ],
+        [
+          [
+            "T",
+            0.533
+          ],
+          [
+            "K",
+            0.233
+          ],
+          [
+            "R",
+            0.1
+          ]
+        ],
+        [
+          [
+            "T",
+            0.367
+          ],
+          [
+            "I",
+            0.2
+          ],
+          [
+            "L",
+            0.133
+          ]
+        ],
+        [
+          [
+            "I",
+            0.4
+          ],
+          [
+            "M",
+            0.333
+          ],
+          [
+            "E",
+            0.1
+          ]
+        ],
+        [
+          [
+            "A",
+            0.467
+          ],
+          [
+            "G",
+            0.2
+          ],
+          [
+            "R",
+            0.067
+          ]
+        ],
+        [
+          [
+            "K",
+            0.667
+          ],
+          [
+            "R",
+            0.133
+          ],
+          [
+            "G",
+            0.067
+          ]
+        ],
+        [
+          [
+            "Y",
+            0.533
+          ],
+          [
+            "W",
+            0.1
+          ],
+          [
+            "E",
+            0.067
+          ]
+        ],
+        [
+          [
+            "M",
+            0.3
+          ],
+          [
+            "S",
+            0.267
+          ],
+          [
+            "L",
+            0.233
+          ]
+        ],
+        [
+          [
+            "I",
+            0.4
+          ],
+          [
+            "V",
+            0.267
+          ],
+          [
+            "L",
+            0.167
+          ]
+        ],
+        [
+          [
+            "S",
+            0.433
+          ],
+          [
+            "A",
+            0.267
+          ],
+          [
+            "P",
+            0.167
+          ]
+        ],
+        [
+          [
+            "W",
+            0.8
+          ],
+          [
+            "F",
+            0.133
+          ],
+          [
+            "Q",
+            0.033
+          ]
+        ]
+      ],
+      "windows": [
+        {
+          "seq_id": "BPS0415",
+          "class": "heldout_pha",
+          "activation": 0.9204902648925781,
+          "position": 396,
+          "rel_position": 0.945,
+          "window": "GIFSGRRWREEIYPQ",
+          "centre": "W"
+        },
+        {
+          "seq_id": "P0A5F6",
+          "class": "3_fold_matched_esterase",
+          "activation": 0.9148600101470947,
+          "position": 368,
+          "rel_position": 0.586,
+          "window": "LSRPDFDHDGELLRF",
+          "centre": "H"
+        },
+        {
+          "seq_id": "BPS0285",
+          "class": "1_pet",
+          "activation": 0.9003598690032959,
+          "position": 246,
+          "rel_position": 0.851,
+          "window": "PQFSNDTMAKFMISW",
+          "centre": "M"
+        },
+        {
+          "seq_id": "BPS0243",
+          "class": "1_pet",
+          "activation": 0.8997098207473755,
+          "position": 255,
+          "rel_position": 0.853,
+          "window": "PTSANTTMAKYFISW",
+          "centre": "M"
+        },
+        {
+          "seq_id": "BPS0287",
+          "class": "1_pet",
+          "activation": 0.8902245759963989,
+          "position": 248,
+          "rel_position": 0.858,
+          "window": "PNTSNTTMAKYMISW",
+          "centre": "M"
+        },
+        {
+          "seq_id": "BPS0247",
+          "class": "1_pet",
+          "activation": 0.8889138698577881,
+          "position": 261,
+          "rel_position": 0.873,
+          "window": "TAAATRFIVPWLKRY",
+          "centre": "I"
+        },
+        {
+          "seq_id": "BPS0198",
+          "class": "1_pet",
+          "activation": 0.8880283832550049,
+          "position": 269,
+          "rel_position": 0.854,
+          "window": "PTKPNTLEMRLLIPW",
+          "centre": "E"
+        },
+        {
+          "seq_id": "BPS0255",
+          "class": "1_pet",
+          "activation": 0.8820638656616211,
+          "position": 256,
+          "rel_position": 0.862,
+          "window": "PQTSNTTMAKYMISW",
+          "centre": "M"
+        },
+        {
+          "seq_id": "BPS0177",
+          "class": "1_pet",
+          "activation": 0.8818390369415283,
+          "position": 285,
+          "rel_position": 0.819,
+          "window": "ATRPNTLEMRILIPW",
+          "centre": "E"
+        },
+        {
+          "seq_id": "BPS0363",
+          "class": "1_pet",
+          "activation": 0.8786563873291016,
+          "position": 219,
+          "rel_position": 0.852,
+          "window": "NTPQAKLMISWLKRF",
+          "centre": "M"
+        },
+        {
+          "seq_id": "BPS0323",
+          "class": "1_pet",
+          "activation": 0.8779585361480713,
+          "position": 230,
+          "rel_position": 0.846,
+          "window": "PNTTNTTMAKSMVSW",
+          "centre": "M"
+        },
+        {
+          "seq_id": "BPS0277",
+          "class": "1_pet",
+          "activation": 0.8773343563079834,
+          "position": 249,
+          "rel_position": 0.853,
+          "window": "PQVSNTTMAKYMISW",
+          "centre": "M"
+        },
+        {
+          "seq_id": "BPS0364",
+          "class": "1_pet",
+          "activation": 0.8770449161529541,
+          "position": 215,
+          "rel_position": 0.837,
+          "window": "VTSANTPQAKLMISW",
+          "centre": "Q"
+        },
+        {
+          "seq_id": "BPS0093",
+          "class": "1_pet",
+          "activation": 0.8765115737915039,
+          "position": 270,
+          "rel_position": 0.581,
+          "window": "VGRSNPVMVRTMLPF",
+          "centre": "M"
+        },
+        {
+          "seq_id": "BPS0275",
+          "class": "1_pet",
+          "activation": 0.8755521774291992,
+          "position": 248,
+          "rel_position": 0.849,
+          "window": "PNITNTQMAKYMIAW",
+          "centre": "M"
+        }
+      ]
+    },
+    "2473": {
+      "n_top_seqs": 30,
+      "n_pet_in_top": 30,
+      "pet_fraction_in_top": 1.0,
+      "mean_activation_pet": 0.9527430534362793,
+      "mean_activation_nonpet": 0.15746431052684784,
+      "prevalence_pet": 1.0,
+      "prevalence_nonpet": 0.7096774193548387,
+      "centre_residues": [
+        [
+          "L",
+          15
+        ],
+        [
+          "V",
+          8
+        ],
+        [
+          "I",
+          7
+        ]
+      ],
+      "motif_hits_in_top_windows": {},
+      "mean_relative_position": 0.576,
+      "position_frequencies": [
+        [
+          [
+            "A",
+            0.667
+          ],
+          [
+            "S",
+            0.167
+          ],
+          [
+            "T",
+            0.133
+          ]
+        ],
+        [
+          [
+            "T",
+            0.667
+          ],
+          [
+            "A",
+            0.167
+          ],
+          [
+            "S",
+            0.133
+          ]
+        ],
+        [
+          [
+            "T",
+            0.933
+          ],
+          [
+            "A",
+            0.033
+          ],
+          [
+            "P",
+            0.033
+          ]
+        ],
+        [
+          [
+            "E",
+            0.6
+          ],
+          [
+            "Q",
+            0.167
+          ],
+          [
+            "P",
+            0.133
+          ]
+        ],
+        [
+          [
+            "S",
+            0.867
+          ],
+          [
+            "G",
+            0.067
+          ],
+          [
+            "K",
+            0.067
+          ]
+        ],
+        [
+          [
+            "V",
+            0.533
+          ],
+          [
+            "A",
+            0.3
+          ],
+          [
+            "D",
+            0.1
+          ]
+        ],
+        [
+          [
+            "Y",
+            0.8
+          ],
+          [
+            "F",
+            0.133
+          ],
+          [
+            "S",
+            0.033
+          ]
+        ],
+        [
+          [
+            "L",
+            0.5
+          ],
+          [
+            "V",
+            0.267
+          ],
+          [
+            "I",
+            0.233
+          ]
+        ],
+        [
+          [
+            "E",
+            0.8
+          ],
+          [
+            "Q",
+            0.167
+          ],
+          [
+            "V",
+            0.033
+          ]
+        ],
+        [
+          [
+            "V",
+            0.567
+          ],
+          [
+            "L",
+            0.267
+          ],
+          [
+            "I",
+            0.067
+          ]
+        ],
+        [
+          [
+            "A",
+            0.733
+          ],
+          [
+            "T",
+            0.133
+          ],
+          [
+            "S",
+            0.067
+          ]
+        ],
+        [
+          [
+            "G",
+            0.8
+          ],
+          [
+            "S",
+            0.167
+          ],
+          [
+            "D",
+            0.033
+          ]
+        ],
+        [
+          [
+            "A",
+            0.733
+          ],
+          [
+            "G",
+            0.2
+          ],
+          [
+            "L",
+            0.033
+          ]
+        ],
+        [
+          [
+            "D",
+            0.8
+          ],
+          [
+            "G",
+            0.2
+          ]
+        ],
+        [
+          [
+            "H",
+            1.0
+          ]
+        ]
+      ],
+      "windows": [
+        {
+          "seq_id": "BPS0108",
+          "class": "1_pet",
+          "activation": 1.1824934482574463,
+          "position": 257,
+          "rel_position": 0.565,
+          "window": "AATPSAYIELTSGGH",
+          "centre": "I"
+        },
+        {
+          "seq_id": "BPS0140",
+          "class": "1_pet",
+          "activation": 1.1636829376220703,
+          "position": 228,
+          "rel_position": 0.536,
+          "window": "AATQSAYIELTSGGH",
+          "centre": "I"
+        },
+        {
+          "seq_id": "BPS0103",
+          "class": "1_pet",
+          "activation": 1.1612529754638672,
+          "position": 252,
+          "rel_position": 0.547,
+          "window": "ATTESVYVEVAGADH",
+          "centre": "V"
+        },
+        {
+          "seq_id": "BPS0107",
+          "class": "1_pet",
+          "activation": 1.1598745584487915,
+          "position": 257,
+          "rel_position": 0.565,
+          "window": "AGTQSAFIELSSGGH",
+          "centre": "I"
+        },
+        {
+          "seq_id": "BPS0163",
+          "class": "1_pet",
+          "activation": 1.1564372777938843,
+          "position": 204,
+          "rel_position": 0.507,
+          "window": "ATTPSAYIELTSGGH",
+          "centre": "I"
+        },
+        {
+          "seq_id": "BPS0125",
+          "class": "1_pet",
+          "activation": 1.1558748483657837,
+          "position": 234,
+          "rel_position": 0.528,
+          "window": "ATTESVYVEVAGADH",
+          "centre": "V"
+        },
+        {
+          "seq_id": "BPS0186",
+          "class": "1_pet",
+          "activation": 1.1526250839233398,
+          "position": 233,
+          "rel_position": 0.717,
+          "window": "SSTPGAYVQYSGADH",
+          "centre": "V"
+        },
+        {
+          "seq_id": "BPS0178",
+          "class": "1_pet",
+          "activation": 1.1499959230422974,
+          "position": 252,
+          "rel_position": 0.728,
+          "window": "ATTESVYLEVAGADH",
+          "centre": "L"
+        },
+        {
+          "seq_id": "BPS0171",
+          "class": "1_pet",
+          "activation": 1.1496738195419312,
+          "position": 199,
+          "rel_position": 0.528,
+          "window": "ASTQSDFVQLAGADH",
+          "centre": "V"
+        },
+        {
+          "seq_id": "BPS0147",
+          "class": "1_pet",
+          "activation": 1.1488450765609741,
+          "position": 208,
+          "rel_position": 0.495,
+          "window": "STTEGAYIEAAGLDH",
+          "centre": "I"
+        },
+        {
+          "seq_id": "BPS0095",
+          "class": "1_pet",
+          "activation": 1.1481753587722778,
+          "position": 252,
+          "rel_position": 0.542,
+          "window": "ATTESVYLEVAGADH",
+          "centre": "L"
+        },
+        {
+          "seq_id": "BPS0184",
+          "class": "1_pet",
+          "activation": 1.1472339630126953,
+          "position": 252,
+          "rel_position": 0.766,
+          "window": "ATTESVYLEVAGADH",
+          "centre": "L"
+        },
+        {
+          "seq_id": "BPS0143",
+          "class": "1_pet",
+          "activation": 1.145789384841919,
+          "position": 248,
+          "rel_position": 0.585,
+          "window": "ASAQSDFVQLAGADH",
+          "centre": "V"
+        },
+        {
+          "seq_id": "BPS0092",
+          "class": "1_pet",
+          "activation": 1.1456284523010254,
+          "position": 251,
+          "rel_position": 0.54,
+          "window": "TTTESVYLEVAGADH",
+          "centre": "L"
+        },
+        {
+          "seq_id": "BPS0089",
+          "class": "1_pet",
+          "activation": 1.143738865852356,
+          "position": 252,
+          "rel_position": 0.538,
+          "window": "ATTESVYLEVAGADH",
+          "centre": "L"
+        }
+      ]
+    },
+    "7734": {
+      "n_top_seqs": 30,
+      "n_pet_in_top": 30,
+      "pet_fraction_in_top": 1.0,
+      "mean_activation_pet": 0.8723875284194946,
+      "mean_activation_nonpet": 0.17585282027721405,
+      "prevalence_pet": 0.996875,
+      "prevalence_nonpet": 0.7096774193548387,
+      "centre_residues": [
+        [
+          "D",
+          29
+        ],
+        [
+          "G",
+          1
+        ]
+      ],
+      "motif_hits_in_top_windows": {
+        "HG (oxyanion hole)": 30
+      },
+      "mean_relative_position": 0.556,
+      "position_frequencies": [
+        [
+          [
+            "Y",
+            1.0
+          ]
+        ],
+        [
+          [
+            "L",
+            0.933
+          ],
+          [
+            "V",
+            0.067
+          ]
+        ],
+        [
+          [
+            "E",
+            1.0
+          ]
+        ],
+        [
+          [
+            "V",
+            0.9
+          ],
+          [
+            "I",
+            0.067
+          ],
+          [
+            "L",
+            0.033
+          ]
+        ],
+        [
+          [
+            "A",
+            0.967
+          ],
+          [
+            "T",
+            0.033
+          ]
+        ],
+        [
+          [
+            "G",
+            1.0
+          ]
+        ],
+        [
+          [
+            "A",
+            0.6
+          ],
+          [
+            "G",
+            0.4
+          ]
+        ],
+        [
+          [
+            "D",
+            0.967
+          ],
+          [
+            "G",
+            0.033
+          ]
+        ],
+        [
+          [
+            "H",
+            1.0
+          ]
+        ],
+        [
+          [
+            "G",
+            1.0
+          ]
+        ],
+        [
+          [
+            "F",
+            1.0
+          ]
+        ],
+        [
+          [
+            "M",
+            0.9
+          ],
+          [
+            "P",
+            0.1
+          ]
+        ],
+        [
+          [
+            "V",
+            0.967
+          ],
+          [
+            "T",
+            0.033
+          ]
+        ],
+        [
+          [
+            "G",
+            0.967
+          ],
+          [
+            "S",
+            0.033
+          ]
+        ],
+        [
+          [
+            "R",
+            0.967
+          ],
+          [
+            "A",
+            0.033
+          ]
+        ]
+      ],
+      "windows": [
+        {
+          "seq_id": "BPS0138",
+          "class": "1_pet",
+          "activation": 1.0288680791854858,
+          "position": 258,
+          "rel_position": 0.606,
+          "window": "YLEVAGGDHGFMVGR",
+          "centre": "D"
+        },
+        {
+          "seq_id": "BPS0098",
+          "class": "1_pet",
+          "activation": 1.0256742238998413,
+          "position": 257,
+          "rel_position": 0.555,
+          "window": "YLEVAGADHGFMVGR",
+          "centre": "D"
+        },
+        {
+          "seq_id": "BPS0081",
+          "class": "1_pet",
+          "activation": 1.0253912210464478,
+          "position": 273,
+          "rel_position": 0.561,
+          "window": "YLEVAGADHGFMVGR",
+          "centre": "D"
+        },
+        {
+          "seq_id": "BPS0084",
+          "class": "1_pet",
+          "activation": 1.0249005556106567,
+          "position": 259,
+          "rel_position": 0.548,
+          "window": "YLEVAGADHGFMVGR",
+          "centre": "D"
+        },
+        {
+          "seq_id": "BPS0083",
+          "class": "1_pet",
+          "activation": 1.0237957239151,
+          "position": 259,
+          "rel_position": 0.546,
+          "window": "YLEVAGADHGFMVGR",
+          "centre": "D"
+        },
+        {
+          "seq_id": "BPS0159",
+          "class": "1_pet",
+          "activation": 1.0225152969360352,
+          "position": 205,
+          "rel_position": 0.501,
+          "window": "YLEVAGGDHGFMVGR",
+          "centre": "D"
+        },
+        {
+          "seq_id": "BPS0133",
+          "class": "1_pet",
+          "activation": 1.022078275680542,
+          "position": 218,
+          "rel_position": 0.505,
+          "window": "YLEVAGGDHGFMVGR",
+          "centre": "D"
+        },
+        {
+          "seq_id": "BPS0090",
+          "class": "1_pet",
+          "activation": 1.0219826698303223,
+          "position": 258,
+          "rel_position": 0.552,
+          "window": "YLEVAGGDHGFMVGR",
+          "centre": "D"
+        },
+        {
+          "seq_id": "BPS0122",
+          "class": "1_pet",
+          "activation": 1.021924614906311,
+          "position": 232,
+          "rel_position": 0.523,
+          "window": "YLEVAGGDHGFMVGR",
+          "centre": "D"
+        },
+        {
+          "seq_id": "BPS0099",
+          "class": "1_pet",
+          "activation": 1.0218780040740967,
+          "position": 257,
+          "rel_position": 0.555,
+          "window": "YLEVAGADHGFMVGR",
+          "centre": "D"
+        },
+        {
+          "seq_id": "BPS0157",
+          "class": "1_pet",
+          "activation": 1.0208237171173096,
+          "position": 205,
+          "rel_position": 0.499,
+          "window": "YLEVAGADHGFMVGR",
+          "centre": "D"
+        },
+        {
+          "seq_id": "BPS0144",
+          "class": "1_pet",
+          "activation": 1.020241379737854,
+          "position": 218,
+          "rel_position": 0.514,
+          "window": "YLEVAGADHGFMVGR",
+          "centre": "D"
+        },
+        {
+          "seq_id": "BPS0102",
+          "class": "1_pet",
+          "activation": 1.017716646194458,
+          "position": 258,
+          "rel_position": 0.558,
+          "window": "YLEVAGGDHGFMVGR",
+          "centre": "D"
+        },
+        {
+          "seq_id": "BPS0121",
+          "class": "1_pet",
+          "activation": 1.0171738862991333,
+          "position": 258,
+          "rel_position": 0.58,
+          "window": "YLEIAGGDHGFPVGR",
+          "centre": "D"
+        },
+        {
+          "seq_id": "BPS0118",
+          "class": "1_pet",
+          "activation": 1.0167819261550903,
+          "position": 239,
+          "rel_position": 0.533,
+          "window": "YVEVAGGDHGFMVGR",
+          "centre": "D"
+        }
+      ]
+    }
+  }
+}

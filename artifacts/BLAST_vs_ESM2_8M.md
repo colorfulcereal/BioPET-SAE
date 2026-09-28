@@ -1,5 +1,13 @@
 # BLASTp vs ESM-2 8M Probe
 
+> **Task framing: PET-only (superseded).** This document evaluates the original
+> **PET vs. everything else** classifier. The project's headline task was later redefined to
+> **polyester degrader vs. non-degrader** (any of PET, PBAT, aliphatic polyester), which
+> reclassifies cutinases as positives and is the framing all current results use.
+> Current equivalents: `EDA_polyester_task.md`, `ESM2_650M_Polyester_Run.md`,
+> `BLAST_vs_ESM2_650M_Polyester.md`. Numbers below remain valid *for the PET-only task* and
+> are retained as the record of how the task came to be redefined.
+
 > **See also `BLAST_vs_ESM2_650M.md`.** The 650M run resolves the
 > phylum-shortcut failure documented in Table 5 here: Actinomycetota class-3 false
 > positives fall from 9/11 to 1/11 and total false positives from 20 to 8, without
@@ -35,7 +43,7 @@ would leak.
 | 1.00e+00 | 0.527 | 0.906 | 0.667 | 29 | 26 | 3 |
 | 3.16e-01 | 0.641 | 0.781 | 0.704 | 25 | 14 | 7 |
 | 1.00e-01 | 0.759 | 0.688 | 0.721 | 22 | 7 | 10 |
-| **3.16e-02** | **0.808** | **0.656** | **0.724** | 21 | 5 | 11 |  <- val optimum
+| **3.16e-02** | **0.808** | **0.656** | **0.724** | 21 | 5 | 11\|<- val optimum |
 | 1.00e-02 | 0.833 | 0.625 | 0.714 | 20 | 4 | 12 |
 | 1.00e-03 | 0.842 | 0.500 | 0.627 | 16 | 3 | 16 |
 | 1.00e-05 | 0.867 | 0.406 | 0.553 | 13 | 2 | 19 |

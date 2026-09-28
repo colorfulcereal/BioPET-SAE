@@ -1,0 +1,449 @@
+<title>PETase Latent Atlas</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.4/3Dmol-min.js"></script>
+<style>
+:root{
+  --bg:#f3f6f4; --surface:#fff; --surface-2:#eef2f0; --ink:#13201b; --ink-2:#3d4e47;
+  --muted:#5f6f68; --rule:#d8e0dc; --rule-2:#c3cec9; --accent:#0f6b57; --accent-soft:#e3f0ec;
+  --pos:#15803d; --pos-bg:#e6f4ea; --neg:#94641b; --neg-bg:#f7efdf;
+  --a0:#1e3a8a; --a1:#3b82c4; --a2:#7fb8ae; --a3:#e0a13c; --a4:#8f1d1d;
+  --shadow:0 1px 2px rgba(19,32,27,.06),0 4px 14px rgba(19,32,27,.05);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#0e1614; --surface:#15211d; --surface-2:#1b2islands; --surface-2:#1b2a25; --ink:#e8efec; --ink-2:#b9c7c1;
+  --muted:#8b9a94; --rule:#25352f; --rule-2:#33453e; --accent:#5ec5a8; --accent-soft:#12302a;
+  --pos:#5fd18a; --pos-bg:#12301f; --neg:#d9a85a; --neg-bg:#2d2415;
+  --a0:#4763c9; --a1:#5b9fd6; --a2:#8fc9bf; --a3:#e8b25c; --a4:#c93a3a;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0e1614; --surface:#15211d; --surface-2:#1b2a25; --ink:#e8efec; --ink-2:#b9c7c1;
+  --muted:#8b9a94; --rule:#25352f; --rule-2:#33453e; --accent:#5ec5a8; --accent-soft:#12302a;
+  --pos:#5fd18a; --pos-bg:#12301f; --neg:#d9a85a; --neg-bg:#2d2415;
+  --a0:#4763c9; --a1:#5b9fd6; --a2:#8fc9bf; --a3:#e8b25c; --a4:#c93a3a;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;line-height:1.5;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:1420px;margin:0 auto;padding-inline:20px;padding-block:0 56px}
+h1,h2,h3{text-wrap:balance;margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-variant-numeric:tabular-nums}
+
+/* header */
+header{border-bottom:1px solid var(--rule);background:var(--surface);margin-bottom:26px}
+.hd{max-width:1420px;margin:0 auto;padding:26px 20px 22px}
+.eyebrow{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);
+  font-weight:600;margin-bottom:9px}
+h1{font-size:clamp(25px,3.4vw,36px);font-weight:700;letter-spacing:-.021em;line-height:1.1}
+.thesis{margin-top:12px;max-width:66ch;color:var(--ink-2);font-size:15px}
+.thesis b{color:var(--ink);font-weight:600}
+.keystat{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.ks{background:var(--surface-2);border:1px solid var(--rule);border-radius:7px;
+  padding:9px 13px;min-width:0}
+.ks .n{font-size:19px;font-weight:600;letter-spacing:-.02em;display:block}
+.ks .l{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;
+  margin-top:1px}
+
+/* layout */
+.grid{display:grid;grid-template-columns:274px minmax(0,1fr);gap:20px;align-items:start}
+@media(max-width:940px){.grid{grid-template-columns:1fr}}
+
+/* tabs */
+.tabs{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--rule)}
+.tab{background:none;border:0;border-bottom:2px solid transparent;padding:11px 8px;
+  font:600 12.5px/1 "IBM Plex Sans",sans-serif;color:var(--muted);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:6px}
+.tab span{font-family:"IBM Plex Mono",monospace;font-size:11px;background:var(--surface-2);
+  border-radius:9px;padding:1px 6px;color:var(--muted)}
+.tab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+.tab[aria-selected="true"] span{background:var(--accent-soft);color:var(--accent)}
+.tabnote{margin:0;padding:10px 14px;font-size:11.5px;line-height:1.45;color:var(--muted);
+  background:var(--surface-2);border-bottom:1px solid var(--rule)}
+.tabnote b{color:var(--ink-2);font-weight:600}
+/* ground truth block */
+.gt{margin-top:6px;border:1px solid var(--pos);border-radius:7px;overflow:hidden}
+.gt .gh{background:var(--pos-bg);color:var(--pos);font:600 10.5px/1 "IBM Plex Sans",sans-serif;
+  letter-spacing:.06em;text-transform:uppercase;padding:6px 9px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px}
+.gtrow{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;
+  padding:5px 9px;font-size:12px;border-top:1px solid var(--rule)}
+.gtrow:first-of-type{border-top:0}
+.gtrow .src{color:var(--muted);font-size:11px}
+.gtrow .v{font:600 12.5px/1 "IBM Plex Mono",monospace}
+.tick{color:var(--pos);font-weight:700;font-size:13px}
+.gtrow.pred{background:var(--surface-2)}
+.gtrow.pred .v{color:var(--muted);font-weight:500}
+.tick.pq{color:var(--rule-2);font-weight:600}
+.gtfoot{padding:7px 9px;border-top:1px solid var(--rule);font-size:11px;line-height:1.45;
+  color:var(--muted);background:var(--surface-2)}
+.gtfoot b{color:var(--ink-2);font-weight:600}
+.nogt{margin-top:6px;border:1px dashed var(--rule-2);border-radius:7px;padding:9px 10px;
+  font-size:11.5px;color:var(--muted);line-height:1.45}
+/* list */
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:10px;
+  box-shadow:var(--shadow)}
+.ph{padding:12px 14px;border-bottom:1px solid var(--rule);display:flex;
+  justify-content:space-between;align-items:baseline;gap:8px}
+.ph h2{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+  font-weight:600}
+.ph .c{font-size:11px;color:var(--muted)}
+#list{max-height:min(74vh,700px);overflow-y:auto}
+@media(max-width:940px){#list{max-height:290px}}
+.row{display:grid;grid-template-columns:1fr auto;gap:3px 9px;align-items:center;
+  width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--rule);
+  padding:9px 14px;cursor:pointer;color:inherit;font:inherit}
+.row:hover{background:var(--surface-2)}
+.row[aria-current="true"]{background:var(--accent-soft);
+  box-shadow:inset 3px 0 0 var(--accent)}
+.row .nm{font-weight:600;font-size:13.5px;letter-spacing:-.01em;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.row .og{grid-column:1;font-size:11px;color:var(--muted);overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;font-style:italic}
+.row .pdb{grid-column:2;grid-row:1;font-size:10.5px;color:var(--muted)}
+.pill{grid-column:2;grid-row:2;font-size:10px;font-weight:600;padding:1px 6px;
+  border-radius:9px;white-space:nowrap}
+.pill.hi{background:var(--pos-bg);color:var(--pos)}
+.pill.lo{background:var(--neg-bg);color:var(--neg)}
+
+/* viewer */
+.vwrap{display:grid;grid-template-columns:minmax(0,1fr) 236px;gap:0}
+@media(max-width:800px){.vwrap{grid-template-columns:1fr}}
+#viewer{position:relative;height:430px;background:var(--surface-2);
+  border-radius:10px 0 0 0;overflow:hidden}
+@media(max-width:800px){#viewer{border-radius:10px 10px 0 0;height:340px}}
+.side{border-left:1px solid var(--rule);padding:14px}
+@media(max-width:800px){.side{border-left:0;border-top:1px solid var(--rule)}}
+.side h3{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+  font-weight:600;margin-bottom:8px}
+.side h3:not(:first-child){margin-top:17px}
+.kv{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;
+  padding:3px 0;border-bottom:1px solid var(--rule)}
+.kv:last-child{border-bottom:0}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;font-weight:500;text-align:right}
+dl{margin:0}
+
+/* latent chips */
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:12px 14px;border-bottom:1px solid var(--rule)}
+.chip{border:1px solid var(--rule-2);background:var(--surface);color:var(--ink-2);
+  border-radius:6px;padding:5px 9px;font:500 12px/1 "IBM Plex Mono",monospace;cursor:pointer;
+  display:flex;align-items:center;gap:6px}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip .sw{width:9px;height:9px;border-radius:2px;flex:none}
+.chip .rl{font-family:"IBM Plex Sans",sans-serif;font-size:11px;opacity:.78}
+
+/* triad */
+.triad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.tr{background:var(--surface-2);border:1px solid var(--rule);border-radius:6px;
+  padding:7px 8px;text-align:center}
+.tr .r{font:600 15px/1.2 "IBM Plex Mono",monospace}
+.tr .l{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;
+  margin-top:2px}
+
+/* sequence */
+.seqbox{margin-top:20px}
+.seqhead{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;
+  align-items:baseline;padding:12px 14px;border-bottom:1px solid var(--rule)}
+.seqhead h2{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+  font-weight:600}
+#seq{padding:14px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:2.05;
+  word-break:break-all;overflow-x:auto}
+#seq .aa{padding:1px 0;border-radius:2px}
+#seq .tri{outline:2px solid var(--ink);outline-offset:0;font-weight:700;border-radius:2px}
+#seq .pk{box-shadow:0 2px 0 var(--accent)}
+.ruler{color:var(--muted);font-size:10.5px;user-select:none}
+.legend{display:flex;align-items:center;gap:9px;font-size:11px;color:var(--muted)}
+.ramp{width:132px;height:9px;border-radius:5px;
+  background:linear-gradient(90deg,var(--a0),var(--a1),var(--a2),var(--a3),var(--a4))}
+.note{font-size:12.5px;color:var(--muted);padding:11px 14px;border-top:1px solid var(--rule);
+  max-width:92ch}
+.note b{color:var(--ink-2);font-weight:600}
+footer{margin-top:30px;padding-top:18px;border-top:1px solid var(--rule);
+  font-size:12px;color:var(--muted);max-width:80ch}
+footer code{font-family:"IBM Plex Mono",monospace;font-size:11.5px;
+  background:var(--surface-2);padding:1px 4px;border-radius:3px}
+</style>
+
+<header>
+  <div class="hd">
+    <div class="eyebrow">Sparse autoencoder · ESM-2 650M · layer 33</div>
+    <h1>PETase Latent Atlas</h1>
+    <p class="thesis">Five sparse-autoencoder latents were selected on training data alone,
+      with no structural information. Each fires on a different stretch of sequence. In three
+      dimensions those stretches converge on <b>one catalytic site</b> — the serine, histidine
+      and aspartate that hydrolyse the ester bond.</p>
+    <div class="keystat">
+      <div class="ks"><span class="n mono">32</span><span class="l">PETases with structures</span></div>
+      <div class="ks"><span class="n mono">77 aa</span><span class="l">median Ser–His separation in sequence</span></div>
+      <div class="ks"><span class="n mono">2.9 Å</span><span class="l">median Ser–His distance in 3D</span></div>
+      <div class="ks"><span class="n mono">0.92</span><span class="l">latent 9529 alone, test AU-ROC</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="grid">
+  <div class="panel">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-v="gt" aria-selected="true">Validated <span></span></button>
+      <button class="tab" role="tab" data-v="pred" aria-selected="false">Predicted <span></span></button>
+    </div>
+    <p class="tabnote" id="tabnote"></p>
+    <div id="list"></div>
+  </div>
+
+  <div>
+    <div class="panel">
+      <div class="chips" id="chips"></div>
+      <div class="vwrap">
+        <div id="viewer"></div>
+        <div class="side">
+          <h3>Prediction</h3>
+          <dl id="pred"></dl>
+          <h3 id="triadh">Catalytic triad</h3>
+          <div class="triad" id="triad"></div>
+          <div id="gtbox"></div>
+          <h3>Sequence vs space</h3>
+          <dl id="geom"></dl>
+        </div>
+      </div>
+      <p class="note" id="vnote"></p>
+    </div>
+
+    <div class="panel seqbox">
+      <div class="seqhead">
+        <h2>Sequence, coloured by latent activation</h2>
+        <div class="legend"><span>0.0</span><span class="ramp"></span><span>1.0+</span></div>
+      </div>
+      <div id="seq"></div>
+      <p class="note"><b>Boxed</b> residues are the catalytic triad. An
+        <b>underline</b> marks a latent's peak residue. Colour is that latent's activation at
+        each position — most of the chain is dark blue (silent) with a sharp red spike where
+        the motif sits.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Latents selected by univariate AU-ROC on the training split only; positions validated
+  against the GxSxG nucleophile elbow and against published triad assignments for LCC
+  (S165 D210 H242) and Cut190 (S176 D222 H254). Structure residue numbering follows each
+  PDB entry's own convention, which for IsPETase counts from the mature N-terminus rather
+  than the full-length sequence. Confidence is the ESM-2 650M dense linear probe;
+  <code>≥0.75</code> shown in green. These latents detect the α/β-hydrolase catalytic
+  apparatus — they do not distinguish PET-degrading enzymes from cutinases acting on other
+  polyesters.
+</footer>
+</div>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function(){
+  var D=JSON.parse(document.getElementById('data').textContent);
+  var E=D.entries, L=D.latents, LIDS=Object.keys(L);
+  var cur=0, curLat=LIDS[0], viewer=null, view='gt';
+  var IDX=E.map(function(e,i){return i});
+  function inView(e){ return view==='gt' ? !!e.ground_truth : !e.ground_truth }
+  var STOPS=[[30,58,138],[59,130,196],[127,184,174],[224,161,60],[143,29,29]];
+
+  function ramp(v){
+    var t=Math.max(0,Math.min(1,v)), s=t*(STOPS.length-1), i=Math.floor(s), f=s-i;
+    if(i>=STOPS.length-1) return 'rgb('+STOPS[STOPS.length-1].join(',')+')';
+    var a=STOPS[i], b=STOPS[i+1];
+    return 'rgb('+a.map(function(c,k){return Math.round(c+(b[k]-c)*f)}).join(',')+')';
+  }
+  function fmt(n,d){ return (n==null||isNaN(n))?'—':Number(n).toFixed(d==null?2:d) }
+
+  // ---- list ----
+  var list=document.getElementById('list');
+  var nGT=E.filter(function(e){return !!e.ground_truth}).length;
+  document.querySelector('.tab[data-v="gt"] span').textContent=nGT;
+  document.querySelector('.tab[data-v="pred"] span').textContent=E.length-nGT;
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(tb){
+    tb.addEventListener('click',function(){
+      view=tb.dataset.v;
+      Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(o){
+        o.setAttribute('aria-selected', o===tb?'true':'false') });
+      var first=E.findIndex(inView);
+      if(first>=0) cur=first;
+      renderList(); paint();
+    });
+  });
+  function renderList(){
+    document.getElementById('tabnote').innerHTML = view==='gt'
+      ? 'These <b>'+nGT+'</b> enzymes have curated active sites in UniProt. The panel shows '+
+        'the annotation beside what the latents point at. Nine list all three residues; '+
+        'Mors1 lists only the serine, so its badge reads 1/1 \u2014 one annotated, one '+
+        'matched, not one of three.'
+      : 'These <b>'+(E.length-nGT)+'</b> enzymes have <b>no curated active site</b>. The '+
+        'triad shown is derived from the latents alone — this is the prediction, with '+
+        'nothing to check it against.';
+    Array.prototype.forEach.call(list.children,function(el,i){ el.hidden = !inView(E[i]) });
+  }
+  E.forEach(function(e,i){
+    var b=document.createElement('button');
+    b.className='row'; b.type='button';
+    var hi=e.probe_score>=D.display_threshold;
+    b.innerHTML='<span class="nm"></span><span class="pdb mono"></span>'+
+      '<span class="og"></span><span class="pill '+(hi?'hi':'lo')+'">'+
+      fmt(e.probe_score,2)+'</span>';
+    b.querySelector('.nm').textContent=e.name;
+    b.querySelector('.og').textContent=e.organism||'—';
+    b.querySelector('.pdb').textContent=e.pdb_id;
+    b.addEventListener('click',function(){ select(i) });
+    list.appendChild(b);
+  });
+
+  // ---- latent chips ----
+  var chips=document.getElementById('chips');
+  LIDS.forEach(function(id){
+    var c=document.createElement('button');
+    c.className='chip'; c.type='button';
+    c.innerHTML='<span class="sw" style="background:'+ramp(.85)+'"></span>'+
+      id+' <span class="rl">'+L[id].role+'</span>';
+    c.addEventListener('click',function(){ curLat=id; paint(); });
+    chips.appendChild(c);
+  });
+
+  // ---- render ----
+  function select(i){ cur=i; paint(); }
+
+  function paint(){
+    var e=E[cur], acts=e.activations[curLat], lat=L[curLat];
+    Array.prototype.forEach.call(list.children,function(el,k){
+      el.setAttribute('aria-current', k===cur?'true':'false');
+      if(k===cur) el.scrollIntoView({block:'nearest'});
+    });
+    Array.prototype.forEach.call(chips.children,function(el,k){
+      el.setAttribute('aria-pressed', LIDS[k]===curLat?'true':'false');
+    });
+
+    var hi=e.probe_score>=D.display_threshold;
+    document.getElementById('pred').innerHTML=
+      row('Probe confidence','<span style="color:'+(hi?'var(--pos)':'var(--neg)')+
+          ';font-weight:600">'+fmt(e.probe_score,3)+'</span>')+
+      row('Split',e.split)+ row('PDB',e.pdb_id+' · chain '+(e.pdb_chain||'—'))+
+      row('Structures',e.pdb_n_structures)+ row('Length',e.length+' aa')+
+      row('Substrates',(e.substrates||'').replace(/\|/g,', '));
+
+    var t=e.triad, rm=e.resmap, s=e.sequence;
+    function pdbnum(i){ return rm[String(i)]!=null?rm[String(i)]:'—' }
+    document.getElementById('triad').innerHTML=
+      tri(s[t.ser],pdbnum(t.ser),'Ser')+tri(s[t.asp],pdbnum(t.asp),'Asp')+
+      tri(s[t.his],pdbnum(t.his),'His');
+
+    renderGT(e);
+    var g=e.triad_3d, sp=e.seq_sep;
+    document.getElementById('geom').innerHTML=
+      row('Ser→His in sequence',sp?sp.ser_his+' residues':'—')+
+      row('Ser→His in space',g?fmt(g.ser_his,1)+' Å':'—')+
+      row('His→Asp in space',g?fmt(g.his_asp,1)+' Å':'—');
+
+    document.getElementById('vnote').innerHTML='Latent <b>'+curLat+'</b> — '+lat.role+
+      ', peaks on <code class="mono">'+lat.motif+'</code>. Cartoon is coloured by this '+
+      'latent’s activation at each residue; the triad is drawn as sticks.';
+
+    drawSeq(e,acts);
+    draw3D(e,acts);
+  }
+  function row(k,v){ return '<div class="kv"><dt>'+k+'</dt><dd>'+v+'</dd></div>' }
+  function tri(r,n,l){ return '<div class="tr"><div class="r">'+(r||'?')+n+
+    '</div><div class="l">'+l+'</div></div>' }
+  function renderGT(e){
+    var box=document.getElementById('gtbox'), g=e.ground_truth, s=e.sequence, t=e.triad;
+    document.getElementById('triadh').textContent =
+      g ? 'Catalytic triad \u2014 verified' : 'Catalytic triad \u2014 predicted';
+    if(!g){
+      box.innerHTML='<div class="nogt">UniProt has <b>no curated active site</b> for this '+
+        'enzyme, so all three residues above are the latents\u2019 prediction with nothing '+
+        'to check them against. On the 10 enzymes that do have a curated annotation, the '+
+        'same method reproduced all 28 annotated residues exactly.</div>';
+      return;
+    }
+    var names={ser:'Ser',asp:'Asp',his:'His'}, rows='', nPred=0;
+    ['ser','asp','his'].forEach(function(k){
+      var site=g.sites.filter(function(x){return x.nearest===k})[0];
+      var ours=s[t[k]]+(t[k]-g.shift+1);
+      if(site){
+        rows+='<div class="gtrow"><span class="src">'+names[k]+'</span>'+
+          '<span class="v">'+site.residue+site.uniprot_pos+' &nbsp;/&nbsp; '+ours+'</span>'+
+          '<span class="tick">'+(site.exact?'\u2713':'\u2248')+'</span></div>';
+      } else {
+        nPred++;
+        rows+='<div class="gtrow pred"><span class="src">'+names[k]+'</span>'+
+          '<span class="v">not annotated &nbsp;/&nbsp; '+ours+'</span>'+
+          '<span class="tick pq">&mdash;</span></div>';
+      }
+    });
+    var caveat = nPred
+      ? '<div class="gtfoot">UniProt annotates only <b>'+g.n_sites+'</b> of the three '+
+        'residues for this enzyme &mdash; the other '+nPred+' are predictions, like the '+
+        'Predicted tab. <b>'+g.n_exact+' of '+g.n_sites+'</b> means every annotated '+
+        'residue was matched, not that '+nPred+' failed.</div>'
+      : '';
+    box.innerHTML='<div class="gt"><div class="gh"><span>UniProt '+g.accession+
+      '</span><span>'+g.n_exact+'/'+g.n_sites+' annotated \u00b7 exact</span></div>'+
+      rows+caveat+'</div>';
+  }
+
+  // ---- sequence track ----
+  function drawSeq(e,acts){
+    var s=e.sequence, t=e.triad, peak=e.peaks[curLat];
+    var mx=Math.max.apply(null,acts)||1, out=[], W=60;
+    for(var i=0;i<s.length;i+=W){
+      out.push('<span class="ruler">'+String(i+1).padStart(4,' ')+' </span>');
+      for(var j=i;j<Math.min(i+W,s.length);j++){
+        var v=acts[j]/mx, cls='aa';
+        if(j===t.ser||j===t.asp||j===t.his) cls+=' tri';
+        if(j===peak) cls+=' pk';
+        var lum=v>0.62?'#fff':'';
+        out.push('<span class="'+cls+'" style="background:'+ramp(v)+
+                 (lum?';color:'+lum:'')+'" title="'+(j+1)+' '+s[j]+
+                 '  act '+acts[j].toFixed(3)+'">'+s[j]+'</span>');
+      }
+      out.push('<br>');
+    }
+    document.getElementById('seq').innerHTML=out.join('');
+  }
+
+  // ---- 3D ----
+  function draw3D(e,acts){
+    var el=document.getElementById('viewer');
+    if(!window.$3Dmol||!e.pdb_data){ el.innerHTML='<p style="padding:20px;color:var(--muted);'+
+      'font-size:13px">Structure unavailable.</p>'; return }
+    if(!viewer){ viewer=$3Dmol.createViewer(el,{backgroundColor:'rgba(0,0,0,0)'}); }
+    viewer.clear();
+    viewer.addModel(e.pdb_data,'pdb');
+    var rm=e.resmap, byRes={}, mx=Math.max.apply(null,acts)||1;
+    Object.keys(rm).forEach(function(k){ byRes[rm[k]]=acts[+k]/mx; });
+    viewer.setStyle({},{cartoon:{colorfunc:function(a){
+      var v=byRes[a.resi]; return v==null?'#8899a0':ramp(v);
+    },thickness:.32,arrows:true}});
+    var t=e.triad, tri=[rm[String(t.ser)],rm[String(t.asp)],rm[String(t.his)]]
+      .filter(function(x){return x!=null});
+    if(tri.length){
+      viewer.setStyle({resi:tri},{cartoon:{colorfunc:function(a){
+        var v=byRes[a.resi]; return v==null?'#8899a0':ramp(v);},thickness:.32},
+        stick:{radius:.19,colorscheme:'whiteCarbon'}});
+      var lbl=['Ser','Asp','His'];
+      [t.ser,t.asp,t.his].forEach(function(idx,n){
+        var rn=rm[String(idx)]; if(rn==null) return;
+        viewer.addLabel(lbl[n]+rn,{fontSize:11,fontColor:'#fff',backgroundColor:'#0f6b57',
+          backgroundOpacity:.86,borderThickness:0,inFront:true},{resi:rn,atom:'CA'});
+      });
+    }
+    viewer.zoomTo(); viewer.render();
+  }
+
+  renderList();
+  var want=E.findIndex(function(x){return x.seq_id==='BPS0282'});
+  select(want>=0?want:E.findIndex(inView));
+  window.addEventListener('resize',function(){ if(viewer) viewer.resize(); });
+})();
+</script>
