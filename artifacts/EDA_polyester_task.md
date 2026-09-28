@@ -118,10 +118,88 @@ handles hard negatives, and validation understates the difficulty. Both are repo
 
 ---
 
+## Label provenance: where every label actually came from
+
+Positives and negatives were established by **different kinds of evidence**, and the
+asymmetry is the dataset's weakest premise. It is stated here rather than buried.
+
+| class | n | source | basis for the label |
+|---|---|---|---|
+| `1_pet` | 320 | PAZy / PlasticDB | **301 experimentally verified**, 19 extrapolated |
+| `2_other_polyester` | 68 | PAZy / PlasticDB | **39 verified**, 29 extrapolated |
+| `heldout_pha` | 36 | PAZy / PlasticDB | 10 verified, 26 extrapolated |
+| `3_fold_matched_esterase` | 185 | UniProt `ec:3.1.1.-` | **assumed** non-degrading — never assayed |
+| `4_naive_control` | 238 | UniProt, outside EC 3.1 | **assumed** non-degrading — never assayed |
+
+Merged positive set: 542 rows — PAZy only 232, PAZy + PlasticDB 210, PlasticDB only 100.
+Each row carries a traceable `source_ids` (e.g. `PAZy:112|PlasticDB:00018`).
+
+**Two consequences.**
+
+1. **A positive means "somebody measured degradation and published it." A negative means
+   "nobody has reported it as a plastic degrader"** — which is largely a statement about
+   what has been tested. If any of the 423 negatives does degrade a polyester, the model is
+   penalised for a correct prediction. PEZy-miner's 36 *assayed* non-degraders are the only
+   known source of genuinely verified negatives and remain unextracted.
+2. **48 of the 388 modelled positives (12%) are extrapolated, not verified** — 19 PET and
+   29 other-polyester. `2_other_polyester` is the weaker half: **29 of 68** rest on
+   homology-based annotation rather than measurement. Since that class is what the task
+   redefinition *added* to the positive side, the headline partly rests on labels nobody
+   measured. `MANUAL_EXCLUSIONS` already catches one such case by hand
+   (`PlasticDB:00230` — "named PETase by homology, only ever assayed on PCL").
+
+### Why the negatives are EC 3.1.1
+
+**EC 3.1.1 is the carboxylic-ester hydrolase subclass — the class PETases themselves belong
+to** (PET hydrolase is EC 3.1.1.101, MHETase 3.1.1.102, cutinase 3.1.1.74). Drawing
+negatives from the same subclass yields proteins that perform the identical chemistry
+(cleaving an ester bond), share the alpha/beta-hydrolase fold and the Ser-Asp-His triad, but
+act on natural substrates rather than plastic.
+
+This is the project's central methodological commitment: a classifier separating PETases
+from *random* proteins has learned "is this a hydrolase," not "is this a plastizyme." For
+that reason `fetch_negatives.py` deliberately does **not** filter class 3 at 30% identity —
+homology to the positives is the point of the tier. Class 4 (outside EC 3.1) provides the
+easy contrast, so the gap between tier-4 and tier-3 performance measures how much of the
+score is fold detection rather than function detection.
+
+**Query gotcha, handled.** `ec:3.1.1.*` is a loose string prefix that also matches
+3.1.10-3.1.14 — 6,174 reviewed entries against 4,294 for the exact `ec:3.1.1.-`, so 1,880
+would have been spurious. The exact form was used. Verified clean: **0 of 185** class-3
+entries carry EC 3.1.1.101, so accession-level and >=90%-identity exclusion both worked.
+
+### Limitation found 2026-09-28: the "fold-matched" tier is only half fold-matched
+
+EC number was used as a proxy for fold, and for this subclass **the proxy leaks**:
+
+| EC | n | enzyme | alpha/beta-hydrolase fold? |
+|---|---|---|---|
+| 3.1.1.96 | 56 | D-aminoacyl-tRNA deacylase | **no** |
+| 3.1.1.29 | 43 | peptidyl-tRNA hydrolase | **no** |
+| 3.1.1.- | 27 | unspecified esterase | yes |
+| 3.1.1.1 | 6 | carboxylesterase | yes |
+| 3.1.1.3 | 6 | triacylglycerol lipase | yes |
+| others | 47 | phospholipases, lactonases, etc. | mixed |
+
+**99 of 185 (54%) are tRNA-processing hydrolases.** They sit in EC 3.1.1 by formal reaction
+chemistry — they hydrolyse the ester linkage of an aminoacyl-tRNA — but structurally they
+are unrelated to cutinases and lipases. Only ~30 entries in the tier are genuine
+esterases/lipases/cutinases.
+
+This is the mechanism behind the caveat already recorded in `SAE_Feature_Interpretation.md`
+§7, that only 41% of tier-3 sequences have a catalytic serine at the peak position. **Tier 3
+is easier than its name claims**, which understates the task's difficulty and correspondingly
+overstates performance on it. Re-querying on fold (InterPro/Pfam alpha/beta-hydrolase clan)
+rather than EC alone would fix it; until then, tier-3 numbers should be read as a
+*mixed* rather than a fold-matched contrast.
+
+---
+
 ## What this dataset can and cannot support
 
-**Can:** *does this enzyme degrade a polyester?* 388 assay-confirmed positives spanning
-three substrate classes, against 423 negatives of which 185 are fold-matched esterases.
+**Can:** *does this enzyme degrade a polyester?* 388 positives spanning three substrate
+classes (340 experimentally verified, 48 extrapolated), against 423 negatives — of which
+185 are nominally fold-matched, though only ~30 are genuine esterases (see above).
 
 **Cannot:** *does this enzyme degrade PET specifically?* That contrast has 48 aliphatic
 and 20 PBAT degraders as its negative set — 6 and 5 in test respectively — and every
@@ -132,6 +210,10 @@ method tried lands near 0.68 on it. See `SAE_Feature_Interpretation.md` §5.
 shown inactive". A false positive in that tier may be a correct prediction about an
 untested enzyme. Metrics are therefore reported per tier rather than pooled.
 
+**A second caveat on the negatives.** 54% of that tier is not fold-matched at all
+(tRNA hydrolases, see above), so tier-3 performance overstates how well the model handles a
+true esterase contrast.
+
 ## Provenance
 
 | file | contents |
@@ -139,3 +221,6 @@ untested enzyme. Metrics are therefore reported per tier rather than pooled.
 | `artifacts/dataset_splits_0.4.md` | sources, dedup, class rationale, split verification |
 | `data/processed/dataset_splits_id40.tsv` | 847 rows: class, split, component |
 | `data/sae_650M_L33/polyester_eda.json` | every number in this document |
+| `data/processed/plastizymes_merged.tsv` | 542 positives, `sources` + `source_ids` per row |
+| `data/processed/uniprot_negatives.tsv` | 423 negatives, EC and phylum per row |
+| `src/biopet_sae/fetch_negatives.py` | the UniProt queries, verbatim |
