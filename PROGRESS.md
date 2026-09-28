@@ -1039,6 +1039,12 @@ build — it would force this step onto Lightning AI.
 
 ### D5. Evaluation: fixed split for the pipeline, 10-fold cluster CV for the headline
 
+> **SUPERSEDED by D10 (2026-09-28).** The 10-fold cluster CV described here was tested and
+> is **not viable on this data**: one homology component holds 84% of the training
+> positives, so it cannot be divided across folds. The fixed train/val/test split is the
+> headline, and nested CV is abandoned. The rationale below for *why* CV would have been
+> preferable still stands — it is the reason the CI is as wide as it is.
+
 Both come from the same cluster assignment. The fixed train/val/test drives the pipeline
 and the Lasso `C` sweep; **10-fold cluster CV** (`GroupKFold` with cluster id as the
 group) produces the reported metric. Rationale: a single 70/15/15 split tests only ~24
@@ -1083,6 +1089,57 @@ Controls:
    separates Actinomycetota from Pseudomonadota *within* the PET class. A feature that
    does is a taxonomy detector, not a function detector.
 
+### D10. Hyperparameter selection stays on val; cluster CV is abandoned (2026-09-28)
+
+**Supersedes D5.** Decision: **keep the three-way protocol — fit on train, select C/eta0 and
+the decision threshold on val, read test once.** Do not move selection into a
+cross-validation loop.
+
+Reopened while looking for more statistical power. The test set is small: 42 positives
+spanning only 20 homology components, Kish effective n **10.6**, 95% CI half-width on recall
+**+/-18 pp**. Pooling val+test looks attractive on paper — 85 positives, 41 components,
+n_eff 18.4, +/-13.7 pp — and val/test components are disjoint, so pooling is structurally
+clean.
+
+**Two protocols considered, one tested:**
+
+1. *Tune on val, report on pooled val+test.* **Rejected as invalid.** Val would be in-sample
+   for selection. Same class of error as the BLAST threshold asymmetry caught earlier
+   (F1 0.820 tuned in place vs 0.598 carried honestly).
+2. *Nested CV — selection in an inner component-aware CV inside train, then one pooled read.*
+   **Rejected: not viable on this data.** Tested directly (`scratchpad/nested_demo.py`,
+   5-fold outer x 4-fold inner over train, `max_L33`):
+
+| outer fold | n | positives | chosen C | chosen eta | outer AU-PRC |
+|---|---|---|---|---|---|
+| 1 | 256 | **256** | 1e-01 | 1e-03 | **undefined — no negatives** |
+| 2 | 83 | **0** | 1e-02 | 1e-03 | **undefined — no positives** |
+| 3 | 83 | 16 | 1e-02 | 1e-03 | 0.7228 |
+| 4 | 83 | 18 | 1e-02 | 1e-03 | 0.8095 |
+| 5 | 83 | 13 | 1e-02 | 1e-03 | 0.5590 |
+
+**Cause: one component holds 256 of 303 train positives (84%);** the other 32 share 47. CV
+assigns whole components to folds, so that component lands entirely in one fold, which then
+holds all the positives while the rest average 12. Two of five folds yield no metric at all,
+and the three that do swing 0.56-0.81 on 13-18 positives each. This is the indivisible-
+component problem already recorded for the PET task, now confirmed for polyester.
+
+**Consequence — and the framing to use.** The current train/val/test split is not a
+compromise; it is the only arrangement this homology structure permits. `assign_components`
+works *because* it does not build equal folds: it places the giant component in train and
+balances the remainder across val and test. State that positively rather than
+apologetically.
+
+**What remains available:** a pooled val+test read as a *supporting* analysis only,
+restricted to threshold-free metrics (AU-ROC, AU-PRC). Hyperparameters were selected on val,
+so the pooled figure is not a clean held-out estimate and must never be the headline. Real
+power needs more independent families (PEZy-miner negatives; positives outside the cutinase
+clade), not more passes over the same data.
+
+**Selection stability, recorded:** 4 of 5 outer folds chose C=1e-2, one chose C=1e-1; all
+chose eta=1e-3. Shipped config is C=1e-2, eta0=1e-4 — same regularization, different
+learning rate, selected on val log-loss.
+
 ---
 
 ### 14b. Why BLASTp's test PR curve is a flat shelf (2026-09-28)
@@ -1109,11 +1166,96 @@ of where that signal runs out. Recorded in `artifacts/BLAST_vs_ESM2_650M_Polyest
 
 ---
 
+### 14c. Artifact audit (2026-09-28)
+
+Full consistency pass over `artifacts/`. Verified: every headline number in the polyester
+docs matches `data/sae_650M_L33/{polyester_results,pr_curves}.json`; every cross-document
+file reference resolves; both trade-off tables in `BLAST_vs_ESM2_650M_Polyester.md`
+(recall-at-precision and precision-at-recall) match source and are not transposed.
+
+Three gaps found and fixed:
+
+1. **No supersession markers.** `BLAST_vs_ESM2_650M.md`, `ESM2_650M_Dense_Run.md`,
+   `ESM2_8M_Dense_Run.md`, `BLAST_vs_ESM2_8M.md` report the **PET-only** task with nothing
+   saying the task was later redefined. A reader landing on one would take a superseded
+   headline as current. Banner added to each pointing at the polyester equivalents;
+   `SAE_Feature_Interpretation.md` got a scope note instead (it is not superseded — its
+   fold-not-substrate finding is what motivated the redefinition).
+2. **The SAE leak correction lived only in PROGRESS.md.** The artifact that actually reports
+   the SAE work carried the conclusion but never the number or the correction. Added §6b
+   with the leak-free table (0.5108, 29th percentile of random) and the correction block;
+   `--select-on train` added to its Reproduce commands.
+3. **Broken markdown tables.** Substrate cells containing raw `|` (`PBS|PHA`,
+   `PBAT|PHA|PLA|PUR`, `PCL|PES|PHBV|PHO`) split their rows into extra columns, so 4 rows
+   across two docs rendered misaligned. Pipes escaped. All tables in all 9 docs now validate.
+
+*Self-inflicted, recorded for honesty:* the first repair attempt used a cell-merge heuristic
+that damaged tables in 6 files that were already correct. Restored from git (HEAD for the
+tracked four, index for the two staged ones), then re-applied only the intended edits and
+fixed the pipes by escaping instead. Verified no content loss: +8 lines per banner file,
+diffs contain banners and escapes only.
+
+---
+
+### 14d. Label provenance audited; the "fold-matched" tier is only half fold-matched (2026-09-28)
+
+Prompted by the question "did the labels come from PAZy and PlasticDB?" Re-derived from the
+source files rather than from memory.
+
+**Positives only.** PAZy + PlasticDB supply the 542-row positive set (PAZy only 232,
+PAZy+PlasticDB 210, PlasticDB only 100), each row carrying a traceable `source_ids`. All 423
+negatives come from UniProt queries in `fetch_negatives.py` and were **never assayed** —
+their label is an assumption, not a measurement. (PEZy-miner is a *different* resource and
+is still unused; its 36 assayed non-degraders remain unextracted.)
+
+**12% of modelled positives are not experimentally verified:**
+
+| class | n | verified | extrapolated |
+|---|---|---|---|
+| `1_pet` | 320 | 301 | 19 |
+| `2_other_polyester` | 68 | **39** | **29** |
+| `heldout_pha` | 36 | 10 | 26 |
+
+`2_other_polyester` is the weak half — 29 of 68 rest on homology annotation. That class is
+exactly what the task redefinition added to the positive side, so the polyester headline
+partly rests on unmeasured labels. Worth stating before a judge finds it.
+
+**Why EC 3.1.1 (recorded, was only in the script docstring):** it is the carboxylic-ester
+hydrolase subclass PETases themselves belong to (PET hydrolase 3.1.1.101, MHETase 3.1.1.102,
+cutinase 3.1.1.74). Same chemistry, same fold, same catalytic triad, different substrate —
+which is what makes the tier hard, and why class 3 is deliberately *not* filtered at 30%
+identity. Verified clean: 0 of 185 class-3 entries are EC 3.1.1.101, so the accession and
+>=90%-identity exclusions worked.
+
+**NEW LIMITATION — EC is a leaky proxy for fold.** Composition of `3_fold_matched_esterase`:
+
+| EC | n | enzyme | alpha/beta fold? |
+|---|---|---|---|
+| 3.1.1.96 | 56 | D-aminoacyl-tRNA deacylase | **no** |
+| 3.1.1.29 | 43 | peptidyl-tRNA hydrolase | **no** |
+| 3.1.1.- / .1 / .3 | 39 | esterases, lipases | yes |
+| others | 47 | phospholipases, lactonases | mixed |
+
+**99 of 185 (54%) are tRNA-processing hydrolases** — in EC 3.1.1 by formal reaction
+chemistry (they cleave an aminoacyl-tRNA ester bond) but structurally unrelated to
+cutinases. Only ~30 of the tier are genuine esterases.
+
+This is the mechanism behind the caveat already in `SAE_Feature_Interpretation.md` §7 (only
+41% of tier-3 sequences have a catalytic serine at the peak). **Tier 3 is easier than its
+name claims**, so tier-3 numbers understate the task's difficulty and overstate performance.
+It does not affect the *overall* polyester metrics' validity, but it does weaken the claim
+that the negative set is fold-matched — which is the project's central design argument.
+Recorded in `artifacts/EDA_polyester_task.md` ("Label provenance").
+
+---
+
 ## Current status (checkpoint, 2026-09-28)
 
-Dataset built and verified; dense-embedding baselines complete at two model scales with a
-BLAST comparison. **Test is spent** — further tuning must return to val or use a fresh set.
-No SAE work yet.
+Dataset built and verified. Detection half complete: dense-embedding probes at two model
+scales, a BLASTp baseline, and the task redefined from PET-only to polyester-degrader.
+Explainability half complete **but against the PET-only task**, which the redefinition
+superseded — porting it is the main open work (Still open #1).
+**Test is spent** on both tasks — further tuning must return to val or use a fresh set.
 
 **Assembled set: 847 sequences.** 320 `1_pet`, 68 `2_other_polyester`, 185
 `3_fold_matched_esterase`, 238 `4_naive_control`, 36 `heldout_pha`, 118 excluded.
@@ -1122,31 +1264,37 @@ No SAE work yet.
 BLASTp significantly on both (paired bootstrap over homology components). Generalises to a
 held-out enzyme lineage at 83%.** See section 14.
 
-**Best single interpretable feature: SAE latent 9529 alone, AU-ROC 0.9160 on the PET task** — a catalytic-serine detector, above
-dense (0.8856), the full SAE probe (0.8900) and BLASTp (0.8778). **Best test F1: BLASTp
-0.800.** No pairwise difference between methods is statistically significant.
+**Best single interpretable feature (PET-only task): SAE latent 9529 alone, AU-ROC 0.9160**
+— a catalytic-serine detector, above dense (0.8856), the full SAE probe (0.8900) and BLASTp
+(0.8778). *On that superseded task* the best test F1 was BLASTp's 0.800 and no pairwise
+difference between methods was significant; the probe's significant win over BLASTp is a
+result of the **polyester** task only. The two must not be quoted side by side without
+their task labels.
 
-**Main scientific result (section 13):** the model's best feature is an interpretable
-nucleophile-elbow detector. It detects the alpha/beta-hydrolase fold, not PET specificity,
-which explains the ~0.68 ceiling on the `2b_aliphatic` contrast across every model scale
-and BLAST.
+**Main mechanistic result so far (section 13, PET-only task):** the model's best feature is
+an interpretable nucleophile-elbow detector. It detects the alpha/beta-hydrolase fold, not
+PET specificity, which explains the ~0.68 ceiling on the `2b_aliphatic` contrast across
+every model scale and BLAST — and is precisely why the task was redefined. The equivalent
+analysis for the polyester classifier has not been run.
 
 **Artifacts** (all numbers reproducible, each with a machine-readable `.json`):
 
 | file | contents |
 |---|---|
 | `artifacts/dataset_splits_0.4.md` | dataset provenance, class rationale, split verification |
-| `artifacts/ESM2_8M_Dense_Run.md` | 8M: C×eta sweep, 5-seed SEs, threshold curve, test |
-| `artifacts/ESM2_650M_Dense_Run.md` | 650M layer 33: same four tables |
-| `artifacts/BLAST_vs_ESM2_8M.md` | BLAST baseline, e-value sweep, 8M error analysis, rebalancing |
-| `artifacts/BLAST_vs_ESM2_650M.md` | BLAST vs 650M, paired bootstrap method, 650M error analysis |
-| `artifacts/SAE_Feature_Interpretation.md` | SAE latents, catalytic-triad mapping |
+| `artifacts/ESM2_8M_Dense_Run.md` | *(PET-only, superseded)* 8M: C×eta sweep, 5-seed SEs, threshold curve, test |
+| `artifacts/ESM2_650M_Dense_Run.md` | *(PET-only, superseded)* 650M layer 33: same four tables |
+| `artifacts/BLAST_vs_ESM2_8M.md` | *(PET-only, superseded)* BLAST baseline, e-value sweep, error analysis, rebalancing |
+| `artifacts/BLAST_vs_ESM2_650M.md` | *(PET-only, superseded)* BLAST vs 650M, paired bootstrap method, error analysis |
+| `artifacts/SAE_Feature_Interpretation.md` | *(analyses the PET-only task)* SAE latents, catalytic-triad mapping, leak correction |
 | `artifacts/EDA_polyester_task.md` | **polyester labels, confound floors** |
 | `artifacts/ESM2_650M_Polyester_Run.md` | **the headline classifier** |
 | `artifacts/BLAST_vs_ESM2_650M_Polyester.md` | **the significant win over BLAST** |
 | `https://claude.ai/artifact/KcdU4xp1QUSvuWzrL4pGwS` | 3D structure viewer, 32 PETases |
 | `https://claude.ai/artifact/S1rzDp1cJYxA39xSTPZteE` | **PR curves, val vs test, vs BLASTp** |
 | `artifacts/pr_curves.html` | source for the curve figure |
+| `artifacts/petase_structures.html` | source for the 3D viewer |
+| `artifacts/SAE_650M_L33_differential.json` | differential-score output (leak-free) |
 
 **Data artifacts:**
 
@@ -1164,40 +1312,91 @@ superseded by the artifacts above.
 
 ## Still open
 
-1. **SAE work — the main remaining question.** Both dense scales and BLAST fail together on
-   `2b_aliphatic` (0.64 / 0.68 / 0.70). Dense dimensions are polysemantic, so this does not
-   establish the feature is absent — only that it is not linearly decodable from dense
-   activations. InterPLM SAEs exist for the exact layers already embedded
-   (8M layers 1–6; 650M layers 1/9/18/24/30/33), and the pooled tensors are cached.
-2. **HMMER is still unimplemented.** A profile HMM over the 257 training positives would be
-   a stronger baseline than pairwise BLAST, and BLAST already matches or beats both ESM-2
-   scales. Needs `mafft` + `hmmbuild`/`hmmsearch`.
-3. **PEZy-miner's 36 assayed non-degraders** remain unextracted from
-   `~/Downloads/1-s2.0-S2214030124000178-mmc1.docx` — the only known source of genuinely
-   verified negatives, which neither PAZy nor PlasticDB provides.
-4. **Framing for write-up.** The defensible claim is now narrow and mostly negative: dense
-   ESM-2 embeddings do not outperform homology search on this benchmark at either scale.
-   That is a legitimate result, and it sets up the SAE question rather than answering it.
+Ordered by what the thesis needs, not by effort. Thesis = (1) detection, (2) mechanistic
+explanation of the detector. **Half 1 is done and wins. Half 2 currently explains the wrong
+classifier.**
+
+1. **The SAE analysis is still on the PET-only task — this is the main gap.**
+   `sae_differential.py` contrasts `1_pet` vs `2b_aliphatic`, i.e. the framing that was
+   *abandoned* when the task became polyester-vs-non-degrader. Every SAE result on file
+   (the six latents, the triad mapping, the 0.5108 coin flip, the structure viewer) describes
+   a classifier that is no longer the headline. The explainability half does not yet attach
+   to the detection half. Nothing else on this list matters as much.
+2. **No causal test of any latent.** All SAE evidence is correlational — latents were
+   *selected* for separating classes, then shown to fire on the catalytic triad. Importance
+   is only established by ablating a latent against a **reconstruction baseline** (not a raw
+   baseline) and seeing the prediction move. The kinase project's precedent is greedy
+   sequential ablation.
+3. **Test is spent on the polyester task.** Final metrics (AU-ROC 0.9681 / AU-PRC 0.9526)
+   were read off test. Any further tuning must return to val or use a fresh set.
+4. **Val and test are not equally hard, and the headline depends on it.** Test drew markedly
+   harder negatives (8/62 clear BLAST's cutoff vs 2/76 in val); on val the probe and BLASTp
+   are tied. The paired bootstrap resamples *within* test and cannot account for split
+   composition. A pooled val+test comparison, or k-fold over homology components, would
+   measure the gap without this dependence. **Until then the defensible claim is "the probe
+   degrades more gracefully as negatives get harder," not "the probe is uniformly better."**
+5. **Only layer 33 has been examined.** It was chosen because the dense probe peaked there.
+   Substrate specificity, if linearly available at all, may sit at a middle layer where
+   structural rather than sequence-level features dominate; SAEs exist for 650M layers
+   1/9/18/24/30 and the embeddings are already cached.
+6. **HMMER is still unimplemented.** A profile HMM over the training positives is a stronger
+   homology baseline than pairwise BLASTp and would harden the central comparison. Needs
+   `mafft` + `hmmbuild`/`hmmsearch`; neither is installed.
+7. **PEZy-miner's 36 assayed non-degraders** remain unextracted from
+   `~/Downloads/1-s2.0-S2214030124000178-mmc1.docx` — the only known source of
+   *experimentally verified* negatives. Every current negative is assumed non-degrading
+   because nobody assayed it, which is the dataset's weakest premise.
+8. **The `3_fold_matched_esterase` tier is only ~46% fold-matched** (§14d). 99 of 185 are
+   tRNA-processing hydrolases that share EC 3.1.1 but not the alpha/beta-hydrolase fold.
+   The tier is the project's central design argument — that negatives are *homologous* hard
+   negatives — so this weakens the argument directly. Fix: re-query on InterPro/Pfam
+   alpha/beta-hydrolase clan membership instead of EC alone, and re-run the comparison.
+   Until then tier-3 numbers are a mixed, not a fold-matched, contrast.
+9. **Label asymmetry** (§14d). Positives are measured; all 423 negatives are assumed
+   non-degrading. 48 of 388 positives (29 of 68 in `2_other_polyester`) are extrapolated
+   rather than assayed.
+10. **Latent 5271 is unassigned** — C-terminal peaks, no consistent motif.
+11. **454 unannotated UniProt EC 3.1.1.101 entries** were never triaged, and the triad-finder
+    was never validated at cutinase scale (4,991 annotated entries available).
 
 ## Next steps
 
-1. Load InterPLM SAEs (`ReLUSAE.from_pretrained` + `hf_hub_download`; the `train` subpackage
-   is missing upstream so `load_sae_from_hf` cannot work) and extract sparse features at
-   650M layer 33, where the dense probe performed best.
-2. Gate on SAE reconstruction fidelity before trusting any feature result — the kinase
-   project's precedent. Compare against a **reconstruction baseline, not a raw baseline**.
-3. Re-run the tiered evaluation on SAE features, with `2b_aliphatic` as the target contrast
-   rather than the overall AU-PRC.
-4. Map any discriminative features to residues and check against the structural determinants
-   (W185 wobble, Y87/W185 aromatic clamp, DS1 disulfide) using the 32 PET entries with PDB
-   structures. The catalytic triad, shared with the negatives, is the built-in control.
-5. Optional: HMMER baseline; PEZy-miner verified negatives.
+Steps 1–3 are one piece of work: port the explainability half onto the classifier that
+actually won.
+
+1. **Re-run the SAE pipeline against the polyester labels.** Reuse the cached
+   `sae_features.npz` (847 x 10,240 — no re-embedding needed); change only the contrast to
+   `{1_pet, 2_other_polyester}` vs `{3_fold_matched_esterase, 4_naive_control}`. Keep
+   `--select-on train`. Gate on reconstruction fidelity before trusting any number.
+2. **Ask the question that now has a real answer.** On the PET-only task the honest finding
+   was negative (no PET-specific latent; 0.5108, worse than random). The polyester probe
+   genuinely beats BLASTp, so there *is* a decision to explain. Target the six test negatives
+   BLASTp ranks above its own median positive — Q01470, P9WK86, P95125, P71668 (probe
+   correctly rejects) versus P86325, Q47M62 (probe fails). **Which latents separate those two
+   groups?** That is the mechanistic claim the project is built to make.
+3. **Map the resulting latents to residues and structures**, reusing `feature_windows.py` and
+   `build_structure_viewer_data.py`. The catalytic triad is the built-in control: latents that
+   only track the triad explain fold, not function, and must be reported as such.
+4. **Then** add the ablation test (Still open #2) — a correlational story is not a mechanism.
+5. **Harden the headline**: pooled val+test or component-level k-fold (Still open #4), and
+   the HMMER baseline (#6).
+6. **Rebuild tier 3 on fold, not EC** (Still open #8) — re-query UniProt for InterPro
+   alpha/beta-hydrolase clan members, rebuild the tier, and re-run the polyester comparison.
+   This is the cheapest change that makes the central design argument actually true.
+7. Optional, in priority order: middle-layer SAEs (#5), PEZy-miner verified negatives (#7,
+   which also addresses #9), the unannotated UniProt triage (#11).
 
 ## Environment notes
 
-- `mmseqs`, `blastp`, `makeblastdb`, `cd-hit`, `hmmscan`, `diamond` are all **not
-  installed** on this machine as of 2026-09-27.
+- **Installed and working** (verified 2026-09-28): `mmseqs`, `blastp`, `makeblastdb`
+  (all `/opt/homebrew/bin`).
+- **Not installed**: `mafft`, `hmmbuild`/`hmmsearch`/`hmmscan` (blocks the HMMER baseline),
+  `cd-hit`, `diamond`.
 - InterPLM SAE availability confirmed live on HuggingFace:
-  `Elana/InterPLM-esm2-8m` layers 1–6 (320 dim → 10,240 features);
-  `Elana/InterPLM-esm2-650m` layers 1, 9, 18, 24, 30, 33 (1,280 dim → 10,240 features).
+  `Elana/InterPLM-esm2-8m` layers 1-6 (320 dim -> 10,240 features);
+  `Elana/InterPLM-esm2-650m` layers 1, 9, 18, 24, 30, 33 (1,280 dim -> 10,240 features).
   Each layer ships `ae_normalized.pt` and `ae_unnormalized.pt`.
+- `interplm`'s installed package is missing its `train` subpackage, so `load_sae_from_hf`
+  cannot work; load via `ReLUSAE.from_pretrained(hf_hub_download(...))`.
+- Apple Silicon: SAE + ESM-2 run on `mps`. GPU only matters for embedding extraction, and
+  all needed embeddings are already cached under `data/sae_650M_L33/`.
