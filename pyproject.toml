@@ -1,0 +1,23 @@
+[project]
+name = "biopet-sae"
+version = "0.1.0"
+description = "Detecting plastic-degrading enzymes (plastizymes) from PLM embeddings and explaining the decision with sparse autoencoder features"
+readme = "README.md"
+authors = [
+    { name = "Hamsini Ramanathan", email = "hamsini.m.ramanathan@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "biopython>=1.85",
+    "numpy>=2.1",
+    "pandas>=2.2",
+    "requests>=2.32",
+    "scikit-learn>=1.5",
+    "tabulate>=0.10.0",
+    "torch>=2.14.0",
+    "transformers>=5.17.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.8,<0.10"]
+build-backend = "uv_build"

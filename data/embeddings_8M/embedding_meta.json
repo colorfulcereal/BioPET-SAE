@@ -1,0 +1,21 @@
+{
+  "model": "facebook/esm2_t6_8M_UR50D",
+  "layers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "dim": 320,
+  "n_sequences": 847,
+  "pooling": [
+    "mean",
+    "max"
+  ],
+  "truncated_over_max_len": 0,
+  "max_len": 1022,
+  "device": "mps",
+  "elapsed_seconds": 22.5
+}

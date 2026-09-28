@@ -1,0 +1,31 @@
+{
+  "threshold": 0.5,
+  "n_components": 411,
+  "largest_component": 252,
+  "largest_pet_component": 252,
+  "dropped_near_duplicate_negatives": [],
+  "composition": {
+    "train|1_pet": 252,
+    "train|2_other_polyester": 47,
+    "train|3_fold_matched_esterase": 126,
+    "train|4_naive_control": 166,
+    "val|1_pet": 34,
+    "val|2_other_polyester": 11,
+    "val|3_fold_matched_esterase": 32,
+    "val|4_naive_control": 36,
+    "test|1_pet": 34,
+    "test|2_other_polyester": 10,
+    "test|3_fold_matched_esterase": 27,
+    "test|4_naive_control": 36,
+    "heldout|heldout_pha": 36
+  },
+  "max_cross_split_identity": {
+    "test|train": 0.4426,
+    "train|val": 0.4975,
+    "heldout|train": 0.9878,
+    "heldout|test": 0.3055,
+    "test|val": 0.4731,
+    "heldout|val": 0.8361
+  },
+  "bound_satisfied": true
+}
