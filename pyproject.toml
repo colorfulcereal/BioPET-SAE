@@ -9,6 +9,8 @@ authors = [
 requires-python = ">=3.13"
 dependencies = [
     "biopython>=1.85",
+    "einops>=0.8.2",
+    "interplm",
     "numpy>=2.1",
     "pandas>=2.2",
     "requests>=2.32",
@@ -21,3 +23,6 @@ dependencies = [
 [build-system]
 requires = ["uv_build>=0.8,<0.10"]
 build-backend = "uv_build"
+
+[tool.uv.sources]
+interplm = { git = "https://github.com/ElanaPearl/interPLM.git" }

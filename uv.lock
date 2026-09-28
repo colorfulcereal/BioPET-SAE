@@ -38,6 +38,8 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "biopython" },
+    { name = "einops" },
+    { name = "interplm" },
     { name = "numpy" },
     { name = "pandas" },
     { name = "requests" },
@@ -50,6 +52,8 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "biopython", specifier = ">=1.85" },
+    { name = "einops", specifier = ">=0.8.2" },
+    { name = "interplm", git = "https://github.com/ElanaPearl/interPLM.git" },
     { name = "numpy", specifier = ">=2.1" },
     { name = "pandas", specifier = ">=2.2" },
     { name = "requests", specifier = ">=2.32" },
@@ -320,6 +324,15 @@ nvtx = [
 ]
 
 [[package]]
+name = "einops"
+version = "0.8.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/2c/77/850bef8d72ffb9219f0b1aac23fbc1bf7d038ee6ea666f331fa273031aa2/einops-0.8.2.tar.gz", hash = "sha256:609da665570e5e265e27283aab09e7f279ade90c4f01bcfca111f3d3e13f2827", size = 56261, upload-time = "2026-01-26T04:13:17.638Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2a/09/f8d8f8f31e4483c10a906437b4ce31bdf3d6d417b73fe33f1a8b59e34228/einops-0.8.2-py3-none-any.whl", hash = "sha256:54058201ac7087911181bfec4af6091bb59380360f069276601256a76af08193", size = 65638, upload-time = "2026-01-26T04:13:18.546Z" },
+]
+
+[[package]]
 name = "filelock"
 version = "4.0.4"
 source = { registry = "https://pypi.org/simple" }
@@ -426,6 +439,11 @@ sdist = { url = "https://files.pythonhosted.org/packages/f5/08/8eea9d4b8302028f3
 wheels = [
     { url = "https://files.pythonhosted.org/packages/58/a2/bb081bab032533a855d44de1d56f8e8426114ff1ba5d1f07a438a0a654f8/idna-3.20-py3-none-any.whl", hash = "sha256:ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c", size = 69583, upload-time = "2026-09-17T14:11:03.168Z" },
 ]
+
+[[package]]
+name = "interplm"
+version = "1.0.0"
+source = { git = "https://github.com/ElanaPearl/interPLM.git#5f4cbf90a0b3c1c031951ffd0b3b8e11b6f2ed61" }
 
 [[package]]
 name = "jinja2"

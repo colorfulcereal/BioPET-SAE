@@ -1,0 +1,165 @@
+{
+  "threshold": 0.002967539128137423,
+  "n_fp": 8,
+  "false_positives": [
+    {
+      "accession": "BPS0038",
+      "score": 0.7756975220538025,
+      "tier": "2b_aliphatic",
+      "phylum": "Pseudomonadota",
+      "blast_evalue": 1.03e-17,
+      "protein": "HP",
+      "substrates": "PBS|PHA"
+    },
+    {
+      "accession": "O33363",
+      "score": 0.008230062297203354,
+      "tier": "3_fold_matched_esterase",
+      "phylum": "Actinomycetota",
+      "blast_evalue": 2.6,
+      "protein": "GDSL lipase Rv0518 (EC 3.1.1.-)",
+      "substrates": ""
+    },
+    {
+      "accession": "A0QWG6",
+      "score": 0.00791177910878689,
+      "tier": "4_naive_control",
+      "phylum": "Actinomycetota",
+      "blast_evalue": 0.48,
+      "protein": "Phosphatidyl-myo-inositol mannosyl",
+      "substrates": ""
+    },
+    {
+      "accession": "P9WGK9",
+      "score": 0.0062718439262674525,
+      "tier": "4_naive_control",
+      "phylum": "Actinomycetota",
+      "blast_evalue": 0.33,
+      "protein": "Sensor histidine kinase MtrB (EC 2",
+      "substrates": ""
+    },
+    {
+      "accession": "BPS0062",
+      "score": 0.005241447343354899,
+      "tier": "2a_PBAT",
+      "phylum": "Bacillota",
+      "blast_evalue": 0.005,
+      "protein": "JW45_1534",
+      "substrates": "PBAT|PHA|PLA|PUR"
+    },
+    {
+      "accession": "BPS0025",
+      "score": 0.0051868907830105995,
+      "tier": "2b_aliphatic",
+      "phylum": "",
+      "blast_evalue": 0.009,
+      "protein": "Lipase",
+      "substrates": "PCL|PES|PHBV|PHO"
+    },
+    {
+      "accession": "P22637",
+      "score": 0.004173014350603411,
+      "tier": "4_naive_control",
+      "phylum": "Actinomycetota",
+      "blast_evalue": 0.17,
+      "protein": "Cholesterol oxidase (CHOD) (EC 1.1",
+      "substrates": ""
+    },
+    {
+      "accession": "O32232",
+      "score": 0.00401258197220489,
+      "tier": "3_fold_matched_esterase",
+      "phylum": "Bacillota",
+      "blast_evalue": 0.067,
+      "protein": "Carboxylesterase (EC 3.1.1.1)",
+      "substrates": ""
+    }
+  ],
+  "test_650M": {
+    "precision": 0.7419354838709677,
+    "recall": 0.7419354838709677,
+    "f1": 0.7419354838709677,
+    "TP": 23,
+    "FP": 8,
+    "FN": 8,
+    "TN": 65,
+    "AUROC": 0.8855501546619531,
+    "AUPRC": 0.8149597955408023
+  },
+  "test_blast": {
+    "precision": 0.8275862068965517,
+    "recall": 0.7741935483870968,
+    "f1": 0.8,
+    "TP": 24,
+    "FP": 5,
+    "FN": 7,
+    "TN": 68,
+    "AUROC": 0.8778170570039769,
+    "AUPRC": 0.849969971068969,
+    "evalue": 0.0316
+  },
+  "tier_fp": {
+    "2a_PBAT": {
+      "650M": 1,
+      "blast": 1,
+      "n_neg": 5
+    },
+    "2b_aliphatic": {
+      "650M": 2,
+      "blast": 3,
+      "n_neg": 6
+    },
+    "3_fold_matched_esterase": {
+      "650M": 2,
+      "blast": 0,
+      "n_neg": 26
+    },
+    "4_naive_control": {
+      "650M": 3,
+      "blast": 1,
+      "n_neg": 36
+    }
+  },
+  "tier_auroc": {
+    "2a_PBAT": {
+      "n_neg": 5,
+      "m650": 0.7419354838709677,
+      "blast": 0.8
+    },
+    "2b_aliphatic": {
+      "n_neg": 6,
+      "m650": 0.6827956989247312,
+      "blast": 0.6989247311827957
+    },
+    "3_fold_matched_esterase": {
+      "n_neg": 26,
+      "m650": 0.9218362282878412,
+      "blast": 0.8939205955334988
+    },
+    "4_naive_control": {
+      "n_neg": 36,
+      "m650": 0.9130824372759856,
+      "blast": 0.9068100358422939
+    }
+  },
+  "class3_actino": [
+    1,
+    11
+  ],
+  "class3_nonactino": [
+    1,
+    15
+  ],
+  "paired_650M_minus_blast": {
+    "AU_ROC": [
+      0.0074197210436438045,
+      -0.09590435240435244,
+      0.12316845691845696
+    ],
+    "AU_PRC": [
+      -0.041195438358855585,
+      -0.18991236253221203,
+      0.07563411176467247
+    ]
+  }
+}

@@ -121,6 +121,88 @@ Operating points of practical interest:
 
 ---
 
+---
+
+## Table 4 — Held-out test set (`max_L6`, one shot)
+
+Test was untouched until `max_L6` and C=1e-3 / eta0=1e-4 had both been selected on val.
+The decision threshold **0.2223 is carried over from val and was not re-tuned on test** --
+re-optimising a threshold on the test set would invalidate it.
+
+Test: 104 sequences, 31 PET, 73 non-PET (prevalence 0.298).
+Negatives by tier: 2a_PBAT = 5, 2b_aliphatic = 6, 3_fold_matched_esterase = 26,
+4_naive_control = 36.
+
+### Headline — trained on train only
+
+| metric | value | 95% CI (component bootstrap) |
+|---|---|---|
+| **Precision** | **0.6000** | |
+| **Recall** | **0.9677** | |
+| F1 | 0.7407 | |
+| AU-ROC | 0.9015 | [0.806, 0.957] |
+| AU-PRC | 0.7899 | [0.575, 0.897] |
+
+```
+TP = 30    FP = 20    FN = 1    TN = 53
+```
+
+30 of 31 PET sequences recovered, one missed, 20 false positives out of 73 negatives.
+
+### Val to test
+
+| | val | test | change |
+|---|---|---|---|
+| AU-ROC | 0.9501 | 0.9015 | -0.049 |
+| AU-PRC | 0.8474 | 0.7899 | -0.058 |
+| Precision | 0.7111 | 0.6000 | -0.111 |
+| Recall | 1.0000 | 0.9677 | -0.032 |
+
+A modest drop, expected because val was spent on hyperparameter and feature-set
+selection. All four changes sit inside the test CIs, so the two splits are consistent
+rather than the model collapsing out of sample.
+
+### Refitting on train+val did not help
+
+| trained on | n | AU-ROC | AU-PRC | Precision | Recall | FP |
+|---|---|---|---|---|---|---|
+| train only | 588 (257 PET) | 0.9015 | 0.7899 | 0.6000 | 0.9677 | 20 |
+| train + val | 707 (289 PET) | 0.9019 | 0.7921 | 0.5556 | 0.9677 | 24 |
+
+Ranking is unchanged (+0.002 AU-PRC), but precision falls because the extra training data
+shifts the probability scale and the val-derived threshold no longer sits in the same
+place. **The train-only model is the one reported.**
+
+### Tier diagnostic on test
+
+| tier | n_neg | test AU-ROC | val AU-ROC |
+|---|---|---|---|
+| 2a_PBAT | 5 | 0.9032 | 0.7031 |
+| **2b_aliphatic** | 6 | **0.6398** | **0.6250** |
+| 3_fold_matched_esterase | 26 | 0.8437 | 1.0000 |
+| 4_naive_control | 36 | 0.9866 | 0.9896 |
+
+Three things changed or held:
+
+1. **Class 3 fell from a perfect 1.0000 to 0.8437.** The tier that carried the val
+   headline does not replicate, so that 1.0000 was partly luck on 40 sequences.
+2. **`2a_PBAT` rose from 0.703 to 0.903, but on 5 negatives against 2 on val.** Too few
+   either way; this number should not be cited.
+3. **`2b_aliphatic` held at 0.640 (val 0.625).** The only tier stable across both
+   independent splits, and it is the hard contrast. Replication across splits makes this
+   the most reliable finding in the run: the probe cannot distinguish PET degraders from
+   enzymes that degrade other aliphatic polyesters.
+
+### Defensible summary
+
+> Precision 0.60, recall 0.97, AU-ROC 0.90 on a held-out set in which no sequence shares
+> more than 40% identity with any training sequence -- while discrimination against other
+> polyester-degrading enzymes remains near 0.64. The probe detects polyester-hydrolase
+> activity rather than PET specificity.
+
+**Test is now spent.** Any further tuning must return to val, or a fresh held-out set is
+required.
+
 ## Caveat that belongs with every number above
 
 These metrics are measured against a negative set of 87 sequences dominated by
@@ -142,10 +224,14 @@ uv run python -m biopet_sae.embed_esm2 --model 8M
 uv run python -m biopet_sae.train_binary_probe \
     --embeddings data/embeddings_8M/embeddings.npz \
     --splits data/processed/dataset_splits_id40.tsv
+
+# Table 4 (test set, threshold 0.2223 carried from val)
+uv run python -m biopet_sae.eval_test --features max_L6 --threshold 0.2223
 ```
 
 | file | contents |
 |---|---|
 | `data/embeddings_8M/embeddings.npz` | pooled embeddings, layers 1-6, mean + max |
 | `data/processed/dataset_splits_id40.tsv` | the split used |
-| `artifacts/ESM2_8M_Dense_Run.json` | every number in this document, machine-readable |
+| `artifacts/ESM2_8M_Dense_Run.json` | Tables 1-3, machine-readable |
+| `artifacts/ESM2_8M_Dense_Run_test.json` | Table 4 (test set), machine-readable |

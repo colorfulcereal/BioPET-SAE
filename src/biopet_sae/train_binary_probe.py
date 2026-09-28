@@ -34,7 +34,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LogisticRegression, SGDClassifier
 from sklearn.metrics import (
     average_precision_score,
     precision_recall_curve,
@@ -231,7 +231,9 @@ def main(argv: list[str] | None = None) -> int:
     print(tdf.pivot(index="features", columns="tier", values="AU-ROC").to_string())
 
     (out_dir / "binary_probe.json").write_text(json.dumps(
-        {"overall": overall, "per_tier": per_tier, "eval_on": args.eval_on,
+        {"config": {"optimizer": args.optimizer, "C": args.C, "eta0": args.eta0,
+                     "epochs": args.epochs, "seed": args.seed},
+         "overall": overall, "per_tier": per_tier, "eval_on": args.eval_on,
          "splits": str(args.splits), "embeddings": str(args.embeddings)}, indent=2))
     odf.to_csv(out_dir / "binary_overall.csv", index=False)
     tdf.to_csv(out_dir / "binary_per_tier.csv", index=False)

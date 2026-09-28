@@ -1,0 +1,825 @@
+{
+  "db_size": 257,
+  "val_sweep": [
+    {
+      "evalue": 10.0,
+      "precision": 0.2909090909090909,
+      "recall": 1.0,
+      "f1": 0.4507042253521127,
+      "TP": 32,
+      "FP": 78,
+      "FN": 0,
+      "TN": 9
+    },
+    {
+      "evalue": 3.1622776601683795,
+      "precision": 0.38461538461538464,
+      "recall": 0.9375,
+      "f1": 0.5454545454545454,
+      "TP": 30,
+      "FP": 48,
+      "FN": 2,
+      "TN": 39
+    },
+    {
+      "evalue": 1.0,
+      "precision": 0.5272727272727272,
+      "recall": 0.90625,
+      "f1": 0.6666666666666666,
+      "TP": 29,
+      "FP": 26,
+      "FN": 3,
+      "TN": 61
+    },
+    {
+      "evalue": 0.31622776601683794,
+      "precision": 0.6410256410256411,
+      "recall": 0.78125,
+      "f1": 0.704225352112676,
+      "TP": 25,
+      "FP": 14,
+      "FN": 7,
+      "TN": 73
+    },
+    {
+      "evalue": 0.1,
+      "precision": 0.7586206896551724,
+      "recall": 0.6875,
+      "f1": 0.7213114754098361,
+      "TP": 22,
+      "FP": 7,
+      "FN": 10,
+      "TN": 80
+    },
+    {
+      "evalue": 0.03162277660168379,
+      "precision": 0.8076923076923077,
+      "recall": 0.65625,
+      "f1": 0.7241379310344828,
+      "TP": 21,
+      "FP": 5,
+      "FN": 11,
+      "TN": 82
+    },
+    {
+      "evalue": 0.01,
+      "precision": 0.8333333333333334,
+      "recall": 0.625,
+      "f1": 0.7142857142857143,
+      "TP": 20,
+      "FP": 4,
+      "FN": 12,
+      "TN": 83
+    },
+    {
+      "evalue": 0.0031622776601683794,
+      "precision": 0.8571428571428571,
+      "recall": 0.5625,
+      "f1": 0.6792452830188679,
+      "TP": 18,
+      "FP": 3,
+      "FN": 14,
+      "TN": 84
+    },
+    {
+      "evalue": 0.001,
+      "precision": 0.8421052631578947,
+      "recall": 0.5,
+      "f1": 0.6274509803921569,
+      "TP": 16,
+      "FP": 3,
+      "FN": 16,
+      "TN": 84
+    },
+    {
+      "evalue": 0.00031622776601683794,
+      "precision": 0.875,
+      "recall": 0.4375,
+      "f1": 0.5833333333333334,
+      "TP": 14,
+      "FP": 2,
+      "FN": 18,
+      "TN": 85
+    },
+    {
+      "evalue": 0.0001,
+      "precision": 0.8666666666666667,
+      "recall": 0.40625,
+      "f1": 0.5531914893617021,
+      "TP": 13,
+      "FP": 2,
+      "FN": 19,
+      "TN": 85
+    },
+    {
+      "evalue": 3.1622776601683795e-05,
+      "precision": 0.8666666666666667,
+      "recall": 0.40625,
+      "f1": 0.5531914893617021,
+      "TP": 13,
+      "FP": 2,
+      "FN": 19,
+      "TN": 85
+    },
+    {
+      "evalue": 1e-05,
+      "precision": 0.8666666666666667,
+      "recall": 0.40625,
+      "f1": 0.5531914893617021,
+      "TP": 13,
+      "FP": 2,
+      "FN": 19,
+      "TN": 85
+    },
+    {
+      "evalue": 3.162277660168379e-06,
+      "precision": 0.8666666666666667,
+      "recall": 0.40625,
+      "f1": 0.5531914893617021,
+      "TP": 13,
+      "FP": 2,
+      "FN": 19,
+      "TN": 85
+    },
+    {
+      "evalue": 1e-06,
+      "precision": 0.8666666666666667,
+      "recall": 0.40625,
+      "f1": 0.5531914893617021,
+      "TP": 13,
+      "FP": 2,
+      "FN": 19,
+      "TN": 85
+    },
+    {
+      "evalue": 3.162277660168379e-07,
+      "precision": 0.8461538461538461,
+      "recall": 0.34375,
+      "f1": 0.4888888888888889,
+      "TP": 11,
+      "FP": 2,
+      "FN": 21,
+      "TN": 85
+    },
+    {
+      "evalue": 1e-07,
+      "precision": 0.8461538461538461,
+      "recall": 0.34375,
+      "f1": 0.4888888888888889,
+      "TP": 11,
+      "FP": 2,
+      "FN": 21,
+      "TN": 85
+    },
+    {
+      "evalue": 3.162277660168379e-08,
+      "precision": 0.8333333333333334,
+      "recall": 0.3125,
+      "f1": 0.45454545454545453,
+      "TP": 10,
+      "FP": 2,
+      "FN": 22,
+      "TN": 85
+    },
+    {
+      "evalue": 1e-08,
+      "precision": 0.8333333333333334,
+      "recall": 0.3125,
+      "f1": 0.45454545454545453,
+      "TP": 10,
+      "FP": 2,
+      "FN": 22,
+      "TN": 85
+    },
+    {
+      "evalue": 3.1622776601683795e-09,
+      "precision": 0.8333333333333334,
+      "recall": 0.3125,
+      "f1": 0.45454545454545453,
+      "TP": 10,
+      "FP": 2,
+      "FN": 22,
+      "TN": 85
+    },
+    {
+      "evalue": 1e-09,
+      "precision": 0.8181818181818182,
+      "recall": 0.28125,
+      "f1": 0.4186046511627907,
+      "TP": 9,
+      "FP": 2,
+      "FN": 23,
+      "TN": 85
+    },
+    {
+      "evalue": 3.1622776601683795e-10,
+      "precision": 0.8,
+      "recall": 0.25,
+      "f1": 0.38095238095238093,
+      "TP": 8,
+      "FP": 2,
+      "FN": 24,
+      "TN": 85
+    },
+    {
+      "evalue": 1e-10,
+      "precision": 0.7777777777777778,
+      "recall": 0.21875,
+      "f1": 0.34146341463414637,
+      "TP": 7,
+      "FP": 2,
+      "FN": 25,
+      "TN": 85
+    },
+    {
+      "evalue": 3.1622776601683794e-11,
+      "precision": 0.7777777777777778,
+      "recall": 0.21875,
+      "f1": 0.34146341463414637,
+      "TP": 7,
+      "FP": 2,
+      "FN": 25,
+      "TN": 85
+    },
+    {
+      "evalue": 1e-11,
+      "precision": 0.7777777777777778,
+      "recall": 0.21875,
+      "f1": 0.34146341463414637,
+      "TP": 7,
+      "FP": 2,
+      "FN": 25,
+      "TN": 85
+    },
+    {
+      "evalue": 3.1622776601683794e-12,
+      "precision": 0.7777777777777778,
+      "recall": 0.21875,
+      "f1": 0.34146341463414637,
+      "TP": 7,
+      "FP": 2,
+      "FN": 25,
+      "TN": 85
+    },
+    {
+      "evalue": 1e-12,
+      "precision": 0.7777777777777778,
+      "recall": 0.21875,
+      "f1": 0.34146341463414637,
+      "TP": 7,
+      "FP": 2,
+      "FN": 25,
+      "TN": 85
+    },
+    {
+      "evalue": 3.162277660168379e-13,
+      "precision": 0.7777777777777778,
+      "recall": 0.21875,
+      "f1": 0.34146341463414637,
+      "TP": 7,
+      "FP": 2,
+      "FN": 25,
+      "TN": 85
+    },
+    {
+      "evalue": 1e-13,
+      "precision": 0.7777777777777778,
+      "recall": 0.21875,
+      "f1": 0.34146341463414637,
+      "TP": 7,
+      "FP": 2,
+      "FN": 25,
+      "TN": 85
+    },
+    {
+      "evalue": 3.1622776601683796e-14,
+      "precision": 0.7777777777777778,
+      "recall": 0.21875,
+      "f1": 0.34146341463414637,
+      "TP": 7,
+      "FP": 2,
+      "FN": 25,
+      "TN": 85
+    },
+    {
+      "evalue": 1e-14,
+      "precision": 0.75,
+      "recall": 0.1875,
+      "f1": 0.3,
+      "TP": 6,
+      "FP": 2,
+      "FN": 26,
+      "TN": 85
+    },
+    {
+      "evalue": 3.1622776601683794e-15,
+      "precision": 0.7142857142857143,
+      "recall": 0.15625,
+      "f1": 0.2564102564102564,
+      "TP": 5,
+      "FP": 2,
+      "FN": 27,
+      "TN": 85
+    },
+    {
+      "evalue": 1e-15,
+      "precision": 0.7142857142857143,
+      "recall": 0.15625,
+      "f1": 0.2564102564102564,
+      "TP": 5,
+      "FP": 2,
+      "FN": 27,
+      "TN": 85
+    },
+    {
+      "evalue": 3.1622776601683793e-16,
+      "precision": 0.7142857142857143,
+      "recall": 0.15625,
+      "f1": 0.2564102564102564,
+      "TP": 5,
+      "FP": 2,
+      "FN": 27,
+      "TN": 85
+    },
+    {
+      "evalue": 1e-16,
+      "precision": 0.7142857142857143,
+      "recall": 0.15625,
+      "f1": 0.2564102564102564,
+      "TP": 5,
+      "FP": 2,
+      "FN": 27,
+      "TN": 85
+    },
+    {
+      "evalue": 3.1622776601683796e-17,
+      "precision": 0.7142857142857143,
+      "recall": 0.15625,
+      "f1": 0.2564102564102564,
+      "TP": 5,
+      "FP": 2,
+      "FN": 27,
+      "TN": 85
+    },
+    {
+      "evalue": 1e-17,
+      "precision": 0.7142857142857143,
+      "recall": 0.15625,
+      "f1": 0.2564102564102564,
+      "TP": 5,
+      "FP": 2,
+      "FN": 27,
+      "TN": 85
+    },
+    {
+      "evalue": 3.1622776601683795e-18,
+      "precision": 0.7142857142857143,
+      "recall": 0.15625,
+      "f1": 0.2564102564102564,
+      "TP": 5,
+      "FP": 2,
+      "FN": 27,
+      "TN": 85
+    },
+    {
+      "evalue": 1e-18,
+      "precision": 0.7142857142857143,
+      "recall": 0.15625,
+      "f1": 0.2564102564102564,
+      "TP": 5,
+      "FP": 2,
+      "FN": 27,
+      "TN": 85
+    },
+    {
+      "evalue": 3.162277660168379e-19,
+      "precision": 0.7142857142857143,
+      "recall": 0.15625,
+      "f1": 0.2564102564102564,
+      "TP": 5,
+      "FP": 2,
+      "FN": 27,
+      "TN": 85
+    },
+    {
+      "evalue": 1e-19,
+      "precision": 0.7142857142857143,
+      "recall": 0.15625,
+      "f1": 0.2564102564102564,
+      "TP": 5,
+      "FP": 2,
+      "FN": 27,
+      "TN": 85
+    },
+    {
+      "evalue": 3.162277660168379e-20,
+      "precision": 0.6666666666666666,
+      "recall": 0.125,
+      "f1": 0.21052631578947367,
+      "TP": 4,
+      "FP": 2,
+      "FN": 28,
+      "TN": 85
+    },
+    {
+      "evalue": 1e-20,
+      "precision": 0.6666666666666666,
+      "recall": 0.125,
+      "f1": 0.21052631578947367,
+      "TP": 4,
+      "FP": 2,
+      "FN": 28,
+      "TN": 85
+    }
+  ],
+  "val_selected_evalue": 0.03162277660168379,
+  "test": {
+    "blast_tuned": {
+      "evalue": 0.03162277660168379,
+      "precision": 0.8275862068965517,
+      "recall": 0.7741935483870968,
+      "f1": 0.8,
+      "TP": 24,
+      "FP": 5,
+      "FN": 7,
+      "TN": 68,
+      "AU-ROC": 0.8778170570039769,
+      "AU-PRC": 0.849969971068969
+    },
+    "blast_spec": {
+      "evalue": 1e-05,
+      "precision": 0.9473684210526315,
+      "recall": 0.5806451612903226,
+      "f1": 0.72,
+      "TP": 18,
+      "FP": 1,
+      "FN": 13,
+      "TN": 72
+    },
+    "probe": {
+      "threshold": 0.2223,
+      "precision": 0.6,
+      "recall": 0.967741935483871,
+      "f1": 0.7407407407407407,
+      "TP": 30,
+      "FP": 20,
+      "FN": 1,
+      "TN": 53,
+      "AU-ROC": 0.901458241272647,
+      "AU-PRC": 0.7898774579868428
+    }
+  },
+  "test_evalue_sweep": [
+    {
+      "evalue": 1.0,
+      "precision": 0.4,
+      "recall": 0.9032258064516129,
+      "f1": 0.5544554455445545,
+      "TP": 28,
+      "FP": 42,
+      "FN": 3,
+      "TN": 31
+    },
+    {
+      "evalue": 0.1,
+      "precision": 0.7352941176470589,
+      "recall": 0.8064516129032258,
+      "f1": 0.7692307692307693,
+      "TP": 25,
+      "FP": 9,
+      "FN": 6,
+      "TN": 64
+    },
+    {
+      "evalue": 0.0316,
+      "precision": 0.8275862068965517,
+      "recall": 0.7741935483870968,
+      "f1": 0.8,
+      "TP": 24,
+      "FP": 5,
+      "FN": 7,
+      "TN": 68
+    },
+    {
+      "evalue": 0.01,
+      "precision": 0.8518518518518519,
+      "recall": 0.7419354838709677,
+      "f1": 0.7931034482758621,
+      "TP": 23,
+      "FP": 4,
+      "FN": 8,
+      "TN": 69
+    },
+    {
+      "evalue": 0.001,
+      "precision": 0.9523809523809523,
+      "recall": 0.6451612903225806,
+      "f1": 0.7692307692307693,
+      "TP": 20,
+      "FP": 1,
+      "FN": 11,
+      "TN": 72
+    },
+    {
+      "evalue": 1e-05,
+      "precision": 0.9473684210526315,
+      "recall": 0.5806451612903226,
+      "f1": 0.72,
+      "TP": 18,
+      "FP": 1,
+      "FN": 13,
+      "TN": 72
+    },
+    {
+      "evalue": 1e-10,
+      "precision": 0.9285714285714286,
+      "recall": 0.41935483870967744,
+      "f1": 0.5777777777777777,
+      "TP": 13,
+      "FP": 1,
+      "FN": 18,
+      "TN": 72
+    },
+    {
+      "evalue": 1e-20,
+      "precision": 1.0,
+      "recall": 0.1935483870967742,
+      "f1": 0.32432432432432434,
+      "TP": 6,
+      "FP": 0,
+      "FN": 25,
+      "TN": 73
+    }
+  ],
+  "tier_false_positives": {
+    "blast_tuned": {
+      "2a_PBAT": [
+        1,
+        5
+      ],
+      "2b_aliphatic": [
+        3,
+        6
+      ],
+      "3_fold_matched_esterase": [
+        0,
+        26
+      ],
+      "4_naive_control": [
+        1,
+        36
+      ]
+    },
+    "blast_spec": {
+      "2a_PBAT": [
+        0,
+        5
+      ],
+      "2b_aliphatic": [
+        1,
+        6
+      ],
+      "3_fold_matched_esterase": [
+        0,
+        26
+      ],
+      "4_naive_control": [
+        0,
+        36
+      ]
+    },
+    "probe": {
+      "2a_PBAT": [
+        2,
+        5
+      ],
+      "2b_aliphatic": [
+        6,
+        6
+      ],
+      "3_fold_matched_esterase": [
+        10,
+        26
+      ],
+      "4_naive_control": [
+        2,
+        36
+      ]
+    }
+  },
+  "tier_auroc": {
+    "2a_PBAT": {
+      "n_neg": 5,
+      "blast": 0.8,
+      "probe": 0.903225806451613
+    },
+    "2b_aliphatic": {
+      "n_neg": 6,
+      "blast": 0.6989247311827957,
+      "probe": 0.6397849462365592
+    },
+    "3_fold_matched_esterase": {
+      "n_neg": 26,
+      "blast": 0.8939205955334988,
+      "probe": 0.8436724565756824
+    },
+    "4_naive_control": {
+      "n_neg": 36,
+      "blast": 0.9068100358422939,
+      "probe": 0.9865591397849462
+    }
+  },
+  "paired_delta_probe_minus_blast": {
+    "AU_ROC": [
+      0.02261928874747542,
+      -0.05331003289473695,
+      0.11814166977766709
+    ],
+    "AU_PRC": [
+      -0.06965680862794509,
+      -0.20077561263723734,
+      0.02795015160777351
+    ]
+  },
+  "val_nohit": 0,
+  "test_nohit": 0,
+  "error_analysis_class3": {
+    "n_fp": 10,
+    "n_class3": 26,
+    "false_positives": [
+      {
+        "accession": "Q9L9D7",
+        "score": 0.5117735511186761,
+        "ec": "3.1.1.84",
+        "organism": "Rhodococcus sp. (strain MB1 Bresler)",
+        "phylum": "Actinomycetota",
+        "protein": "Cocaine esterase (EC 3.1.1.84)"
+      },
+      {
+        "accession": "P9WHR4",
+        "score": 0.49298225563521547,
+        "ec": "3.1.1.-",
+        "organism": "Mycobacterium tuberculosis (strain CDC 1551 / Oshkosh)",
+        "phylum": "Actinomycetota",
+        "protein": "Carboxylesterase B (EC 3.1.1.-)"
+      },
+      {
+        "accession": "I6Y2J4",
+        "score": 0.4447223780682213,
+        "ec": "3.1.1.3",
+        "organism": "Mycobacterium tuberculosis (strain ATCC 25618 / H37Rv)",
+        "phylum": "Actinomycetota",
+        "protein": "Triacylglycerol lipase (EC 3.1.1.3) (Esterase/lipase) (Triolein hydrolase) [Cleaved into: Cytosolic triacylglycerol lipase; Extracellular triacylglycerol lipase]"
+      },
+      {
+        "accession": "O32232",
+        "score": 0.43066789246589493,
+        "ec": "3.1.1.1",
+        "organism": "Bacillus subtilis (strain 168)",
+        "phylum": "Bacillota",
+        "protein": "Carboxylesterase (EC 3.1.1.1)"
+      },
+      {
+        "accession": "Q01470",
+        "score": 0.39256161802414646,
+        "ec": "3.1.1.-",
+        "organism": "Pseudarthrobacter oxydans (Arthrobacter oxydans)",
+        "phylum": "Actinomycetota",
+        "protein": "Phenmedipham hydrolase (EC 3.1.1.-) (Phenylcarbamate hydrolase)"
+      },
+      {
+        "accession": "P95125",
+        "score": 0.36291771045142585,
+        "ec": "3.1.1.-",
+        "organism": "Mycobacterium tuberculosis (strain ATCC 25618 / H37Rv)",
+        "phylum": "Actinomycetota",
+        "protein": "Carboxylic ester hydrolase LipN (EC 3.1.1.-)"
+      },
+      {
+        "accession": "P9WK86",
+        "score": 0.32935687943827197,
+        "ec": "3.1.1.1",
+        "organism": "Mycobacterium tuberculosis (strain CDC 1551 / Oshkosh)",
+        "phylum": "Actinomycetota",
+        "protein": "Carboxylesterase NlhH (EC 3.1.1.1)"
+      },
+      {
+        "accession": "Q47M62",
+        "score": 0.3151471146501786,
+        "ec": "3.1.1.1",
+        "organism": "Thermobifida fusca (strain YX)",
+        "phylum": "Actinomycetota",
+        "protein": "Carboxylesterase (EC 3.1.1.1)"
+      },
+      {
+        "accession": "P86325",
+        "score": 0.31381392561012,
+        "ec": "3.1.1.1",
+        "organism": "Thermobifida fusca (Thermomonospora fusca)",
+        "phylum": "Actinomycetota",
+        "protein": "Carboxylesterase (EC 3.1.1.1)"
+      },
+      {
+        "accession": "P71668",
+        "score": 0.3047488799921573,
+        "ec": "3.1.1.-",
+        "organism": "Mycobacterium tuberculosis (strain ATCC 25618 / H37Rv)",
+        "phylum": "Actinomycetota",
+        "protein": "Esterase LipI (EC 3.1.1.-)"
+      }
+    ],
+    "by_phylum": {
+      "Actinomycetota": {
+        "FP": 9,
+        "TN": 2
+      },
+      "Pseudomonadota": {
+        "FP": 0,
+        "TN": 9
+      },
+      "Bacteroidota": {
+        "FP": 0,
+        "TN": 3
+      },
+      "Bacillota": {
+        "FP": 1,
+        "TN": 0
+      },
+      "Basidiomycota": {
+        "FP": 0,
+        "TN": 1
+      },
+      "Ascomycota": {
+        "FP": 0,
+        "TN": 1
+      }
+    },
+    "ec_fp": {
+      "3.1.1.3": 1,
+      "3.1.1.1": 4,
+      "3.1.1.-": 4,
+      "3.1.1.84": 1
+    },
+    "ec_tn": {
+      "3.1.1.61": 1,
+      "3.1.1.106": 3,
+      "3.1.1.29": 3,
+      "3.1.1.-": 2,
+      "3.1.1.32": 5,
+      "3.1.1.2": 1,
+      "3.1.1.5": 1
+    },
+    "mean_score_fp": 0.38986922054543083,
+    "mean_score_tn": 0.08757826048904735
+  },
+  "rebalancing_experiment": {
+    "train_pet_actino_pct": 76.7,
+    "train_neg_actino_pct": 58.9,
+    "p_pet_given_actino": 0.503,
+    "p_pet_given_not_actino": 0.306,
+    "variants": [
+      {
+        "name": "A. baseline",
+        "n_train": 588,
+        "n_pet": 257,
+        "precision": 0.6,
+        "recall": 0.968,
+        "f1": 0.741,
+        "fp_total": 20,
+        "fp_class3": "10/26",
+        "fp_actino": "9/11"
+      },
+      {
+        "name": "B. phylum reweighting",
+        "n_train": 588,
+        "n_pet": 257,
+        "precision": 0.625,
+        "recall": 0.968,
+        "f1": 0.759,
+        "fp_total": 18,
+        "fp_class3": "10/26",
+        "fp_actino": "9/11"
+      },
+      {
+        "name": "C. subsample Actino positives",
+        "n_train": 477,
+        "n_pet": 146,
+        "precision": 0.596,
+        "recall": 0.903,
+        "f1": 0.718,
+        "fp_total": 19,
+        "fp_class3": "10/26",
+        "fp_actino": "9/11"
+      }
+    ],
+    "homology_test": {
+      "fp_median_evalue": 0.47,
+      "fp_min_evalue": 0.067,
+      "tn_median_evalue": 3.3,
+      "tn_min_evalue": 0.051,
+      "pet_median_evalue": 1.7e-07,
+      "pet_min_evalue": 5.1e-45
+    },
+    "conclusion": "neither rebalancing nor the homology explanation holds; the feature is absent from the representation"
+  }
+}

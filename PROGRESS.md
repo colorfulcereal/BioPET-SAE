@@ -378,6 +378,185 @@ because the data cannot support one. Two openings follow: publish the verified b
 its 28 test positives stated as underpowered, and explain *why* out-of-family transfer
 fails using SAE features.
 
+### 10. Modelling runs: ESM-2 8M, 650M, and the BLAST baseline (2026-09-27/28)
+
+Split used throughout: `dataset_splits_id40.tsv` (40% identity bound, verified; the 30%
+bound leaves only 15 val PET, see the FINDING section above). Train 588 (257 PET), val 119
+(32 PET), test 104 (31 PET). **Test was untouched until hyperparameters were fixed on val.**
+
+Protocol, applied identically to every method: tune on val, apply to test unchanged.
+Artifacts: `artifacts/ESM2_8M_Dense_Run.md`, `ESM2_650M_Dense_Run.md`,
+`BLAST_vs_ESM2_8M.md`, `BLAST_vs_ESM2_650M.md`.
+
+#### Test-set results
+
+| method | Precision | Recall | F1 | AU-ROC | AU-PRC | TP | FP | FN | TN |
+|---|---|---|---|---|---|---|---|---|---|
+| BLASTp @ e-value 3.16e-2 (val-tuned) | **0.828** | 0.774 | **0.800** | 0.8778 | **0.8500** | 24 | 5 | 7 | 68 |
+| ESM-2 650M `max_L33` (C=0.1, eta=1e-3) | 0.742 | 0.742 | 0.742 | **0.8856** | 0.8150 | 23 | 8 | 8 | 65 |
+| ESM-2 8M `max_L6` (C=1e-3, eta=1e-4) | 0.600 | **0.968** | 0.741 | 0.9015 | 0.7899 | 30 | 20 | 1 | 53 |
+| BLASTp @ e-value 1e-5 (the plan's spec) | 0.947 | 0.581 | 0.720 | — | — | 18 | 1 | 13 | 72 |
+
+**No pairwise difference among the three methods is statistically significant.** Paired
+bootstrap over the 66 test homology components: 650M − BLAST gives dAU-ROC +0.0074
+[−0.096, +0.123] and dAU-PRC −0.0412 [−0.190, +0.076]; 650M − 8M gives dAU-ROC −0.0152
+[−0.097, +0.048] and dAU-PRC +0.0285 [−0.083, +0.131]. Every interval crosses zero at
+n=104 with 31 positives.
+
+The bootstrap resamples **whole homology components, not sequences** — members of a
+component are ≥40% identical, i.e. one family observed several times, so resampling
+sequences would report a dishonestly narrow interval. Both methods are scored on the same
+resample and the difference recorded; their errors correlate at r = 0.61, which cuts
+comparison noise ~36% versus comparing two separate intervals.
+
+#### What survives as a finding: error profiles, not scores
+
+| | 8M `max_L6` | 650M `max_L33` | BLASTp |
+|---|---|---|---|
+| total false positives | 20 | 8 | 5 |
+| class-3 FP | 10/26 | 2/26 | 0/26 |
+| class-3 FP, Actinomycetota | **9/11** | **1/11** | 0/11 |
+| class-3 FP, non-Actinomycetota | 1/15 | 1/15 | 0/15 |
+| failure mode | confidently wrong (scores 0.31–0.51 vs thr 0.22) | marginally wrong (7 of 8 score 0.004–0.008 vs thr 0.003) | — |
+
+**The taxonomic shortcut predicted by D6 was confirmed at 8M and is resolved at 650M.** The
+8M probe made 9 of its 11 Actinomycetota class-3 errors — an 82% false-positive rate on that
+group against 7% elsewhere — and two of those errors were *Thermobifida fusca*
+carboxylesterases, i.e. non-PET enzymes from the very organism whose PETases (TfCut, TfH)
+are in the training set. That is organism recognition, not function recognition. At 650M the
+rate falls to 1/11, equal to the non-Actinomycetota rate.
+
+**Rebalancing does not fix it; scale does.** Three variants were tested at 8M (baseline;
+phylum reweighting keeping all data; subsampling Actinomycetota positives to match the
+negative rate, costing 111 of 257 positives). **All three produced exactly 10/26 class-3
+errors with a 9/11 Actinomycetota skew.** Reweighting removed only 2 class-4 errors;
+subsampling lowered recall to 0.903 and fixed nothing. The probe never sees a phylum label —
+it sees embedding dimensions, and the GC-driven compositional signature is inside the
+features. Reweighting the loss moves a boundary; it cannot delete a feature.
+
+The competing explanation — that those esterases are genuine PETase relatives and the
+negative label is merely unverified — was also rejected. BLASTed against the training PET
+set, the 10 false positives have median best e-value 0.47 (min 0.067) against 1.7e-07 for
+true positives, six orders of magnitude worse. One correctly-rejected sequence (`P37446`,
+e-value 0.051) has a *better* alignment than 9 of the 10 errors.
+
+**Conclusion: the feature was absent from the 8M representation, not mis-weighted in the
+data.** Max-pooled ESM-2 8M layer 6 carries compositional and taxonomic information, which
+is what a linear readout extracts. Layer 33 of 650M carries more of the functional signal.
+
+#### The tier that does not move
+
+| method | `2b_aliphatic` AU-ROC |
+|---|---|
+| ESM-2 8M `max_L6` | 0.6398 |
+| ESM-2 650M `max_L33` | 0.6828 |
+| BLASTp | 0.6989 |
+
+Two model scales 80× apart and a sequence-alignment method all land near 0.68 on separating
+PET degraders from other polyester degraders. Unchanged by scale, and the same tier where
+BLAST also performs worst. This is the strongest evidence that **PET specificity, not fold
+recognition, is the unsolved problem**, and it is the case for the SAE work: dense
+dimensions are polysemantic, so "not linearly decodable at either scale" does not establish
+that the feature is absent.
+
+#### Other results worth carrying forward
+
+- **Max-pooling beats mean-pooling at both scales** (8M: AU-PRC 0.848 vs 0.710 at L3; 650M:
+  0.818 vs 0.734 at L33), consistent with the catalytic signal occupying a few residues.
+- **Learning rate is not a meaningful hyperparameter for a linear probe.** Across four orders
+  of magnitude at fixed C, AU-PRC moves <0.01 and SGD matches lbfgs to three decimals — the
+  objective is convex. Only eta0=1e-1 destabilises, and it produced two spurious val optima
+  (`mean_L3` at 8M, `mean_L33` at 650M) that did not transfer.
+- **Both scales sit in the separable regime.** Best-F1 thresholds land at 0.222 (8M) and
+  0.0030 (650M), far below 0.5, because the training data is linearly separable and
+  probabilities saturate. Ranking metrics are unaffected; the probability scale is not
+  calibrated and the default 0.5 threshold is unusable.
+- **Seed standard errors are fourth-decimal** (5 seeds) and measure optimizer determinism,
+  not performance uncertainty. The honest interval is the component bootstrap, ~0.25–0.31
+  wide on AU-PRC — three orders of magnitude larger.
+- **The plan's "≥40% higher recall than BLASTp" target** is met against its own specified
+  baseline (0.968 vs 0.581 at e-value 1e-5, +67% relative) but 1e-5 is a weak operating
+  point; against a val-tuned BLAST the comparison reverses on F1.
+- **`mean_L4` scored highest of all 12 8M feature sets** (AU-PRC 0.8745) but was never in the
+  comparison set, which was chosen as L3/L6 before the full sweep existed. Not pursued.
+
+### 11. SAE feature extraction — setup and method decisions (2026-09-28)
+
+**Status: in progress.** SAE loads and verified; extraction pass running.
+
+#### Loading (verified)
+
+`interplm` installed from git. `ReLUSAE.from_pretrained(hf_hub_download(...))` works;
+`load_sae_from_hf` cannot, because the upstream package omits its `train` subpackage (the
+gotcha already recorded in CLAUDE.md). `einops` is an undeclared runtime dependency and had
+to be added separately.
+
+`Elana/InterPLM-esm2-650m`, `layer_33/ae_normalized.pt`:
+
+```
+encoder.weight  (10240, 1280)     decoder.weight  (1280, 10240)
+bias            (1280,)           <- subtracted BEFORE encoding
+encode: ReLU(encoder(x - bias))   decode: decoder(f) + bias
+```
+
+#### Pipeline
+
+```
+seq -> ESM-2 650M -> layer 33 per-residue (L x 1280) -> SAE.encode -> (L x 10240) -> pool
+```
+
+The SAE operates **per residue**, so the pooled tensors in `data/embeddings_650M/` cannot be
+reused — this needs a fresh forward pass (~4 min on MPS). Max- and mean-pooled variants are
+both saved; max-pooling won at both dense scales and is the natural choice for sparse
+non-negative activations.
+
+Layer 33 chosen because it is where the dense probe performed best (AU-PRC 0.818) and is one
+of the six layers where InterPLM ships SAEs for this backbone.
+
+#### Three method decisions, ahead of results
+
+**D7. The plan's differential score needs a variance floor.** The spec is
+
+```
+S_j = (mu_pet - mu_control) / (sigma_control + 1e-8)          eps = 1e-8
+```
+
+which was written for dense activations. SAE latents are sparse, so many will be exactly 0
+across all controls, giving sigma_control = 0 and S_j ~ mu_pet x 1e8. The top-50 list would
+be dominated by ultra-rare latents firing in one or two sequences. Mitigation: report the
+plan's raw statistic *and* a corrected version using a variance floor
+(`sigma_control + median(sigma_all)`) plus a minimum-prevalence filter (latent active in
+>=10% of PETases). Any latent appearing only in the raw ranking is an artifact of the
+epsilon, not a finding.
+
+**D8. "Control" must be computed per negative tier, not pooled.** The plan leaves
+`mu_control` undefined. Given the measured tier structure, the choice determines the answer:
+
+| control set | what the top latents encode |
+|---|---|
+| `4_naive_control` | "is this an esterase at all" |
+| `3_fold_matched_esterase` | "is this a polyester hydrolase" |
+| **`2b_aliphatic`** | **PET specificity — the unsolved contrast** |
+
+All three are computed separately. The 2b contrast is the scientifically meaningful one and
+also the weakest powered (48 training sequences).
+
+**D9. Restricting to sequences the probe classifies correctly conditions on the model.**
+Per the user's request, the top-50 latents are computed over sequences where the ESM-2 650M
+probe predicts correctly. This follows the kinase project's precedent (it analysed the
+27/200 held-out proteins the classifier confidently called kinase). It must be stated that
+the resulting latents explain **the probe's decision**, not PET biology directly — which is
+the correct target for an interpretability claim, but not the same claim.
+
+#### Mandatory gate before any feature claim
+
+The extraction also saves the SAE **reconstruction** of the dense activations, pooled
+identically, plus per-residue reconstruction cosine. The probe must be re-run on
+SAE-reconstructed activations and survive; if reconstruction destroys the signal, every
+downstream feature result is meaningless. Kinase-project precedent, and it is also why
+comparisons must use a **reconstruction baseline rather than a raw baseline** — otherwise
+generic round-trip noise contaminates the causal signal.
+
 ---
 
 ## Decisions locked (2026-09-27)
@@ -494,60 +673,72 @@ Controls:
 
 ---
 
-## Current status (checkpoint, 2026-09-27)
+## Current status (checkpoint, 2026-09-28)
 
-Dataset is built, split, and verified. No embeddings, no SAE, no probe yet — deliberately,
-because the split analysis changed what the project should claim.
+Dataset built and verified; dense-embedding baselines complete at two model scales with a
+BLAST comparison. **Test is spent** — further tuning must return to val or use a fresh set.
+No SAE work yet.
 
-**Assembled set: 847 sequences across 5 labels.**
+**Assembled set: 847 sequences.** 320 `1_pet`, 68 `2_other_polyester`, 185
+`3_fold_matched_esterase`, 238 `4_naive_control`, 36 `heldout_pha`, 118 excluded.
 
-| label | n | source |
-|---|---|---|
-| 1_pet | 320 | PAZy + PlasticDB, assay-confirmed |
-| 2_other_polyester | 68 | PAZy + PlasticDB, assay-confirmed |
-| 3_fold_matched_esterase | 185 | UniProt `ec:3.1.1.-`, phylum-quota matched |
-| 4_naive_control | 238 | UniProt, outside EC 3.1, phylum-quota matched |
-| heldout_pha | 36 | cross-activation probe (only 12 usable, see above) |
-| excluded | 118 | non-ester mechanism + 1 curated exclusion |
+**Best test result to date: BLASTp @ e-value 3.16e-2, F1 0.800** (P 0.828, R 0.774).
+Neither ESM-2 scale beats it, and no pairwise difference is statistically significant.
 
-**Split as currently built (30% bound, verified):** class 1 is 290/15/15, which is not
-usable for a detection claim — see the finding above.
-
-**Artefacts:**
+**Artifacts** (all numbers reproducible, each with a machine-readable `.json`):
 
 | file | contents |
 |---|---|
-| `data/processed/plastizymes_merged.tsv` | 542 positives, 35 columns, class labels + reasons |
-| `data/processed/uniprot_negatives.tsv` | 423 negatives with phylum |
-| `data/processed/dataset_splits.tsv` | 847 rows: class, split, cluster, component |
-| `data/processed/pair_identities.tsv` | 70,230 cached global alignments (both definitions) |
-| `results/eda_report.md` | 12-section EDA |
-| `results/split_frontier.json` | threshold sweep + PHA contamination |
+| `artifacts/dataset_splits_0.4.md` | dataset provenance, class rationale, split verification |
+| `artifacts/ESM2_8M_Dense_Run.md` | 8M: C×eta sweep, 5-seed SEs, threshold curve, test |
+| `artifacts/ESM2_650M_Dense_Run.md` | 650M layer 33: same four tables |
+| `artifacts/BLAST_vs_ESM2_8M.md` | BLAST baseline, e-value sweep, 8M error analysis, rebalancing |
+| `artifacts/BLAST_vs_ESM2_650M.md` | BLAST vs 650M, paired bootstrap method, 650M error analysis |
+
+**Data artifacts:**
+
+| file | contents |
+|---|---|
+| `data/processed/dataset_splits_id40.tsv` | 847 rows: class, split, component |
+| `data/processed/pair_identities.tsv` | 70,230 cached global alignments |
+| `data/embeddings_8M/embeddings.npz` | layers 1–6, mean + max pooled |
+| `data/embeddings_650M/embeddings.npz` | layers 1/9/18/24/30/33, mean + max pooled |
+| `results/eda_report.md`, `results/split_frontier.json` | EDA, threshold sweep |
+
+**Stale and pending deletion:** `results/probe_embeddings_8M/` (0.30 split) and
+`results/binary_embeddings_8M_dataset_splits_id40/` (C=1.0, pre-regularization-fix). Both
+superseded by the artifacts above.
 
 ## Still open
 
-1. **Detection bound to report at** — 0.50 (34 test positives) or 0.60 (39), described
-   accurately as within-family discrimination. The 0.30 bound is verified but yields only
-   15 test positives.
-2. **Backbone** — ESM-2 8M (reuse kinase infrastructure, layers 1–6 SAEs) vs 650M
-   (verified available: SAEs for layers 1, 9, 18, 24, 30, 33, all 10,240 features over
-   1,280 dims). With 847 sequences there is no compute argument for 8M.
-3. **Whether to expand the positive set** to make remote-homology testable at all. The
-   ceiling is external: PAZy and PlasticDB together are the curated universe. Metagenomic
-   mining (the PlasticEnz route) would add candidates but not *verified* ones.
+1. **SAE work — the main remaining question.** Both dense scales and BLAST fail together on
+   `2b_aliphatic` (0.64 / 0.68 / 0.70). Dense dimensions are polysemantic, so this does not
+   establish the feature is absent — only that it is not linearly decodable from dense
+   activations. InterPLM SAEs exist for the exact layers already embedded
+   (8M layers 1–6; 650M layers 1/9/18/24/30/33), and the pooled tensors are cached.
+2. **HMMER is still unimplemented.** A profile HMM over the 257 training positives would be
+   a stronger baseline than pairwise BLAST, and BLAST already matches or beats both ESM-2
+   scales. Needs `mafft` + `hmmbuild`/`hmmsearch`.
+3. **PEZy-miner's 36 assayed non-degraders** remain unextracted from
+   `~/Downloads/1-s2.0-S2214030124000178-mmc1.docx` — the only known source of genuinely
+   verified negatives, which neither PAZy nor PlasticDB provides.
+4. **Framing for write-up.** The defensible claim is now narrow and mostly negative: dense
+   ESM-2 embeddings do not outperform homology search on this benchmark at either scale.
+   That is a legitimate result, and it sets up the SAE question rather than answering it.
 
 ## Next steps
 
-1. Rebuild splits at the chosen relaxed bound, keeping the verified 0.30 split alongside
-   as the strict-but-underpowered variant.
-2. Filter the PHA probe set to the 12 sequences below 30% identity to trained data.
-3. Replace the regex fold check with real profile methods (Pfam PF01083 cutinase,
-   PF12695 abhydrolase) to settle whether the PET class is one structural family or
-   several — the 80.6%/≥30% density finding suggests one, which would mean any classifier
-   result is family recognition unless the contrast class is inside the same family.
-4. Then embeddings: ESM-2 via HuggingFace `transformers` (not `fair-esm`), max-pooled,
-   retaining per-residue activations so residue mapping stays possible.
-5. Run the three phylum controls (D6) as part of the first probe evaluation, not after.
+1. Load InterPLM SAEs (`ReLUSAE.from_pretrained` + `hf_hub_download`; the `train` subpackage
+   is missing upstream so `load_sae_from_hf` cannot work) and extract sparse features at
+   650M layer 33, where the dense probe performed best.
+2. Gate on SAE reconstruction fidelity before trusting any feature result — the kinase
+   project's precedent. Compare against a **reconstruction baseline, not a raw baseline**.
+3. Re-run the tiered evaluation on SAE features, with `2b_aliphatic` as the target contrast
+   rather than the overall AU-PRC.
+4. Map any discriminative features to residues and check against the structural determinants
+   (W185 wobble, Y87/W185 aromatic clamp, DS1 disulfide) using the 32 PET entries with PDB
+   structures. The catalytic triad, shared with the negatives, is the built-in control.
+5. Optional: HMMER baseline; PEZy-miner verified negatives.
 
 ## Environment notes
 
