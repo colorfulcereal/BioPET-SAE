@@ -56,11 +56,35 @@ PHYLUM_TAXA: dict[str, int] = {
     "Deinococcota": 1297,
 }
 
-# any of these in a UniProt keyword or protein name means the entry is not safely a
-# negative, whatever its EC annotation says
-PLASTIC_HINTS = re.compile(
+# Any of these in a UniProt protein name, keyword or EC field means the entry is not
+# safely a negative.
+#
+# Two independent patterns on purpose. The name patterns catch enzymes UniProt describes
+# as plastic-active; the EC patterns catch the same enzymes by classification, so the
+# filter no longer depends on an entry being *named* informatively. As of 2026-09-28 all
+# 72 reviewed entries carrying a plastic EC code are caught by name alone, but an entry
+# annotated `EC 3.1.1.101` and named "Alpha/beta-hydrolase fold protein" would otherwise
+# pass -- and the name filter is load-bearing, since only 152 of 388 positives carry a
+# UniProt accession for the accession-level exclusion to match on.
+#
+# The EC codes are the polyester-active ones. 3.1.1.75/76 are included because PHA is
+# held out of the polyester task entirely: a PHA depolymerase belongs in neither class,
+# so it must not be drawn as a negative.
+_PLASTIC_NAMES = (
     r"polyethylene terephthalate|PETase|MHETase|terephthalate|cutinase|"
-    r"plastic|polyester hydrolase|polyurethan",
+    r"plastic|polyester hydrolase|polyurethan|depolymerase"
+)
+_PLASTIC_EC = (
+    r"3\.1\.1\.101"   # poly(ethylene terephthalate) hydrolase
+    r"|3\.1\.1\.102"  # mono(2-hydroxyethyl) terephthalate hydrolase
+    r"|3\.1\.1\.74"   # cutinase
+    r"|3\.1\.1\.75"   # poly(3-hydroxybutyrate) depolymerase
+    r"|3\.1\.1\.76"   # poly(3-hydroxyoctanoate) depolymerase
+)
+# the EC alternation needs its own group, or the lookarounds bind only to the last
+# branch and `3.1.1.740` / `13.1.1.74` match
+PLASTIC_HINTS = re.compile(
+    rf"(?:{_PLASTIC_NAMES})|(?<![\d.])(?:{_PLASTIC_EC})(?![\d.])",
     re.IGNORECASE,
 )
 

@@ -164,9 +164,59 @@ easy contrast, so the gap between tier-4 and tier-3 performance measures how muc
 score is fold detection rather than function detection.
 
 **Query gotcha, handled.** `ec:3.1.1.*` is a loose string prefix that also matches
-3.1.10-3.1.14 — 6,174 reviewed entries against 4,294 for the exact `ec:3.1.1.-`, so 1,880
-would have been spurious. The exact form was used. Verified clean: **0 of 185** class-3
-entries carry EC 3.1.1.101, so accession-level and >=90%-identity exclusion both worked.
+3.1.10-3.1.14 (nucleases, which cut DNA and RNA) — 6,174 reviewed entries against 4,294 for
+the exact `ec:3.1.1.-`, so 1,880 would have been spurious. The exact form was used.
+
+### Keeping PETases and cutinases out of the negatives
+
+**Every positive in this dataset comes from PAZy or PlasticDB. Every negative comes from
+UniProt.** The two sets never mix, and the separation is enforced rather than assumed.
+
+This matters because the class-3 query is *deliberately* broad enough to include plastic
+degraders: EC 3.1.1 is the subclass PETase (3.1.1.101), MHETase (3.1.1.102) and cutinase
+(3.1.1.74) all belong to. Asking UniProt for "all carboxylic-ester hydrolases" asks for them
+too. Three filters remove them, applied in `fetch_negatives.py` before anything is written:
+
+1. **Accession exclusion.** Every UniProt accession appearing anywhere in the positive set is
+   banned outright, so a known plastizyme cannot be re-drawn as a negative.
+2. **The name filter (`PLASTIC_HINTS`).** A regex run over each candidate's *protein name,
+   keywords and EC field* together; if it matches, the entry is dropped:
+
+   ```
+   polyethylene terephthalate | PETase | MHETase | terephthalate |
+   cutinase | plastic | polyester hydrolase | polyurethan
+   ```
+
+   This is the one that does the real work. It catches plastic-active enzymes that PAZy and
+   PlasticDB never recorded — anything UniProt itself names as a cutinase or a PET hydrolase
+   is removed whether or not our positive set knows about it.
+3. **Identity exclusion**, applied later during clustering: any negative >=90% identical to a
+   positive is dropped as a probable duplicate accession of the same protein.
+
+**Verified against live UniProt (2026-09-28), not assumed.** Every reviewed entry carrying a
+plastic-degrading EC code was re-queried and checked against the filters:
+
+| EC | reviewed entries matching the class-3 query | already in positives | caught by name filter | slipped through |
+|---|---|---|---|---|
+| 3.1.1.101 (PET hydrolase) | 10 | 8 | 10 / 10 | **0** |
+| 3.1.1.102 (MHETase) | 1 | 0 | 1 / 1 | **0** |
+| 3.1.1.74 (cutinase) | 61 | 9 | 61 / 61 | **0** |
+
+And confirmed in the delivered data: **0 of the 423 negatives** carry any of those EC codes.
+
+**Why the name filter carries the load.** Only **152 of 388** positives have a UniProt
+accession at all — the other 236 come from PlasticDB records without one — so accession
+exclusion can only protect against 40% of them. For the rest, the name filter is the sole
+barrier. It holds because UniProt's naming convention is consistent: all 72 entries above
+carry "cutinase", "terephthalate" or "MHET" in their protein name.
+
+**Known fragility, worth fixing before any re-fetch.** The regex matches *names*, not EC
+codes — `PLASTIC_HINTS` does not match the string `3.1.1.101`. So the guarantee currently
+rests on the assumption that any plastic-degrading enzyme says so in its name. That is true
+of all 72 reviewed entries today, but an entry annotated `EC 3.1.1.101` and named, say,
+"Alpha/beta-hydrolase fold protein" would pass. Adding the three EC codes to the exclusion
+pattern removes the dependency at no cost.
+
 
 ### Limitation found 2026-09-28: the "fold-matched" tier is only half fold-matched
 
@@ -192,6 +242,84 @@ is easier than its name claims**, which understates the task's difficulty and co
 overstates performance on it. Re-querying on fold (InterPro/Pfam alpha/beta-hydrolase clan)
 rather than EC alone would fix it; until then, tier-3 numbers should be read as a
 *mixed* rather than a fold-matched contrast.
+
+---
+
+## Why this is a hard dataset
+
+Worth stating plainly, because most of the design choices in this document are consequences
+of it rather than preferences. The difficulty is not that the data is small — though it is —
+but that it is **structurally** awkward in four independent ways.
+
+### 1. The positives are one dense family, not a diverse sample
+
+Known plastizymes are overwhelmingly cutinase-like alpha/beta-hydrolases that happen to have
+been assayed on a polyester. Across the 388 positives:
+
+| measure | value |
+|---|---|
+| positive-positive pairs >= 30% identity | 45.0% of all 75,078 pairs |
+| positive-positive pairs >= 50% identity | 15.1% |
+| median identity among aligned pairs | 0.434 |
+| median relatives at >= 50% identity, per positive | 57.5 |
+| positives with **no** >= 50% relative | 71 / 388 |
+
+**One homology component holds 256 of 303 training positives (84%)**; the remaining 32
+components share 47. This single fact drives most of what follows: any procedure that
+assigns whole components — splitting, k-fold CV, bootstrap — has to move 84% of the
+positives as one indivisible block.
+
+### 2. A stricter identity bound makes the benchmark *easier*, not harder
+
+The intuitive fix — tighten the cross-split bound from 40% to 30% — backfires. A negative
+that is 40% identical to a positive must join that positive's component, and therefore its
+split. Tightening the bound systematically **evicts the hard negatives from the test set**:
+
+| class-3 negatives >= 30% identical to a positive | train | val | test |
+|---|---|---|---|
+| at the 40% bound (current) | 18 | 0 | **8** |
+| at a 30% bound | 14 | 11 | **1** |
+
+All six negatives that BLASTp ranks above its own median positive move from test to val. The
+30% split would report a stricter-sounding identity bound while measuring an easier
+discrimination, on 40% fewer test positives. The 40% bound is the better instrument, and the
+reason is worth stating rather than defending.
+
+### 3. Effective sample size is far below the sequence count
+
+The 42 test positives are not 42 independent observations — they occupy 20 homology
+components, unevenly:
+
+| effective n | 95% CI half-width, recall ~0.9 |
+|---|---|
+| 42 (treating sequences as independent — too optimistic) | +/- 9.1 pp |
+| **10.6** (Kish, treating each component as one unit) | **+/- 18.0 pp** |
+
+The truth lies between, nearer the lower figure. Cross-validation does not rescue this: the
+giant component means a fold either holds it (and is almost all positive) or does not (and
+has almost none). Tested directly — two of five folds produced no metric at all. See
+PROGRESS.md D10.
+
+### 4. The labels are asymmetric, and the hard negatives are unverifiable
+
+A positive means somebody ran an assay. A negative means nobody has reported the enzyme as a
+degrader, which is largely a statement about what has been tested. The closer a negative is
+to the positives — i.e. the more useful it is as a hard case — the more likely it is to be a
+genuinely untested plastizyme rather than a true negative. **The most informative negatives
+are exactly the ones whose labels are least trustworthy.** There is no way to resolve this
+from within the data; it needs assayed non-degraders (PEZy-miner).
+
+### What follows from all this
+
+- **Any headline accuracy figure is meaningless without the identity bound and the class
+  balance beside it.** Both are quoted throughout this document for that reason.
+- **The right claims are mechanistic and comparative, not absolute.** "The probe degrades
+  more gracefully than BLASTp as negatives get harder, and here is the feature it uses"
+  survives these constraints; "AU-PRC 0.95" does not, on its own.
+- **This is within-family discrimination, not remote-homolog detection.** The remote-homolog
+  claim cannot be evaluated on curated data, because the independent families do not exist
+  in it — an honest negative result, and one the field shares (see `dataset_splits_0.4.md`
+  on Balci et al. 2026, whose title states the same conclusion).
 
 ---
 
