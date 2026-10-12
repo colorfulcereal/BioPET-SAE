@@ -1,0 +1,18 @@
+{
+ "funnel": {
+  "1_predicted_cds": 2104436,
+  "2_length_and_alphabet": 1864531,
+  "3_exact_dedup": 1837819,
+  "4_gxsxg_elbow": 240964,
+  "5_not_near_a_known_positive": 240961,
+  "6_family_deduplicated": 207316,
+  "7_sampled": 500
+ },
+ "studies": {
+  "MGYS00005625": "Engineered \u2014 plastic metagenome (PRJEB15404)",
+  "MGYS00006544": "Marine \u2014 tracking genomic signatures (PRJNA777294)",
+  "MGYS00005970": "Lab enrichment \u2014 polyethylene film, in situ marine"
+ },
+ "seed": 0,
+ "max_identity": 0.9
+}

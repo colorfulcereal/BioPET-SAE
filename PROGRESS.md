@@ -99,6 +99,14 @@ that determines whether two enzymes are mechanistically comparable at all:
 Pooling polyamidases or polyurethanases under "plastic degrader" would have been a
 mechanism error — they do not hydrolyse esters.
 
+**Published basis for this rule** — [R1] Danso, Chow & Streit (2019) organise microbial
+plastic degradation around exactly this split: polymers with a hydrolysable backbone (ester,
+amide, urethane) versus a pure C–C backbone (PE, PP, PS, PVC), which admits no hydrolase and
+requires oxidative attack. [R3] Wei et al. (2020) state the consequence directly —
+biotechnological progress is still limited to polyesters — which is the one-line justification
+for restricting the task to polyester degraders rather than "plastic degraders". Cite [R1] for
+the exclusion of the 109 non-ester-mechanism candidates and [R3] for the task definition.
+
 ### 4. EDA (2026-09-27) — `src/biopet_sae/eda.py` → `results/eda_report.md`
 
 12 sections, every number recomputed from the merged table. Findings that change the
@@ -936,6 +944,13 @@ separate enzyme lineage. Recognising them is evidence the model learned "polyest
 hydrolase" as a property rather than memorising the cutinase family — and it cannot be
 passed by flagging everything, since the same model returns 0/36 on non-esterase controls.
 
+> **SUPERSEDED — see §25 (2026-10-11).** The premise in the paragraph above, that these are
+> an *unseen* separate lineage, was asserted when the holdout was created and never tested.
+> It is false for 14 of the 36: they share a homology component with a trained positive, and
+> 25 trained positives already act on a PHA. Corrected probe figure on the 22 genuinely clean
+> proteins: **16/22 (73%)**, not 30/36 (83%). The BLASTp 28/36 cannot be corrected without
+> re-running it and must not be compared against the corrected probe number.
+
 #### The confound also improved
 
 | task | positives Actinomycetota | negatives | gap |
@@ -1249,6 +1264,1353 @@ Recorded in `artifacts/EDA_polyester_task.md` ("Label provenance").
 
 ---
 
+### 21. The negative set, clarified on fold rather than EC — val has no hard negatives (2026-10-11)
+
+Prompted by "can we clarify our negative set", asked while planning the hard-negative triad
+test. Every number below was re-derived by querying UniProt live for InterPro, Pfam and
+`ACT_SITE` on all 423 negatives, then recomputing the probe metrics from
+`polyester_scores_650M.npz`. The top line of the decomposition reproduces the published
+headline exactly (test AU-ROC 0.9681 / AU-PRC 0.9526), which is what licenses the rest.
+
+**This supersedes the 14d estimate.** 14d put tier 3 at "only ~46% fold-matched" using
+*non-tRNA* as a proxy for fold. On direct fold annotation it is **27.0%** (50 of 185). The proxy was too
+generous: it counted GDSL/SGNH lipases, patatin phospholipases and β-lactamase-fold
+hydrolases as fold-matched when none of them are α/β hydrolases.
+
+**What the 423 negatives actually are.** All from UniProt, all never assayed. Classified by
+InterPro `IPR029058` (α/β hydrolase fold), cross-checked against Pfam:
+
+| group | n | evidence |
+|---|---|---|
+| tRNA-processing hydrolases | 99 | PF02580 D-aminoacyl-tRNA deacylase ×56 (EC 3.1.1.96), PF01195 peptidyl-tRNA hydrolase ×43 (EC 3.1.1.29) |
+| other EC 3.1.1, non-α/β fold | 36 | PF13472/PF00657 GDSL-SGNH, PF01734 patatin, PF00144 β-lactamase, PF01661 macro domain, PF01339 CheB |
+| genuine α/β hydrolase fold | 51 | `IPR029058`; 50 in tier 3, 1 mislabelled into tier 4 |
+| naive controls (no EC 3.1.1) | 237 | kinases, gyrases, monooxygenases, 61 with no EC at all |
+
+So **51 of 423 negatives (12%)** are fold-matched. The tRNA entries are in the set because
+they are EC 3.1.1 by reaction chemistry — the `ec:3.1.1.-` trap already in the environment
+notes. The query was correct; an EC class is simply not a fold. Pfam agrees with InterPro
+independently on every one of the 135 tier-3 non-α/β entries, so this is not an artifact of
+leaning on a single accession.
+
+**The split problem.** The 99 tRNA entries collapse into exactly **3 homology components**,
+and the identity-bounded split sent each component entirely to one split — correct behaviour
+for a homology-aware split, with a bad consequence:
+
+| component | n | goes to |
+|---|---|---|
+| `P0A025` | 56 | train |
+| `A1A141` | 40 | **val** |
+| `B3ESC6` | 3 | test |
+
+| negatives by hardness | train | val | test |
+|---|---|---|---|
+| all | 285 | 76 | 62 |
+| tRNA-processing | 56 | **40** | 3 |
+| EC 3.1.1 non-tRNA | 63 | **0** | 23 |
+| α/β hydrolase fold | 40 | **1** | 10 |
+| α/β fold + GxSxG + 3 curated `ACT_SITE` | 32 | **1** | 9 |
+
+**Val's 76 negatives are 40 tRNA hydrolases plus 36 random proteins. It contains zero
+genuine fold-matched esterases.**
+
+**What that does to the headline.** Test AU-ROC decomposed by negative subgroup, positives
+held fixed at 42; CIs are 5,000-draw bootstrap over both classes:
+
+| negatives | n | AU-ROC | AU-PRC |
+|---|---|---|---|
+| all — published headline | 62 | 0.9681 | 0.9526 |
+| naive controls | 36 | 1.0000 | 1.0000 |
+| tRNA-processing | 3 | 1.0000 | 1.0000 |
+| EC 3.1.1 non-tRNA | 23 | 0.9141 [0.840, 0.971] | 0.9526 |
+| α/β hydrolase fold | 10 | 0.8167 [0.676, 0.926] | 0.9550 |
+| α/β fold + GxSxG + triad | 9 | 0.7963 [0.659, 0.910] | 0.9550 |
+
+39 of the 62 test negatives (63%) are separated perfectly, so the headline is a weighted
+blend in which most of the weight is free. The fold-matched task is **0.82, with the CI
+reaching down to 0.68**. On val the same decomposition gives 1.0000 against the tRNA family
+and 0.9948 against naive controls, and the fold-matched cell is *unmeasurable*.
+
+**Three consequences, all load-bearing.**
+
+1. The operating threshold **0.1455 was tuned on a split containing no hard negatives.**
+   That is the mechanism behind test precision falling to 0.830 — the threshold was set
+   where nothing hard was pushing back.
+2. The seven latents were selected on **train+val** by Cliff's δ against this negative set,
+   and val contributes 76 easy negatives to that δ. Recomputing δ against only the 51
+   fold-matched negatives is therefore **required**, not an optional robustness check.
+3. **No claim about the hard task can rest on val.** Only test can carry one, and there
+   n = 10.
+
+**Fix, and why relabelling is not enough.** Rebuilding tier 3 on fold (already on the
+Still-open list) exposes the real problem: the dataset holds only 51 fold-matched negatives
+against 388 positives, so no relabelling of existing rows can give val a usable hard
+negative set. New negatives have to be fetched — UniProt reviewed, `IPR029058` plus three
+curated `ACT_SITE` residues, never assayed on a plastic, excluding the cutinase/PETase
+families — and there are thousands available. Target 300–400 so that every split, val
+included, gets genuine hard negatives, then re-split and re-run detection and latent
+selection.
+
+Scratch: `neg_annot.json`, `neg_actsites.json`, `pos_annot.json`, `negclar.py`, `negclar2.py`.
+
+---
+
+### 22. Test 3 — the δ≥0.9 selection was powered by the easy negatives (2026-10-11)
+
+The check §21 said was required. The seven latents were selected on train+val by Cliff's
+δ ≥ 0.9 plus bootstrap top-10 ≥ 75%, against a negative set that §21 showed is 88% not
+fold-matched. This re-runs the identical procedure against each negative subgroup separately.
+
+**Implementation validated first.** Recomputing δ for all 10,240 latents against the original
+all-negatives basis reproduces `selection_full.npz` with **max |difference| = 0.00e+00**, and
+the stored per-latent values to ten decimal places. The procedure below is therefore the same
+one, differing only in which negatives it sees.
+
+**δ by negative subgroup** (train+val, n_pos = 346, 2,000-draw bootstrap CI):
+
+| latent | all neg (361) | naive (201) | tRNA (96) | other EC, wrong fold (23) | **α/β FOLD-MATCHED (41)** |
+|---|---|---|---|---|---|
+| 9529 Ser | 0.959 | 0.989 | 0.997 | 0.967 | **0.716** [0.64, 0.79] |
+| 5201 pocket | 0.949 | 0.986 | 0.998 | 0.968 | **0.646** [0.54, 0.74] |
+| 7942 pocket | 0.937 | 0.980 | 0.998 | 0.965 | **0.569** [0.40, 0.71] |
+| 5255 pocket | 0.936 | 0.989 | 0.998 | 0.977 | **0.506** [0.34, 0.65] |
+| 2661 Asp | 0.936 | 0.974 | 0.997 | 0.956 | **0.595** [0.48, 0.70] |
+| 7734 His | 0.934 | 0.975 | 0.996 | 0.954 | **0.577** [0.46, 0.68] |
+| 5271 shell | 0.934 | 0.971 | 0.992 | 0.949 | **0.608** [0.49, 0.71] |
+
+**Not one of the seven clears δ ≥ 0.9 against fold-matched negatives.** The best, 9529, falls
+to 0.716 with a CI topping out at 0.79 — the criterion is excluded, not merely missed. 5255
+reaches 0.506, i.e. AUC 0.75.
+
+The tRNA-processing family gives the **highest** δ of any subgroup, 0.992–0.998. The latents
+were, in effect, selected for separating plastizymes from D-aminoacyl-tRNA deacylases.
+
+**Re-running the full selection on fold-matched negatives only** (all 10,240 latents, same
+200-draw random-half bootstrap, same δ ≥ 0.9 and top-10 ≥ 75% criterion):
+
+| basis | n_neg | latents passing | latents with δ≥0.9 | max δ |
+|---|---|---|---|---|
+| all negatives (original) | 361 | **5** — 9529, 5201, 2661, 7942, 5255 | 26 | 0.9589 (9529) |
+| fold-matched only | 41 | **0** | **0** | 0.8469 (latent 9638) |
+
+Against fold-matched negatives **no latent in the dictionary** reaches δ ≥ 0.9; the ceiling is
+0.847. And the seven fall out of contention entirely — top-10 frequency **0% for all seven**,
+ranks **133, 326, 435, 482, 540, 570, 810** of 10,240:
+
+| latent | δ fold-matched | top-10 | rank |
+|---|---|---|---|
+| 9529 | 0.7162 | 0% | 133 |
+| 5201 | 0.6463 | 0% | 326 |
+| 5271 | 0.6079 | 0% | 435 |
+| 2661 | 0.5951 | 0% | 482 |
+| 7734 | 0.5773 | 0% | 540 |
+| 7942 | 0.5693 | 0% | 570 |
+| 5255 | 0.5057 | 0% | 810 |
+
+**Control — it is not a sample-size artifact.** n_neg = 41 is small, so each easy subgroup was
+subsampled to exactly 41 and δ recomputed, 500 draws (median [5th, 95th]):
+
+| latent | naive n=41 | tRNA n=41 | all-neg n=41 | fold n=41 |
+|---|---|---|---|---|
+| 9529 | 0.990 [0.99, 0.99] | 0.997 [1.00, 1.00] | 0.960 [0.93, 0.98] | **0.716** |
+| 5201 | 0.986 [0.98, 0.99] | 0.998 [1.00, 1.00] | 0.951 [0.91, 0.98] | **0.646** |
+| 7942 | 0.980 [0.97, 0.98] | 0.998 [1.00, 1.00] | 0.946 [0.89, 0.98] | **0.569** |
+| 5255 | 0.989 [0.99, 0.99] | 0.998 [1.00, 1.00] | 0.939 [0.88, 0.98] | **0.506** |
+| 2661 | 0.974 [0.97, 0.98] | 0.997 [1.00, 1.00] | 0.939 [0.90, 0.97] | **0.595** |
+| 7734 | 0.975 [0.97, 0.98] | 0.996 [0.99, 1.00] | 0.935 [0.89, 0.96] | **0.577** |
+| 5271 | 0.971 [0.97, 0.98] | 0.992 [0.99, 0.99] | 0.937 [0.89, 0.96] | **0.608** |
+
+At *identical* n, the easy subgroups still return 0.93–0.998 and the 5th percentile of the
+all-negatives draw never drops below 0.88 — far above every fold-matched point estimate. The
+collapse is driven by negative-set **composition**, not by n.
+
+**Minor note on the bootstrap frequency.** δ reproduces exactly, but top-10 frequency is
+draw-dependent: this run gives 7734 = 70% and 5271 = 73% where the stored run gave 79.5% and
+78.5%. Rank order is unchanged and the same five pass strictly. Consistent with §16's existing
+caveat that 7734 and 5271 straddle the stability cutoff. Irrelevant to the conclusion here,
+where all seven sit at 0%.
+
+**What this does and does not overturn.**
+
+- It does **not** touch the localisation result. 57/59 proteins at 96.6%, the 0-of-10,240
+  random-latent null, and the offset consistency all stand — those ask *where* a latent fires,
+  and are unaffected by which negatives were used to pick it.
+- It **does** overturn the claim implicit in "δ ≥ 0.9 selection": these are **not** latents that
+  distinguish plastizymes from fold-matched esterases. They distinguish hydrolases-with-a-
+  canonical-active-site from tRNA deacylases and random proteins. §15 and §14d already read
+  this direction from the 1,326-esterase run; test 3 makes it quantitative on our own data and
+  shows the selection criterion itself carried the confound.
+- The honest statement of the explainability claim is therefore: the SAE latents are a
+  **validated readout of serine-hydrolase catalytic machinery** — which is worth having, and is
+  independently verified — but they are **not** the signal the probe uses to call something a
+  polyester degrader. Whatever drives the 0.82 fold-matched AU-ROC is not in these seven.
+- The ceiling of 0.847 over the whole dictionary says a single-latent explanation of the hard
+  task does not exist in this SAE at layer 33. If the probe's fold-matched margin is real, it is
+  distributed, and finding it needs a multi-latent or attribution-based method, not δ ranking.
+
+Caveat carried forward: n_neg = 41 fold-matched negatives in train+val (40 train, 1 val). The
+collapse is robust to the size control, but the *ceiling* of 0.847 and the identity of the new
+top latents (9638, 7370, 6875) are estimated on 41 proteins and should not be treated as a
+replacement selection until the negative set is rebuilt per §21.
+
+Scratch: `test3.py`, `test3b.py`, `test3c.py`, `test3_delta.json`.
+
+#### 22b. Revision — "collapsed" was the wrong word; the honest verdict is undetermined
+
+Prompted by the objection that δ of 0.5–0.72 is a *large* effect, not a collapse, and that the
+latents may still be isolating plastizyme machinery from fold-matched esterases. The objection
+is correct on its first half, and the follow-up analysis overturns it on the second. Both
+corrections are recorded because §22 as first written was wrong in one direction and the naive
+reading is wrong in the other.
+
+**Where the objection is right — these are not noise-level values.** δ over all 10,240 latents
+on the plastizyme-vs-fold-matched comparison (train+val, 346 vs 41):
+
+| percentile | δ |
+|---|---|
+| 50th (median latent) | +0.0000 |
+| 75th | +0.1850 |
+| 95th | +0.5866 |
+| 99th | +0.7302 |
+| max | +0.8469 |
+
+Only **8.1%** of latents reach δ ≥ 0.5 and 11.1% reach the conventional "large" threshold of
+0.43. 9529 at 0.716 is the **98.7th percentile**. Describing that as a collapse was wrong; the
+correct statement is that it fails the 0.9 *selection criterion*, which is a different claim.
+
+**Length is not the confound.** Sequence length alone gives δ = +0.052 on the same comparison
+(positive median 303 aa, fold-matched negative median 298 aa). Ruled out.
+
+**Homology is the confound.** The 346 train+val positives collapse into 54 homology components
+and **one component, `BPS0190`, holds 256 of them — 74%**; 38 components are singletons. The 41
+fold-matched negatives spread across 32 components, largest 3. Collapsing both sides to one
+value per component (median over members):
+
+| latent | per-protein δ | per-component δ | component-level percentile |
+|---|---|---|---|
+| 9529 Ser | +0.716 | **+0.116** | 79.4 |
+| 5201 pocket | +0.646 | **+0.108** | 78.2 |
+| 7942 pocket | +0.569 | +0.068 | 70.8 |
+| 5255 pocket | +0.506 | −0.010 | 41.3 |
+| 2661 Asp | +0.595 | **−0.104** | 21.3 |
+| 7734 His | +0.577 | **−0.160** | 12.8 |
+| 5271 shell | +0.608 | **−0.178** | 10.7 |
+
+Component-level median across the dictionary is 0.000 and its max is +0.560, so 9529's +0.116
+is "small" by convention and the Asp, His and shell latents turn **negative**.
+
+**Cluster bootstrap** (resample components with replacement, keep all members, 2,000 draws) —
+protein-level δ with a CI that respects homology structure:
+
+| latent | δ | 95% CI |
+|---|---|---|
+| 9529 | +0.716 | [−0.254, +0.898] |
+| 5201 | +0.646 | [−0.242, +0.829] |
+| 5271 | +0.608 | [−0.488, +0.855] |
+| 2661 | +0.595 | [−0.439, +0.839] |
+| 7734 | +0.577 | [−0.508, +0.837] |
+| 7942 | +0.569 | [−0.319, +0.827] |
+| 5255 | +0.506 | [−0.370, +0.738] |
+
+**Every CI includes zero.**
+
+**Verdict.** Whether the seven latents separate polyester degraders from fold-matched esterases
+is **undetermined**, not refuted. The per-protein δ of 0.72 is one cutinase family counted 256
+times against 41 assorted esterases. With homology respected the point estimate falls to ≈0.12
+and the interval spans zero — and it spans zero because the effective sample is ~54 positive
+families with one at 74% against 32 negative families, i.e. the test has almost no power. This
+is the same wall as D5/D10, where one component holding 84% of train positives made cluster CV
+non-viable.
+
+Both of §22's directional claims therefore need qualifying:
+
+- "The latents do not distinguish plastizymes from fold-matched esterases" — **overstated**.
+  They fail the δ ≥ 0.9 criterion and are not demonstrably better than chance once homology is
+  respected, but the data cannot rule the effect out either.
+- "δ ≈ 0.5–0.72 shows the machinery still isolates plastizymes" — **also unsupported**, because
+  that number is driven by positive-set homology density, not by 346 independent observations.
+
+What survives unchanged: the localisation result (57/59 proteins, the 0-of-10,240 random-latent
+null, offset consistency), which asks *where* a latent fires and is independent of the negative
+basis; and the reading that these latents are a validated readout of serine-hydrolase catalytic
+machinery.
+
+**Consequence for the §21 fix.** The rebuild cannot be negatives-only. 300–400 fold-matched
+negatives would fix one side, but with 74% of positives in a single component the comparison
+stays underpowered. The positive side needs either homology-aware weighting (one vote per
+family) or genuine positive diversity beyond the dominant cutinase clade — and any future δ or
+AU-ROC on the hard task must be reported with a cluster bootstrap, never a per-protein one.
+
+Scratch: `test3d.py`, `test3e.py`, `test3d.json`.
+
+#### 22c. Is the Ser–His–Asp machinery shared across the groups? Yes for esterases, no for tRNA
+
+Prompted by "is the serine hydrolase catalytic machinery common across plastizymes, hydrolases
+and the tRNA thing also?" Answered two independent ways — from UniProt's own catalytic
+annotations, and from latent activation — which agree.
+
+**What UniProt annotates as catalytic:**
+
+| group | n | sites per protein | residues | UniProt description |
+|---|---|---|---|---|
+| fold-matched esterase | 51 | 43 of 47 have **3** | S 46, H 44, D 35, E 8 | "Nucleophile" (Ser); "Charge relay system" (His, Asp) |
+| tRNA-processing | 99 | 43 have **exactly 1**, 56 have none | **H 43, zero Ser** | "Proton acceptor" |
+| other EC 3.1.1, wrong fold | 36 | mixed | S 19, D 17, H 14 | "Nucleophile" |
+| naive control | 237 | 147 have none | D 34, H 25, E 23, C 18, S 10 | scattered |
+
+**The tRNA group are not serine hydrolases at all.** Peptidyl-tRNA hydrolase (43, PF01195) uses
+a single His general base to activate water — one annotated site, "Proton acceptor", no
+nucleophile. D-aminoacyl-tRNA deacylase (56, PF02580) carries **no active-site annotation
+whatsoever**. They are EC 3.1.1 because they cleave an ester bond by an unrelated mechanism.
+So 99 of the 185 entries in the tier labelled "fold-matched esterase" lack both the fold and
+the catalytic machinery.
+
+**Latent activation agrees exactly** (median `feat_max` / % above the 0.3 firing threshold):
+
+| group | n | 9529 Ser | 2661 Asp | 7734 His | 5201 pocket |
+|---|---|---|---|---|---|
+| plastizymes | 388 | 0.970 / 96.1% | 0.917 / 84.0% | 0.919 / 89.4% | 0.942 / 96.1% |
+| fold-matched esterase | 51 | 0.783 / **100.0%** | 0.757 / 80.4% | 0.709 / 84.3% | 0.793 / **100.0%** |
+| other EC 3.1.1, wrong fold | 36 | 0.043 / 13.9% | 0.030 / 0.0% | 0.029 / 0.0% | 0.043 / 0.0% |
+| tRNA-processing | 99 | **0.000 / 0.0%** | 0.000 / 0.0% | 0.000 / 0.0% | 0.000 / 0.0% |
+| naive control | 237 | 0.018 / 0.0% | 0.019 / 0.0% | 0.014 / 0.0% | 0.030 / 0.8% |
+| held-out PHA | 36 | 0.837 / 97.2% | 0.845 / 97.2% | 0.729 / 97.2% | 0.759 / 100.0% |
+
+Three readings, each load-bearing:
+
+1. **Shared with genuine esterases.** 100% of fold-matched esterases fire 9529 and the pocket
+   latent, against 96.1% of plastizymes. Same triad, same fold, same charge relay, and the SAE
+   reads it in both. The gap is one of degree — median 0.783 vs 0.970 — which is precisely the
+   residual δ ≈ 0.6–0.72 of §22, and §22b shows that residue is confounded by positive-set
+   homology. **This is the mechanistic reason δ cannot be large against this group.**
+2. **Absent in the tRNA group.** Median exactly 0.000, not one of 99 above 0.3. The δ of 0.997
+   against them was the latent separating plastizymes from proteins with no Ser nucleophile at
+   all — a fold test with the answer written on it, not a hard negative.
+3. **The wrong-fold EC 3.1.1 group is the discriminating control.** They *do* have Ser
+   nucleophiles (19 annotated), and 13.9% fire 9529 — but **0% fire the Asp, His or pocket
+   latents.** So the latents do not detect "a serine"; they detect the α/β charge-relay
+   geometry. A Ser nucleophile in a GDSL/SGNH or patatin fold earns partial credit on the Ser
+   latent and nothing else.
+
+Incidental confirmation: held-out PHA scores 97.2% on all three triad latents, so the machinery
+reading generalises to a substrate class absent from training.
+
+Scratch: `mech.py`, `mech2.py`.
+
+
+
+---
+
+### 23. Dataset release v1 — packaged for hand-off (2026-10-11)
+
+Asked for so the dataset can be recorded and given to someone else for experimentation. The
+point of the release is not the sequences — those were always in
+`dataset_splits_id40.tsv` — but the **fold-based negative classification** from §21–§22c,
+shipped as a column so a downstream user cannot repeat the EC-class mistake.
+
+**Files.**
+
+| path | contents |
+|---|---|
+| `data/release/biopet_sae_dataset_v1.tsv` | 847 rows × 20 columns, sequences included (399 KB) |
+| `data/release/biopet_sae_dataset_v1.fasta` | same sequences, header carries split/class/group (330 KB) |
+| `DATASET_CARD.md` | the card, repo root, 215 lines |
+| `src/biopet_sae/build_release.py` | builder; `--refresh` re-queries UniProt |
+| `data/processed/uniprot_negative_annotation.json` | cached annotation, 55 KB, fetched 2026-10-11 |
+
+Both release files are small enough to commit, unlike `data/mgnify/` (398 MB, still needs a
+`.gitignore` entry).
+
+**The columns that carry the new information:**
+
+| column | why it exists |
+|---|---|
+| `negative_group` | the fold-based classification — `ab_hydrolase_hard_negative` (51), `ec311_wrong_fold` (36), `tRNA_processing_no_ser_nucleophile` (99), `naive_control` (237) |
+| `component` | homology component, so a downstream user can cluster-bootstrap instead of resampling proteins |
+| `ab_hydrolase_fold` | InterPro `IPR029058` flag |
+| `gxsxg_elbow` | sequence-level nucleophile-elbow flag |
+| `n_curated_active_sites` | curated UniProt `ACT_SITE` count |
+| `ec`, `pfam` | the evidence behind `negative_group` |
+
+`class_label` is retained for continuity with every published result, with the card stating
+plainly that `3_fold_matched_esterase` is a misnomer (50 of 185 carry the fold).
+
+**One bug found and fixed while building it.** The first pass of `build_release.py` extracted
+EC numbers only from UniProt's `recommendedName` and `includes`, where the earlier scratch
+annotation also read `alternativeNames` and `submissionNames`. Two negatives carry their
+EC 3.1.1 only on an alternative name, so they were classified `naive_control` instead of
+`ec311_wrong_fold` — group totals came out 34/239 against the correct 36/237. Caught by
+diffing the written file against the independent scratch annotation, which is the only reason
+it surfaced; the α/β count of 51 was unaffected either way. Fixed, re-fetched, now **0
+disagreements**.
+
+**Verification.** 21 assertions re-derived from the written TSV, not from the builder's
+internals: row and split counts, all four group counts and their per-split breakdown, the
+verified/unverified/extrapolated positive counts, the 74 components with 256 in the largest,
+the tRNA active-site pattern (43 with one site, 56 with none, all carrying PF02580/PF01195),
+and tier 3 at 185 with 50 carrying the fold. All pass. FASTA checked record-by-record against
+the TSV: 847 records, 0 sequence mismatches.
+
+**What the card tells a downstream user, in priority order.** Two numbers bound every claim —
+**51** fold-matched negatives (1 in val) and **66%** of positives in component `BPS0190`.
+Then: report test decomposed by `negative_group`; bootstrap over `component`, never over
+proteins; say whether you tuned on val; state n for the fold-matched cell (10); leave
+`heldout_pha` unused. The reference-results table gives the headline 0.9681 beside the
+per-group decomposition down to 0.8167, so the blend is visible rather than asserted.
+
+**Artifacts.**
+
+| artifact | URL | state |
+|---|---|---|
+| **BioPET-SAE Dataset v1** | `https://claude.ai/artifact/TrmNy5H5KtFTNRgkKcLS8y` | **v1, new** |
+| Plastizyme Detection Methods | `https://claude.ai/artifact/US29Zu7ScaoAKSoepRQeMg` | **v2** |
+
+The methods page was revised rather than duplicated: the "fold-matched" tier corrected from
+"86 genuine non-tRNA esterases" to 27% fold-matched with the four-group composition table; a
+new "What the negatives actually are" subsection; the val-has-one-hard-negative flag with the
+three-component mechanism; the positive-homology-density flag with the cluster-bootstrap
+instruction; the label-asymmetry paragraph corrected to separate 48 unverified from 29
+extrapolated-only; and the "what this does not show" bullet rewritten from the single 0.79
+figure to the full per-group decomposition with its CI. Both pages are private — they need
+sharing from the page's Share menu before anyone else can open them.
+
+---
+
+### 24. Positive substrate classes enumerated exhaustively; four errors corrected (2026-10-11)
+
+Prompted by "is this exhaustive?" against the methods page's three-constraint table. It was
+not. Re-derived from `plastizymes_merged.tsv` joined to the splits.
+
+**What defines the positive classes** — not the substrate group, as the artifact implied, but
+one question. Verified: all 320 `1_pet` carry PET in `substrates` and `is_pet = 1`; zero of the
+68 do.
+
+| class | n | definition |
+|---|---|---|
+| `1_pet` | 320 | acts on PET **at all**, whatever else it also does — 44 have >1 substrate |
+| `2_other_polyester` | 68 | degrades a polyester but **never** PET |
+| `heldout_pha` | 36 | **primary** substrate group is PHA — withheld entirely |
+
+This is why `1_pet` contains 30 enzymes whose primary group is aliphatic polyester: they are
+PET-active enzymes that also act on PCL or PLA.
+
+**All 25 positive substrates.** Counts are enzymes acting on that substrate and sum past 388
+because enzymes are promiscuous.
+
+| family | substrates (n enzymes) |
+|---|---|
+| aromatic polyester — 284 primary | PET 320, PEF 7 |
+| aromatic–aliphatic copolyester — 21 primary | PBAT 31, PBSeT 2, Ecovio-FT 2 |
+| aliphatic polyester — 83 primary | PLA 52, PCL 43, PBS 22, PES 16, PBSA 15, PEA 3, PPL 1 |
+| PHA family — held out as a class | PHA 23, PHB 11, PHBV 5, P3HP 3, P4HB 3, PHO 2, PHBH 1, PHBVH 1, PHPV 1 |
+| non-polyester, on kept enzymes | PUR 16, PU 10, PC 5, PA 1 |
+
+`PES` here is polyethylene **succinate**, not polyethersulfone — worth disambiguating wherever
+it is written.
+
+**Four errors in the methods artifact, now fixed (v3).**
+
+1. **Removed-substrate list enumerated 105 of 109.** It named polyamide 65, polyurethane 15,
+   polyolefin 13, polycarbonate 4, rubber 8 = 105, omitting polyether 2 and unknown 2. The
+   total was right; the list was not.
+2. **Kept-substrate list named 6 of 25.** PEF, PBSA, PBSeT, PEA, P3HP, P4HB, PPL and Ecovio-FT
+   were all absent.
+3. **"lineage: cutinase-like" was wrong twice over.** The kept positives span **74 homology
+   components**, not one lineage; and the constraint applied is a holdout on *primary*
+   substrate class, not a lineage filter. Relabelled "primary substrate class".
+4. **`2_other_polyester` described as "20 PBAT, 48 aliphatic".** The 20 is correct as an
+   enzyme count on PBAT, but the two figures were presented as a partition and are not one:
+   53 act on an aliphatic polyester and 20 on PBAT, overlapping by 5. By primary class it is
+   53 aliphatic / 15 aromatic copolyester. Corrected to state both framings.
+
+**A substantive consequence, not just a wording fix.** Holding out PHA removed 36 enzymes whose
+*primary* class is PHA. It did **not** remove PHA activity from the training set — **25 kept
+positives still act on a PHA**. The PHA generalisation result (30/36, 83%) therefore measures
+"unseen as a primary substrate class", not "never seen". That qualification now sits on the
+artifact and should accompany the 83% wherever it is quoted.
+
+Artifact: `https://claude.ai/artifact/US29Zu7ScaoAKSoepRQeMg` v3.
+
+#### 24b. The positives do not hydrolyse esters exclusively, and `mechanism` is derived not assayed
+
+Prompted by "do 1_pet and 2_other_polyester degrade only ester bonds?" They do not.
+
+| mechanism as recorded | n |
+|---|---|
+| carboxylic ester **only** | **363 (93.6%)** |
+| carboxylic ester + urethane | 17 |
+| carbonate ester + carboxylic ester | 3 |
+| carboxylic ester + unknown | 2 |
+| carbonate ester + carboxylic ester + urethane | 2 |
+| amide + carboxylic ester | 1 |
+
+`1_pet` 304 of 320 pure, 16 mixed; `2_other_polyester` 59 of 68 pure, 9 mixed.
+
+**`mechanism` is a deterministic function of `substrates`, so it is a lookup and not an assay.**
+Checked: **0 of 79** distinct substrate strings map to more than one mechanism, and the
+PUR/PU ↔ `urethane` relation is a perfect **39/39 biconditional in both directions**. The
+column therefore records which bond types the *material* contains, never which bond the enzyme
+was shown to cleave. Nothing in this dataset resolves that for any entry.
+
+Two consequences:
+
+- **The 19 urethane entries are probably still ester chemistry.** Polyester-polyurethanes are
+  built from polyester polyols, so the backbone alternates ester and urethane linkages; an
+  esterase degrading one most likely cleaves the ester segments. Treating these as evidence of
+  urethane-bond hydrolysis would repeat the material-vs-bond error that §14d's exclusion rule
+  exists to prevent — here inside our own positive set.
+- **The 5 polycarbonate entries are esters regardless**, a carbonate ester (O–CO–O) rather
+  than a carboxylic one.
+
+**The one genuine exception: `BPS0383`**, mechanism `amide|carboxylic_ester`, substrates
+`PA|PET`, `verified_activity = 1`. A single experimentally verified entry with polyamide
+activity inside a positive set defined by ester hydrolysis. Not an extrapolation artifact.
+Worth a decision: keep it and say so, or exclude it for consistency with the 65 polyamide
+entries already removed. It is currently kept and undocumented, which is the one option that
+should not stand.
+
+**Also noted:** `BPS0190`, the representative of the homology component holding 66% of the
+positives, is itself promiscuous — `PBS|PCL|PEF|PET|PHA|PHB|PLA|PU|PUR`, verified. The dominant
+family is a broad-spectrum polyesterase rather than a PET specialist, which bears on how the
+66% concentration should be described.
+
+**Correction to the first version of this note.** It said the claim "hydrolyses only ester
+bonds" is *false for 25 enzymes*, while also saying it is *unsupported either way* for the 19
+urethane ones. Both cannot hold. 25 is the count of positives carrying any
+non-carboxylic-ester annotation, which is not the count for which the exclusivity claim is
+false — that conflates "has a non-ester annotation" with "demonstrably cleaves a non-ester
+bond". The correct accounting:
+
+| extra bond recorded | n | is "only ester bonds" false? |
+|---|---|---|
+| carbonate ester | 3 | **no** — a carbonate ester is an ester; not a counterexample |
+| urethane | 19 | **undetermined** — polyester-PU contains both bonds |
+| unknown substrate | 2 | **undetermined** by definition |
+| amide | 1 | **yes** — nylon's backbone is amide, with no ester to cleave |
+
+False for **1**, undetermined for **21**, not a counterexample for **3**. (Stated as "only
+*carboxylic* ester bonds", the 3 carbonate entries become false too, giving 4.)
+
+**The real reason to avoid the exclusivity wording** is stronger and simpler than a count: the
+dataset cannot support an exclusivity claim for **any** of the 388, the 363 pure-ester ones
+included, because none of them was assayed against an amide or a urethane. Absence of recorded
+activity is evidence that nobody looked. The inclusion criterion is "hydrolyses **at least
+one** polyester"; "hydrolyses only ester bonds" is unsupported across the whole positive set.
+
+**Symmetric issue on the excluded side.** All **15** entries excluded as "non-ester mechanism
+(POLYURETHANE)" have PU/PUR as their *only* substrate — 0 of 15 carry any other — and 13 of 15
+are verified. So the boundary was applied consistently: kept enzymes have PUR alongside a real
+polyester, excluded ones have nothing else. But if esterases degrade polyester-polyurethane by
+attacking its ester segments, some of those 15 may themselves be esterases, making that
+exclusion a decision about the substrate's name rather than about mechanism. Open question,
+and it mirrors the one inside the positives.
+
+
+---
+
+### 25. The PHA holdout premise was never tested, and it is partly false (2026-10-11)
+
+Prompted by "have you proved the PHA anywhere? we haven't proved that yet, right?" Correct —
+the **number** was recorded (§14, and `methods_detection.html`), but the **premise** under it
+was not. Both places call PHA depolymerases "a separate enzyme lineage" and title the result
+"Generalisation to an unseen lineage". That claim was asserted when `build_dataset.py` assigned
+`CLASS_HELDOUT_PHA` with the reason string *"distinct depolymerase lineage, held out as probe"*
+and was never checked against the homology structure. This is the first test of it.
+
+**What PHA is, for the record.** Polyhydroxyalkanoates are polyesters bacteria make as
+carbon-storage granules — natural polymers, unlike every other substrate in the positive set.
+PET is synthetic (c. 1941) and nothing evolved to degrade it, so PETases are repurposed
+cutinases; PHA depolymerases are dedicated enzymes with an ancient natural substrate. Our 36
+are named accordingly: 17 PHB depolymerase, 12 PHA depolymerase, plus variants, mostly from
+*Cupriavidus* and *Paucimonas*. 10 of 36 have verified activity.
+
+**The premise fails on two counts.**
+
+| check | result |
+|---|---|
+| PHA homology components | 19, of which **6 are shared with trained positives** |
+| PHA proteins with a ≥40%-identity relative in training | **14 of 36** |
+| trained positives that already act on a PHA | **25** (17 of them in the train split) |
+
+So "unseen lineage" is false for 14 of 36, and "the model never saw PHA activity" is false
+outright.
+
+**The result split on that contamination** (probe scores from
+`polyester_scores_650M.npz`, threshold 0.1455):
+
+| subset | n | detected | median score |
+|---|---|---|---|
+| all held-out PHA — **the published 83%** | 36 | 30 (83%) | 0.645 |
+| shares a component with a trained positive | 14 | **14 (100%)** | 0.768 |
+| **clean — no component overlap** | 22 | **16 (73%)** | **0.388** |
+
+**All six misses fall in the clean subset**, and the contaminated proteins score roughly double.
+The corrected generalisation figure is **16/22 = 73%**.
+
+**BLASTp cannot be corrected.** `polyester_blast.json` stores only the aggregate
+`pha: {probe: [30,36], blast: [28,36]}` — no per-protein results — so the 28/36 cannot be
+decomposed without re-running BLAST. Until then the corrected probe figure must not be put
+beside it; comparing 73% against an uncorrected 78% would be worse than the original error.
+
+**Should the 36 be moved into the positives instead?** Quantified, the trade is:
+
+| | positives | components | largest component |
+|---|---|---|---|
+| now | 388 | 74 | 66% |
+| + all 36 | 424 | **87 (+13 new families)** | 60% |
+| + only the 14 overlapping | 402 | 74 (**+0 new families**) | 62% |
+
+Adding all 36 buys 13 new positive families and +18% effective sample size, and changes no
+conclusion: §22b showed the fold-matched comparison is underpowered at 74 positive components
+against 32 negative ones, and 87 against 32 is still underpowered. The cost is the project's
+only evidence against its most likely criticism — that the probe detects cutinase-shaped
+sequences rather than polyester-degrading activity, which **test performance cannot refute**
+because test positives come from the same families as train positives. Recommendation: keep
+the holdout.
+
+**But redefine it as the 22 clean proteins.** The 14 overlapping ones add zero new families if
+moved to training and inflate the figure if left in the holdout — the one group with no good
+home. Either move them to the positives or footnote them, but stop counting them in the
+headline.
+
+**The ceiling is the field's, not the dataset's.** [R4] records fewer than 50 experimentally
+verified plastics-active enzymes at publication. There is no reservoir of additional positive
+diversity to draw on, which is a limitation to state rather than engineer around.
+
+Corrected in `methods_detection.html`; §14's subsection now carries a supersession note.
+
+---
+
+### 26. PHA generalisation retired; the exclusion rationale stated properly (2026-10-11)
+
+**Decision (user's, 2026-10-11): the PHA generalisation claim is withdrawn entirely.** §25
+showed the premise was false for 14 of 36 and that 25 trained positives already act on a PHA,
+so there was never an unseen lineage to generalise to. Rather than report a corrected 73%, the
+claim is dropped. The 36 PHA depolymerase rows stay in `dataset_splits_id40.tsv` with
+`split=heldout`, unused and carrying no claim. **No metric changes** — they were never in
+train, val or test, so every published number stands exactly as it was.
+
+The task is now stated in three parts and nothing else:
+
+| | definition |
+|---|---|
+| **positive** | an enzyme experimentally reported to degrade a plastic whose backbone is joined by carboxylic ester bonds — 388 |
+| **hard negative** | an α/β-hydrolase-fold protein with the same Ser–His–Asp triad, never reported to degrade a plastic — 51 |
+| **naive control** | unrelated proteins, plus the two intermediate tiers — 372 |
+
+PHA remains a *substrate* in the positive table (PHA 23, PHB 11, PHBV 5, and the rest), because
+positives that act on one are ordinary positives. What is gone is the notion of PHA as a
+withheld class.
+
+**The exclusion rationale, corrected.** The user proposed stating that the other plastics are
+excluded because they lack the ester bond and are harder to break. The first half is right; the
+second half would be a factual error in print, because the source data contains **65
+polyamide-degrading and 15 polyurethane-degrading enzymes** and **92 of the 118 excluded
+entries have experimentally verified activity**. Nylonases and polyurethanases are real. The
+exclusions therefore fall into two tiers that must be stated separately:
+
+| plastic | backbone bond | why it is out |
+|---|---|---|
+| polyamide (nylon) | amide `–C(=O)–NH–` | hydrolysable, but by an **amidase** — a different catalytic machine |
+| polyurethane | urethane `–NH–C(=O)–O–` | hydrolysable, different machine |
+| polycarbonate | carbonate `–O–C(=O)–O–` | an ester, but not a carboxylic one; few enzymes |
+| polyether (PEG) | ether `–C–O–C–` | very stable, needs oxidative chemistry |
+| polyolefins/vinyls (PE, PP, PS, PVC) | C–C only | **no hydrolysable bond exists** — oxidative attack only |
+| rubber | C–C / C=C | same |
+
+Only the last two rows are excluded on chemistry alone. The rest are excluded because a
+different bond needs a different enzyme, so pooling them with PETases would train one
+classifier on unrelated families and call the mixture a plastic degrader.
+
+**Why the ester is the bond that works** — now stated in the artifact rather than assumed. An
+ester's carbonyl carbon is electrophilic with a good leaving group, so a serine nucleophile
+attacks at a modest barrier. In an amide the nitrogen lone pair delocalises into the carbonyl,
+giving the C–N bond partial double-bond character and raising the uncatalysed barrier by orders
+of magnitude. In a C–C backbone there is no polarised bond at all, so hydrolysis is not
+chemically available. Plus the evolutionary point: **cutin is a natural polyester**, so
+cutinases existed before PET did and PET's ester is close enough that they partly work on it;
+nothing in nature resembled polyethylene. (Supported by [R1] for the backbone split and [R3]
+for "progress is limited to polyesters".)
+
+**Artifacts.** `eda_dataset.html` v2 — PHA holdout language removed, held-out row dropped from
+the splits table, new section "What is not in the positive set, and why" with both tiers and
+the chemistry. `methods_detection.html` v5 — the "Generalisation to an unseen lineage" section
+deleted, the constraint row relabelled. §14 and §25 keep their supersession notes so the
+history stays readable.
+
+**Note:** the "BioPET-SAE Dataset v1" artifact (`TrmNy5H5KtFTNRgkKcLS8y`) no longer resolves
+for this account and is gone from the gallery. Its source survives as
+`artifacts/dataset_card.html`, `DATASET_CARD.md` and `data/release/`; it has not been
+republished.
+
+---
+
+### 27. Hand-off package for an external replication (2026-10-11)
+
+Built so a second team can reproduce the experiment in a fresh repository with no access to
+this one. Generated by `src/biopet_sae/build_handoff.py`; `handoff/` is 756 KB total.
+
+| file | lines / size | purpose |
+|---|---|---|
+| `handoff/README.md` | 168 lines | the science — positive and negative definitions, the 21 polyester substrates with backbone bonds, what is excluded and why, splits, provenance, references |
+| `handoff/AGENTS.md` | 104 lines | the contract for an AI agent — six hard rules, what to reproduce first, mistakes already made here |
+| `handoff/EVALUATION.md` | 3.6 KB | five reporting rules, baselines, and what a result can and cannot support |
+| `handoff/dataset.tsv` | 397 KB | 847 rows × 18 columns, sequences included |
+| `handoff/dataset.fasta` | 341 KB | same sequences; header carries split, label, group, component |
+| `handoff/schema.json` | 2.1 KB | per-column definitions, written for a loader to read |
+| `handoff/manifest.json` | 2.6 KB | counts, split constraints, sha256, and the baselines to reproduce |
+
+**Two changes from the internal release.** `split=heldout` is rewritten to `split=unused`, so
+nothing in the package implies a generalisation claim retired in §26; and
+`tRNA_processing_no_ser_nucleophile` is shortened to `trna_processing`. The internal files are
+unchanged.
+
+**The six hard rules in `AGENTS.md`**, which are the real deliverable: never fit or select on
+test; bootstrap over `component` and never over proteins; report test decomposed by
+`negative_group` and state n=10 for the hard-negative cell; use `negative_group` not
+`class_label`; `unused` rows carry no claim; declare any tuning done on validation, which holds
+one hard negative.
+
+It also carries a "mistakes already made here" section so the second team does not repeat
+them — an EC code is not a fold (§21), a name is not a fold either (the 16-word blocklist that
+admitted a Proteinase K-like subtilisin, §26 context), absence of recorded activity is not
+evidence of inactivity, and a large effect that misses a cutoff has not collapsed (§22b).
+
+**Verification.** 22 assertions, all passing: row and column counts against `schema.json`
+order; sha256 of both data files against the manifest; split, negative-group and
+hard-negative-by-split counts against the manifest; `label` in {0,1}; `negative_group`
+populated exactly when `label==0`; no stale `heldout` value anywhere; FASTA matched
+record-by-record against the TSV (847 records, 0 mismatches); 74 positive components with
+`BPS0190` at 256; every headline figure present in the prose; and the README's substrate
+counts recomputed from the data.
+
+---
+
+### 20. Full metagenomic screen — 30,000 families, 165 ranked candidates (2026-10-03)
+
+Scaled the 500-sequence pilot (section 19) to **30,000 protein families**. 13.5 h of ESM-2
+650M + SAE inference on MPS. **BLAST was deliberately not run**, at the user's direction —
+so this screen makes no homology claim, and the "homology search would miss it" framing from
+the pilot is absent.
+
+#### Source and curation — `src/biopet_sae/build_screen30k.py`
+
+MGnify (EBI Metagenomics) API v1, three plastic-associated studies, two assemblies each,
+cached locally (277 MB):
+
+| study | biome | families | sampled |
+|---|---|---|---|
+| MGYS00005625 | Engineered — plastic metagenome (PRJEB15404) | 82,884 | **10,000** |
+| MGYS00006544 | Marine — genomic signatures (PRJNA777294) | 73,047 | **10,000** |
+| MGYS00005970 | Lab enrichment — PE film, in situ marine | 51,385 | **10,000** |
+
+Sampling is **stratified equally** so no assembly dominates; natural proportions would have
+been 40/35/25.
+
+| funnel step | remaining |
+|---|---|
+| 1 · predicted CDS across 6 assemblies | 2,104,436 |
+| 4 · length 50-1000, standard AAs, unique, contains **GxSxG** | 240,964 |
+| 5 · not >=90% identical to any of the 542 known plastizymes | 240,961 (**3 dropped**) |
+| 6 · families at 90% identity — **one representative each** | 207,316 |
+| 7 · stratified sample | **30,000** |
+
+**"30,000 families, not 30,000 sequences."** The elbow filter uses the *generic* motif;
+filtering on our training variants would pre-select for what the model already knows.
+
+#### Results — `src/biopet_sae/score_screen30k.py`
+
+| probe threshold | candidates |
+|---|---|
+| >= 0.9 | **4** |
+| >= 0.8 | 21 |
+| >= 0.7 | 40 |
+| >= 0.5 | **165** |
+| >= 0.3 | 683 |
+
+Median 0.0375, p90 0.132, p99 0.417, **max 0.9378**. Reference: our 42 test positives had
+median 0.60, max 0.97.
+
+**The pilot's ceiling was a sample-size artifact.** Section 19 reported max 0.582 and noted
+the maximum could not be extrapolated from 500 draws — correctly, as it turned out. At
+30,000 the best candidate reaches **0.930**, well inside the range of known plastizymes.
+
+**Triad distribution across all 30,000:**
+
+| triad residues located | n |
+|---|---|
+| 0/3 | 21,123 |
+| 1/3 | 7,264 |
+| 2/3 | 1,308 |
+| **3/3** | **305** (1.0%) |
+
+#### Ranked shortlist: 165
+
+Tiers are evidence-based, with no homology component:
+
+| tier | definition | n |
+|---|---|---|
+| **A** | probe >= 0.5 **and** 3/3 catalytic triad | **40** |
+| **B** | probe >= 0.5 and 2/3 triad | 74 |
+| **C** | probe >= 0.5, triad <= 1/3 | 51 |
+
+Top five: probe 0.930 `GQSGG` 607 aa PE-film · 0.913 `GYSMG` 439 aa PE-film · 0.879 `GQSGG`
+528 aa PE-film · 0.834 `GYSMG` 430 aa Marine · 0.832 `GFTNG` 552 aa PE-film. All 3/3 triad,
+pocket activation 0.83-0.92.
+
+#### Three findings worth keeping
+
+**1 · The probe enriched for the plastizyme elbow without being told to.** Plastizyme-style
+elbow variants (`G[HWYFDENQ]S[MQA]G`) are 2.9% of the 30,000 pool but **42.5% of Tier A** —
+a **14.7x enrichment**. The motif was never an input to the probe, only to the generic
+`GxSxG` pre-filter.
+
+| set | plastizyme-style elbow |
+|---|---|
+| all 30,000 | 866 (2.9%) |
+| tier A | 17/40 (**42.5%**) |
+| tier B | 26/74 (35.1%) |
+| tier C | 9/51 (17.6%) |
+
+**2 · Tier A concentrates in the enrichment biomes.** From equal 10,000-sequence samples:
+**21 PE-film, 15 Marine, 4 Engineered.** The polyethylene-film in-situ enrichment yields 5x
+the Tier A candidates of the engineered-plastic metagenome. Tiers B and C are flat across
+biomes (22/23/29 and 14/21/16), so the skew is specific to the strongest tier.
+
+**3 · The two-stage filter separates the tiers on independent evidence.** Pocket-latent
+activation, which is not part of the tier definition: **median 0.76 in Tier A against 0.49 in
+Tier C**. Of 165 candidates above threshold only 40 have a complete triad; the 51 in Tier C
+have probe confidence with no mechanistic support — the pattern that was noise in four of
+five pilot cases.
+
+#### The anomaly to chase
+
+The **highest raw score in the entire run is 0.938 with only 2/3 triad** — Ser ok (act 0.97),
+His ok (0.82), **Asp misses** (act 0.80, lands on G not D). 341 aa, engineered biome, elbow
+`GYTEG`. It ranks 41st rather than 1st because tiering puts complete triads first.
+
+Either a genuine variant triad (a Glu-for-Asp substitution would not be scored by our
+`D/E` rule if the geometry differs), or a probe artifact. This is precisely the case the
+mechanistic evidence exists to flag, and it is the first candidate worth looking at by hand.
+
+#### Honest framing
+
+- **Nominations, not discoveries.** No experimental validation exists for any of the 165.
+- **Base rate.** The probe was trained at 47.8% prevalence; a metagenome's true rate is far
+  lower, so precision here is much worse than the 0.830 benchmark. **Rank, not threshold.**
+- **No homology comparison.** BLAST was not run, so we cannot say whether these would have
+  been found by sequence search. That claim requires a separate run against the 542 known.
+- **Nothing here is a novel fold.** Everything passed a GxSxG pre-filter, so all 30,000 are
+  esterase-like by construction. The screen ranks within that family.
+
+Artifact: `https://claude.ai/artifact/9UVa672uQUXExrESd2xvtv` — 165 ranked candidates,
+filterable by tier and biome, per-candidate evidence cards, full provenance and funnel.
+Data: `data/mgnify/screen30k_{set.tsv,scored.jsonl,funnel.json,payload.json}`.
+
+**Next:** BLAST the 40 Tier A candidates against the 542 known to populate the
+"probe yes, homology no" cell; ESMFold the top 10 to check the triad is spatially assembled;
+hand-inspect the 0.938 anomaly.
+
+---
+
+### 19. Prospective metagenomic screen — MGnify plastisphere, 500 candidates (2026-09-29)
+
+First application of the pipeline to sequences that are not in any curated database.
+**Result: no candidate scores as high as a typical known plastizyme, and one candidate has
+a full evidence stack that homology search misses.** Both halves matter.
+
+#### Where the sequences came from
+
+UniProt is not a viable source: it holds **28** proteins under metagenome taxa in total, and
+`PF01083` (cutinase domain, unreviewed) is 96% already named "cutinase" and 78% fungal —
+screening it would rediscover the training family. Metagenomic proteins live in MGnify/IMG-M.
+
+MGnify has 14 plastic-related studies; three have assemblies with predicted CDS:
+
+| study | biome | assemblies used |
+|---|---|---|
+| MGYS00005625 | Engineered — plastic metagenome (PRJEB15404) | 2 |
+| MGYS00006544 | Marine — genomic signatures (PRJNA777294) | 2 |
+| MGYS00005970 | Lab enrichment — polyethylene film, in situ marine | 2 |
+
+#### Funnel — `src/biopet_sae/fetch_metagenome.py`
+
+| step | remaining |
+|---|---|
+| 1 · predicted CDS across 6 assemblies | 2,104,436 |
+| 2 · length 50-1000, standard amino acids | 1,864,531 |
+| 3 · exact duplicates removed | 1,837,819 |
+| 4 · contains a **GxSxG** nucleophile elbow | 240,964 |
+| 5 · not >=90% identical to any of our 388 positives | 240,961 (**3 dropped**) |
+| 6 · family-deduplicated at 90% (mmseqs, one rep per cluster) | 207,316 |
+| 7 · **random sample, seed 0** | **500** |
+
+**The elbow filter uses the generic motif, not our training variants.** Filtering on
+`G[HWYFDENQ]S[MQA]G` would pre-select for what the model already knows and make any hit
+partly circular. Of the 500 sampled, only **16 (3.2%)** carry a plastizyme-style elbow, and
+there are **335 distinct** elbow 5-mers — so the set is fold-enriched but not motif-enriched.
+Biome balance: 200 engineered / 163 marine / 137 PE-film.
+
+**Only 3 of 240,964 were near-identical to a known positive.** The plastisphere does not
+contain copies of our training set.
+
+#### Scoring — `src/biopet_sae/score_screen.py`
+
+Probe refit on train only (C=1e-2, eta0=1e-4), BLASTp against the 303 training positives,
+SAE triad localisation with the learned offsets, pocket-latent activation.
+
+| probe threshold | candidates |
+|---|---|
+| >= 0.9 | **0** |
+| >= 0.7 | **0** |
+| >= 0.5 | 4 |
+| >= 0.3 | 15 |
+| >= 0.1455 (shipped) | 42 |
+
+**Median score 0.032, maximum 0.582.** For reference our 42 test positives had median 0.60
+and max 0.97 — **the best metagenomic candidate scores below the median known plastizyme.**
+
+#### The four cells
+
+| | count |
+|---|---|
+| probe YES, BLAST no — *the interesting cell* | **5** |
+| probe YES, BLAST yes — both agree | 10 |
+| probe no, BLAST yes — homology only | 16 |
+| probe no, BLAST no | 469 |
+
+#### The one candidate with a complete evidence stack
+
+`MGYA00572563 | ERZ1644704.2386-NODE-2386`, engineered-plastic biome, 477 aa:
+
+| evidence | value |
+|---|---|
+| probe score | 0.324 |
+| **BLASTp** | **e = 0.09, 31% identity — above the 3.16e-2 cutoff, so homology MISSES it** |
+| catalytic Ser | latent 9529 peak 229, act **1.04**, +1 -> **S** |
+| catalytic Asp | latent 2661 peak 427, act 0.69, +3 -> **D** |
+| catalytic His | latent 7734 peak 456, act 0.78, +1 -> **H** |
+| pocket latents | mean activation **0.98** — the highest in the whole screen |
+| elbow | `GYSLG` |
+
+Full triad located, strongest pocket signal of all 500, and BLASTp would not return it.
+That is exactly the cell the detection result predicts the probe should win in.
+
+**The other four in that cell are noise** — all 0/3 triad with activations of 0.01-0.08, i.e.
+the latents are silent. The probe scored them 0.30-0.35 on dense embedding alone with no
+mechanistic support. **This is the two-stage filter earning its place:** probe score alone
+would have nominated five, the SAE evidence rejects four.
+
+#### Honest reading
+
+1. **No strong hit.** Max 0.582 against a test-positive median of 0.60. If the plastisphere
+   contains an obvious novel plastizyme, this screen did not find it.
+2. **One real nomination**, with probe + full triad + top pocket signal + BLAST disagreement.
+   It is a hypothesis for wet-lab testing, not a discovery.
+3. **The base-rate caveat stands.** At the shipped 0.1455 threshold this set yields 42
+   candidates, most of which will be ordinary esterases (specificity 0.871 -> ~13% FP rate).
+   Reporting the *ranking* rather than a thresholded call is the only defensible framing.
+4. **7 of 500 have 3/3 triad**; 356 have 0/3. The SAE evidence is a strong filter and is
+   nearly independent of the probe score.
+
+Data: `data/mgnify/screen_set.tsv`, `screen_scored.json`, `screen_funnel.json`,
+raw assemblies cached under `data/mgnify/raw/`.
+
+**Next:** ESMFold the top ~10 to check the triad is spatially assembled; pull more
+assemblies for breadth; check whether the top candidates skew to one phylum (the
+P86325 failure mode).
+
+---
+
+### 18. Evidence table for the localisation claim, and what each stage rests on (2026-09-29)
+
+#### The four-stage pipeline
+
+| stage | question it answers | data | held out? | result |
+|---|---|---|---|---|
+| **1 · Selection** | does this latent separate degraders from non-degraders? | train+val, 707 seqs | no | 7 of 10,240 survive: delta >= 0.9 **and** bootstrap top-10 >= 75% |
+| **2 · Offset** | is the catalytic residue a constant distance from the peak? | train+val, 14 curated | no | Ser **+1** (13/14), Asp **+3** (9/14), His **+1** (12/14) |
+| **3 · Localisation** | does that offset transfer to unseen proteins? | 45 held-out | **yes** | **57/59 proteins = 96.6%** (residues: 164 exact, 8 recovered) |
+| **4 · Null** | would an arbitrary latent do as well? | all 10,240 | **yes** | median latent 4.4%; ours 98-100%, nothing higher |
+
+**Stage 2 is what assigns each latent to a residue, not stage 3.** Each latent has exactly one
+target whose gap repeats (13/14, 9/14, 12/14); against its other two targets the modal gap
+appears 5-6 times out of 14 — a mode of noise. See the cross-localisation caveat below.
+
+#### Evidence table, ranked by strength
+
+The 1,326-esterase result is **deliberately excluded here** — see the note after the table.
+
+| evidence | n | ground truth | plastizymes? | held out? | result |
+|---|---|---|---|---|---|
+| train+val curated `ACT_SITE` | 18 | **experimental** | yes, ours | no | Ser 17/18, Asp 11/18, His 15/18 |
+| **test curated `ACT_SITE`** | **2** | **experimental** | yes, ours | **yes** | 2/2, 2/2, 2/2 |
+| **46 unseen curated cutinases** | **46** | **experimental** | family, not ours | **yes** | Ser **100%**, Asp **97.8%**, His **95.7%** |
+| test GxSxG motif | 38 | motif (regex) | yes, ours | **yes** | **38/38** |
+| random-latent null | 10,240 | — | — | **yes** | median 4.4% vs ours 98-100% |
+
+**Why the 1,326 curated esterases are not in this table.** They support the claim *"9529 fires
+at the catalytic serine"* — and for that they are the best evidence available, since only 20
+of our 388 positives are curated at all. But they are **not plastizymes**, so they cannot
+support the headline. If these latents localise the catalytic machinery of any esterase, they
+are esterase features, not plastizyme features — which is the finding of 14d/15/16, and the
+reason the probe reaches only 0.79 AU-ROC against genuine esterases. **That result belongs
+under limitations, not results.**
+
+**The uncomfortable fact the table exposes:** experimental ground truth on *held-out
+plastizymes* is **2 sequences**. Everything larger is the wrong organisms (1,326), the wrong
+strictness (38, motif-based), or not held out (18). The 46 cutinases are the best compromise —
+curated, experimental, outside our data, right family — but they are curated *cutinases*, not
+enzymes assayed on plastic, and calling them plastizymes would overstate it.
+
+#### The motifs behind the 38/38
+
+Latent 9529's peak-centred 5-mers across the 38 held-out test positives that carry an elbow
+(4 of the 42 have no GxSxG at all):
+
+| motif | n | in train+val? | | motif | n | in train+val? |
+|---|---|---|---|---|---|---|
+| GHSQG | 9 | yes | | GISLG | 2 | **no** |
+| GHSMG | 8 | yes | | GNSVG | 1 | **no** |
+| GDSAG | 3 | yes | | GFSLG | 1 | **no** |
+| GYSQG | 3 | yes | | GHSFG | 1 | **no** |
+| GESAG | 2 | yes | | GCSLG | 1 | **no** |
+| GWSMG | 2 | yes | | GLSLG | 1 | **no** |
+| GHSLG, GFSQG, GQSMG, GFSMG | 1 each | yes | | | | |
+
+**7 of the 38 hits use a variant that appears in no train+val positive** — `GISLG`, `GNSVG`,
+`GFSLG`, `GHSFG`, `GCSLG`, `GLSLG`. The latent is locating the structural position, not
+matching a memorised string.
+
+**CORRECTION:** earlier write-ups (including the atlas footer through v17) cited `GDSAG` and
+`GESAG` as unseen variants. They are not — both occur in train+val. The list above is correct.
+
+#### Cross-localisation caveat
+
+Each selected latent localises more than one triad residue on the held-out set:
+
+| latent | Ser loc | Asp loc | His loc | assigned |
+|---|---|---|---|---|
+| 9529 | **100.0%** | 4.5% | 4.4% | Ser — specific on both measures |
+| 2661 | 86.7% | **100.0%** | 93.3% | Asp — on offset consistency only |
+| 7734 | 84.4% | 4.5% | **97.8%** | His |
+
+**Why 2661 scores 86.7% on Ser despite a 5/14 offset fit:** 43 of the 45 held-out entries are
+external cutinases, one homogeneous family, where the triad separations collapse to a single
+value so *any* fixed offset transfers. Across the diverse train+val set the separations are
+bimodal (Ser->Asp `[45, 46x5, 55x5, 82]`, sd 60.8), which is why 9529's Asp gap fits only
+6/14. **"Held out" here means unseen, not diverse** — that inflates every cross-target rate.
+Only 9529 is specific on both measures; 2661 and 7734 rest on offset consistency plus motif.
+
+---
+
+### 17. THE NULL for SAE residue localisation — random latents under the identical procedure (2026-09-29)
+
+**This is the control the localisation headline depends on. Nothing in sections 15-16 means
+anything without it, and it was missing until the user asked for it.**
+
+#### Why the earlier null was not enough
+
+Section 16 reported a null that randomised the *position*: start the +/-3 search from a random
+residue instead of the latent's peak, 3.2% hit rate. That tests **the search rule** — "is the
+window just finding serines by luck?" It does not test **the interpretation** — "is this
+latent special, or would any of the 10,240 do as well?" The headline claim is that particular
+dictionary elements encode catalytic residues, and only the second question addresses it.
+
+#### The procedure, applied identically to all 10,240 latents
+
+1. One ESM-2 + SAE pass per protein gives a `residues x 10,240` activation table; take the
+   **argmax down each column** -> one peak position per latent per protein.
+2. **Gap** = `curated_residue_index - peak`. Note: the *curated* UniProt residue, never the
+   nearest serine — using "nearest" would be circular, since these proteins are serine-rich.
+3. **Learn the rule on train+val only** (the 14 entries with curated sites): the modal gap.
+4. **Apply to the 45 held-out entries** (2 test + 43 external cutinases), scoring exact, or
+   recovered by sliding +/-3 to the nearest residue of the right type.
+5. Repeat for every latent -> a distribution to place the chosen ones against.
+
+Every random latent gets **the same advantages**: its own fitted offset, the same window, and
+no activation requirement (the real pipeline demands non-zero activation at the slid
+position; the null does not). The null is therefore run under a *looser* rule than the real
+result it is compared to.
+
+#### Result
+
+| latent | role | its rate | random mean | random median | 95th pct | scoring higher | tied |
+|---|---|---|---|---|---|---|---|
+| 9529 | Ser | **100.0%** | 12.0% | **4.4%** | 60.0% | **0 / 10,240** | 25 |
+| 2661 | Asp | **100.0%** | 12.6% | **4.5%** | 56.8% | **0 / 10,240** | 7 |
+| 7734 | His | **97.8%** | 9.7% | **4.4%** | 57.8% | **0 / 10,240** | 8 |
+
+A typical latent localises at **4.4%**. The three chosen ones are at 98-100%, and nothing in
+the dictionary beats them. **Percentiles: 99.75%, 99.92%, 99.91%.**
+
+**Shuffled-position null** (real latents, protein A's peak applied to protein B, 200
+permutations): Ser mean 12.0% / max 31.1%; Asp 7.5% / 31.8%; His 6.5% / 40.0%. Against
+97.8-100% real.
+
+#### Worked example of why the null was needed
+
+| | latent 9529 | latent 77 (arbitrary) |
+|---|---|---|
+| gaps across the 14 train+val | `[1]x13, [18]x1` | `[-125,-111,-110,-105x3,-58,-51x4,26,67x2]` |
+| modal gap | **+1** (13/14) | **-51** (4/14, a mode of noise) |
+| held-out exact | **45/45 = 100%** | **26/45 = 58%** |
+
+**A nonsense rule still scores 58%**, because a wrong position plus a +/-3 window often lands
+on *some* serine. That is the whole reason the floor has to be measured: without it, 97% looks
+decisive when the relevant comparison is not zero.
+
+#### The caveat that must travel with the number
+
+**These latents are not unique — they sit at a ceiling shared with others.** 26 latents tie
+with 9529 on Ser, 8 with 2661, 9 with 7734; roughly 600 exceed 50%. Characterising the 26:
+
+- only **2** peak where 9529 peaks (6590, at the same residue in 58/59 proteins, offset +1)
+- **10** correlate above 0.8 with 9529 (897 at 0.983, 2804 at 0.980, 6778 at 0.975) —
+  redundant copies, the SAE splitting one feature across dictionary elements
+- the rest peak elsewhere and reach the serine by their own constant; learned offsets across
+  the 26 span **-13 to +26**, i.e. a ~40-residue window around the elbow
+- 9529 is **not** the strongest of them (2925 has higher mean activation, 0.513 vs 0.508).
+  What distinguishes it is offset consistency: +1 in 13 of 14, landing on the `x` of GxSxG
+
+**So the supportable sentence is a percentile, not a superlative:** *"latent 9529 localises
+the catalytic serine better than 99.75% of the 10,240 dictionary elements"* — **not** "the SAE
+learned a serine detector". The catalytic-serine neighbourhood is encoded redundantly by a
+family of latents; 9529 is its most precisely positioned member. This is consistent with the
+0.88 mean correlation already recorded among the six selected latents (section 16).
+
+Data: `data/sae_650M_L33/null_random_latents.npz` (per-latent rates for all 10,240 x 3
+targets), `null_random_latents_summary.json`, `all_latent_peaks.npy` (59 x 10,240 peaks).
+Script: `scratchpad/null_features.py`.
+
+---
+
+### 16. Neighbourhood protocol — the latents do not fire on the catalytic residue (2026-09-29)
+
+**Supersedes the framing in section 15.** Section 15's numbers are arithmetically right but
+described wrongly, in two ways that a user's questions exposed.
+
+**(a) Conditioning on "the latent fired" was invalid.** §15 reported accuracy over proteins
+with activation > 0.3. Every protein in that set has a curated three-residue catalytic site,
+so a latent that stays silent is a *miss*, not a case to exclude. Selecting on the model's
+own output discards the failures. Honest denominators, all 1,326: **Ser 78.9%, Asp 35.9%,
+His 63.1%**.
+
+**(b) The +2 offset "correction" in §15 was wrong for this project's domain.** It was fitted
+across 1,326 esterases, of which 1,266 are not cutinases. Per family:
+
+| subset | n | offset +2 | offset +3 |
+|---|---|---|---|
+| cutinases (EC 3.1.1.74) | 60 | 13.6% | **86.4%** |
+| all curated EC 3.1.1.- | 1326 | **35.9%** | 17.7% |
+| non-cutinases | 1266 | **36.9%** | 14.5% |
+
+The original **+3 is correct for cutinases**, which is what the project is about. Excluding
+the 14 entries that are our own training positives, on **46 unseen curated cutinases**:
+Ser 100%, Asp 97.8%, His 95.7%.
+
+#### The finding that changes the claim
+
+**None of the three latents fires on the catalytic residue.** Activation at the curated
+residue, relative to the latent's own peak:
+
+| latent | act at peak | act at the residue | ratio | >=50% of peak |
+|---|---|---|---|---|
+| 9529 Ser | 0.634 | 0.152 | 0.24 | **0/59** |
+| 2661 Asp | 0.311 | 0.078 | 0.25 | **0/58** |
+| 7734 His | 0.380 | 0.186 | 0.49 | 13/59 |
+
+Each peaks one to three positions *before* the residue; by the residue itself the signal has
+decayed to a quarter (Ser, Asp) or half (His). So the defensible claim is **"fires in a
+catalytic-residue neighbourhood, from which the residue sits at a learned offset"** — not
+"detects the catalytic serine". The localisation results stand; the mechanism is motif
+detection plus a fixed offset, and that must be stated.
+
+This also reframes the Asp problem: the mapping was always indirect, so whether the Asp lands
+at +2 or +3 depends on local motif spacing, which differs by family. No single constant works.
+
+#### Scoring protocol now used
+
+1. Offsets learned on **train+val only**: Ser +1 (13/14), Asp +3 (9/14), His +1 (12/14).
+2. **exact** — learned offset lands on the curated residue.
+3. **recovered** — it does not, so slide **±3** to the nearest residue of the right type
+   (S / D-E / H) with non-zero activation. Counted separately, never merged into exact.
+4. **miss** — no such residue in the window.
+
+**Null control:** the same ±3 rule from a *random* position hits the curated residue in
+**3.2%** of trials (41/1,280). Widening to ±5 recovers nothing further, so the window is
+correcting one-residue offsets rather than searching until something is found.
+
+**The unit is the protein, not the residue.** Within a protein the three latents agree
+**100% of the time** — either all three residues are located or none is, because a canonical
+alpha/beta-hydrolase active site either is present or it is not. Counting 176 residue-level
+outcomes treats one protein-level failure as three. Corrected to per-protein reporting:
+
+| view | proteins | fully located | partial | none | rate |
+|---|---|---|---|---|---|
+| test (held out) | 2 | **2** | 0 | 0 | 100.0% |
+| external cutinases | 43 | **42** | 1 | 0 | 97.7% |
+| train+val (in-sample) | 14 | **13** | 0 | 1 | 92.9% |
+| **all** | **59** | **57** | **1** | **1** | **96.6%** |
+
+Residue-level breakdown beneath it, retained for detail but **not** as the headline:
+
+| view | n pairs | exact | recovered | miss |
+|---|---|---|---|---|
+| test | 6 | 5 | 1 | 0 |
+| external cutinases | 128 | 125 | 2 | 1 |
+| train+val | 42 | 34 | 5 | 3 |
+| **all** | **176** | **164** | **8** | **4** |
+
+**CORRECTION (2026-09-29).** This was previously reported as **172/176 = 97.7%**, which
+inflates the denominator roughly threefold: with pairwise agreement of 1.0 between the three
+latents, 176 residue outcomes are not 176 independent observations. The headline is now
+**57/59 proteins = 96.6%**. The rate barely moves; the sample size does. Same error class as
+counting sequences instead of homology components, which was flagged for the test split and
+then reproduced here.
+
+The 2 failing proteins: **BPS0016** (PAM), a polyamidase and the only
+non-alpha/beta-hydrolase present, where all three latents are silent (peak activations 0.070,
+0.054, 0.007) — they signal "not my motif" rather than firing wrongly; and **Q9Y7G8**
+(cutinase pbc1), which misses on His only.
+
+Data: `data/sae_650M_L33/atlas_views.json`, `learned_offsets.json`.
+Atlas rebuilt around this protocol: `https://claude.ai/artifact/KcdU4xp1QUSvuWzrL4pGwS`
+(v13) — three views, methods section, per-tier reporting.
+
+#### Two UI bugs found and fixed, both from duplicated state
+
+1. **Chip ordering.** `Object.keys()` orders integer-like keys numerically, not by insertion,
+   so latent chips interleaved the triad and pocket groups and the page opened on the wrong
+   latent. Fixed by carrying an explicit `order` field and sorting on it.
+2. **Offset drift.** The caption read `latents[j].offset` while scoring used
+   `protocol.offsets[j]`; the first was left at +2 from the reverted correction, so the page
+   scored at +3 while displaying "+2". Both now derive from one source, and a build check
+   fails if they diverge — it compares both config fields against the `off_used` recorded on
+   every scored entry.
+
+Same root cause in both: one fact stored twice. Worth checking for on any further edits.
+
+#### Independent audit of the atlas (2026-09-29)
+
+A separate agent audited the page against the payload. Its two HIGH findings were
+re-verified here before acting, and both were real.
+
+**1. The footer printed `undefined` nine times.** `line()` read `aggregate[view][j].hit`,
+but the aggregate objects carry only `exact` / `recovered` / `miss` / `n`. The per-*entry*
+records do have `hit`, and the top scoreboard computes `exact+recovered` correctly — so the
+key existed in one place and not the other. Third instance of the duplicated-state bug in
+this page. Fixed, and a build check now recomputes the footer from per-entry tiers.
+
+**2. BPS0393's structure was the wrong protein.** PDB **4OYL** was attached to this cutinase
+(A0A075B5G4), but only **57.7%** of mapped positions agree in residue identity — it is a
+homolog, not this sequence. Comparison across all 14 view-1 entries:
+
+| entry | PDB | residue-identity agreement |
+|---|---|---|
+| BPS0239 / BPS0054 / BPS0269 | 3VIS / 3GBS / 4EB0 | 100% |
+| BPS0282 (IsPETase) | 5XFY | 99.6% |
+| **BPS0393** | **4OYL** | **57.7%** |
+
+The 3D view was drawing a label reading `Ser106` on a **glutamine**, `Asp161` on an
+**alanine**, and `His175` on a **serine**, and colouring ~42% of the cartoon by the wrong
+residue mapping. Its `dist_to_ser` values were also meaningless. The structure fields were
+removed; the entry now renders sequence-only like the test and external views. **Scoring is
+unaffected** — localisation runs on sequence, so BPS0393 remains 3/3 exact and the
+aggregate stays 172/176. view1 keeps 14 entries, 13 of which now carry a structure.
+
+**A finding that touches a scientific claim.** The "What survived" table read as the top six
+latents by Cliff's delta. It was not:
+
+| latent | delta | bootstrap top-10 | shown before? |
+|---|---|---|---|
+| 5271 | 0.93405 | 78.5% | **no — outranks 7734** |
+| 7734 | 0.93381 | **79.5%** | yes |
+
+Latent **5271 outranks 7734** and was omitted, and **7734 itself falls below the 80%
+stability cutoff** — `polyester_latents.json` records the strictly stable set as
+`[9529, 5201, 2661, 7942, 5255]`, five latents, without the His one. 5271 is now shown with
+a note that it was never localised, and the page states plainly that 7734's selection is
+weaker than the others' and that it is scored because its His assignment was established
+independently.
+
+**Also corrected:** the pocket geometry was stated as "8–10 Å" and "23–74 residues" as if
+those were ranges; the true medians are 8.1/9.6/9.0 Å and 21.5/68/74 residues, with observed
+ranges 6.0–24.5 Å and 11–128. Now reported as medians with ranges. Plus four presentation
+bugs: `uniprot_shift` was applied in the side panel but not the sequence ruler or tooltip
+(a 38-residue discrepancy on the three Q6A0I4 entries); the "N-terminal residues absent"
+explanation was emitted for negative offsets, where it is backwards; the ruler's
+`padStart(4)` was collapsed by HTML white-space handling so the monospace columns did not
+line up; and recovered rows showed the curated residue in the predicted column, now
+`T225 → D224`.
+
+**Not applied:** the audit flagged a missing doctype/charset/viewport. The Artifact publish
+skeleton supplies those, and the tool explicitly requires the file to omit them, so adding
+them would break publishing. The checked-in file is only valid as artifact input.
+
+**Verified clean by the audit** (independently recomputed): all 12 aggregate groups match the
+per-entry tiers; `latents[j].offset` and `protocol.offsets[j]` agree after the earlier fix;
+chip ordering holds; every activation array length equals its sequence length with no nulls
+or NaNs; `pred == peak+1+off_used` for all 175 scored records; all view2/view3 guards for
+missing structure fields are complete; max sequence length 386, so `Math.max.apply` is safe.
+
+---
+
+### 15. Triad latents verified at n=1,326 against curated UniProt active sites (2026-09-29)
+
+> **Framing superseded by section 16 (2026-09-29).** The counts below are correct but were
+> reported over a denominator conditioned on the latent firing, which hides genuine misses,
+> and the +2 Asp offset recorded here is wrong for cutinases (+3 is right). Read section 16
+> first; the table below is retained because the wrong version was stated before the right
+> one.
+
+The His and Asp assignments previously rested on 12 train/val sequences plus 2 in test.
+Tested properly: every reviewed UniProt entry in `ec:3.1.1.-` carrying **three** curated
+`ACT_SITE` residues — **1,326 proteins**, overwhelmingly ordinary esterases and lipases,
+not plastizymes. ESM-2 650M L33 + SAE, 424 s on MPS.
+
+**Counting only proteins where the latent actually fires (activation > 0.3):**
+
+| latent | role | offset | exact | within 1 | n firing |
+|---|---|---|---|---|---|
+| 9529 | catalytic **Ser** | +1 | **865/866 (99.9%)** | 100% | 866 |
+| 7734 | catalytic **His** | +1 | **556/595 (93.4%)** | 99% | 595 |
+| 2661 | catalytic **Asp** | **+2** | **393/566 (69.4%)** | 85% | 566 |
+
+**Accuracy tracks activation strength**, the key evidence that these are real detectors
+rather than coincidences:
+
+| latent | top 25% act | 2nd | 3rd | bottom 25% |
+|---|---|---|---|---|
+| 9529 | **100%** | 100% | — | 17% |
+| 7734 | **98%** | 71% | — | 14% |
+| 2661 | **77.7%** | 48.9% | 15.9% | 0.9% |
+
+Bottom-quartile mean activation is 0.03 — the latent is silent there, so its argmax is
+arbitrary. Pooling silent with firing proteins is what made the first pass look bad.
+
+**CORRECTION — latent 2661's offset was wrong.** Published at **+3**, derived from
+hand-checking three enzymes (LCC, IsPETase, Cut190) where +3 happened to fit. Across 1,326
+proteins the correct offset is **+2**: aspartate is the modal residue at peak+2 in **522**
+of them, against 299 at peak+3. At +3 it scores 18% exact overall; at +2, 36% overall and
+69% among firing proteins.
+
+*I also first reported this as "2661 is not really an Asp detector."* That was wrong — an
+artefact of pooling firing and silent proteins. Conditioned on firing it is a genuine, if
+less precise, Asp detector. Recorded because the wrong version was stated before the right
+one.
+
+**Why this matters.** These latents fire on the catalytic machinery of esterases in
+general, not of plastizymes specifically — 1,326 mostly-non-degrading proteins is the
+direct evidence. It confirms the reading in 14d: the interpretable features explain "is
+this a hydrolase with a canonical active site," the *easy* half of the polyester decision.
+They do not explain the probe's advantage over BLASTp on hard esterase negatives.
+
+Data: `data/sae_650M_L33/triad_verification_uniprot.json` (summary + per-entry).
+Atlas updated to the corrected offset: `https://claude.ai/artifact/KcdU4xp1QUSvuWzrL4pGwS`.
+
+---
+
 ## Current status (checkpoint, 2026-09-28)
 
 Dataset built and verified. Detection half complete: dense-embedding probes at two model
@@ -1313,15 +2675,23 @@ superseded by the artifacts above.
 ## Still open
 
 Ordered by what the thesis needs, not by effort. Thesis = (1) detection, (2) mechanistic
-explanation of the detector. **Half 1 is done and wins. Half 2 currently explains the wrong
-classifier.**
+explanation of the detector. **Half 1 is done and wins. Half 2 now explains the right
+classifier, but only its easy half.**
 
-1. **The SAE analysis is still on the PET-only task — this is the main gap.**
-   `sae_differential.py` contrasts `1_pet` vs `2b_aliphatic`, i.e. the framing that was
-   *abandoned* when the task became polyester-vs-non-degrader. Every SAE result on file
-   (the six latents, the triad mapping, the 0.5108 coin flip, the structure viewer) describes
-   a classifier that is no longer the headline. The explainability half does not yet attach
-   to the detection half. Nothing else on this list matters as much.
+1. **The explanation covers the easy half of the decision, not the hard half.**
+   *(Updated 2026-09-29 — the previous item here, "the SAE analysis is still on the PET-only
+   task," is done.)* Selection was redone on polyester labels: Cliff's delta on train+val
+   with a 200-draw bootstrap, test untouched, frozen before localisation. Six latents —
+   three on the catalytic triad (verified at n=1,326, section 15), three on the substrate
+   pocket 8–10 Å from the Ser. **But the six correlate at 0.88 and 90% of their variance is
+   one axis**, "how canonical is this active site." Against genuine esterases they reach
+   only **0.79 AU-ROC on test**, and **no latent survives the bootstrap** on that contrast
+   (63 negatives in train+val). So the probe's advantage over BLASTp on hard esterase
+   negatives — the actual contribution — remains unexplained. Places left to look:
+   layers 18/24, where structure rather than local motif dominates; and rebuilding tier 3
+   on fold so the contrast has more than 23 clean test negatives (Still open #8).
+   `SAE_Feature_Interpretation.md` still documents the superseded PET-only run and needs
+   rewriting against the polyester results.
 2. **No causal test of any latent.** All SAE evidence is correlational — latents were
    *selected* for separating classes, then shown to fire on the catalytic triad. Importance
    is only established by ablating a latent against a **reconstruction baseline** (not a raw
@@ -1385,6 +2755,34 @@ actually won.
    This is the cheapest change that makes the central design argument actually true.
 7. Optional, in priority order: middle-layer SAEs (#5), PEZy-miner verified negatives (#7,
    which also addresses #9), the unannotated UniProt triage (#11).
+
+## References
+
+Bibliographic details verified against the Crossref API (2026-10-11), not quoted from memory.
+Mechanistic summaries below come from abstracts and reviews of these works; **check the
+wording in [R1] before quoting it as the basis for the exclusion rule.**
+
+| id | citation | DOI | what it supports here |
+|---|---|---|---|
+| **R1** | Danso D, Chow J, Streit WR (2019). Plastics: environmental and biotechnological perspectives on microbial degradation. *Applied and Environmental Microbiology* 85, e01095-19. | `10.1128/AEM.01095-19` | The hydrolysable-backbone vs C–C-backbone split. **Cite for the 109 non-ester-mechanism exclusions.** |
+| **R2** | Wei R, Zimmermann W (2017). Microbial enzymes for the recycling of recalcitrant petroleum-based plastics: how far are we? *Microbial Biotechnology* 10, 1308–1322. | `10.1111/1751-7915.12710` | PE, PS, PUR and PET compared side by side. Context for why PET is 82.5% of our positives — literature coverage, not our sampling. Open access, PMC5658625. |
+| **R3** | Wei R, Tiso T, Bertling J, O'Connor K, Blank LM, Bornscheuer UT (2020). Possibilities and limitations of biotechnological plastic degradation and recycling. *Nature Catalysis* 3, 867–871. | `10.1038/s41929-020-00521-w` | "Progress is still limited to polyesters." **Cite for the task definition** — polyester degraders, not plastic degraders. |
+| **R4** | Buchholz PCF, Feuerriegel G, Zhang H, Perez-Garcia P, Nover L-L, Chow J, Streit WR, Pleiss J (2022). Plastics degradation by hydrolytic enzymes: the plastics-active enzymes database — PAZy. *Proteins* 90, 1443–1456. | `10.1002/prot.26325` | **Cite for the positive set** — PAZy supplies 340 of 388 positives. Also derives PET-active sequence motifs by profile HMM over ~3,000 homologs, which is the published precedent for the unimplemented HMMER baseline (Still open #3). |
+
+**Two points in [R4] worth carrying into the write-up.** It reports fewer than 50
+experimentally verified plastics-active enzymes at publication, which is the cleanest external
+statement of how small this field's ground truth is and why a homology-dense positive set is
+unavoidable rather than careless. And its profile-HMM approach over PET-active homologs is
+prior art for the HMMER baseline — worth reading before implementing it, since matching their
+protocol makes the comparison interpretable.
+
+**Still uncited.** No reference yet for: the α/β hydrolase fold definition behind `IPR029058`;
+the catalytic mechanism of peptidyl-tRNA hydrolase and D-aminoacyl-tRNA deacylase asserted in
+§22c (currently resting on UniProt's own `ACT_SITE` annotations, which is adequate but is not
+a citation); PHA depolymerase lineage distinctness; and the identity-threshold choice behind
+the 40% split ceiling.
+
+---
 
 ## Environment notes
 

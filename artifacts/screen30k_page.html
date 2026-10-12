@@ -1,0 +1,752 @@
+<title>Metagenomic Plastizyme Screen</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f3f6f4; --surface:#fcfcfb; --surface-2:#eef2f0; --ink:#0b0b0b; --ink-2:#3d4e47;
+  --muted:#52514e; --rule:#d8e0dc; --rule-2:#c3cec9;
+  --accent:#0f6b57; --accent-soft:#e3f0ec;
+  --probe:#2a78d6; --blast:#eb6834;
+  --pos:#15803d; --pos-bg:#e6f4ea; --warn:#a3341f; --warn-bg:#fbeae6;
+  --shadow:0 1px 2px rgba(19,32,27,.06),0 4px 14px rgba(19,32,27,.05);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#0e1614; --surface:#15211d; --surface-2:#1b2a25; --ink:#e8efec; --ink-2:#b9c7c1;
+  --muted:#8b9a94; --rule:#25352f; --rule-2:#33453e;
+  --accent:#5ec5a8; --accent-soft:#12302a;
+  --probe:#3987e5; --blast:#d95926;
+  --pos:#5fd18a; --pos-bg:#12301f; --warn:#e8836b; --warn-bg:#331a15;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0e1614; --surface:#15211d; --surface-2:#1b2a25; --ink:#e8efec; --ink-2:#b9c7c1;
+  --muted:#8b9a94; --rule:#25352f; --rule-2:#33453e;
+  --accent:#5ec5a8; --accent-soft:#12302a;
+  --probe:#3987e5; --blast:#d95926;
+  --pos:#5fd18a; --pos-bg:#12301f; --warn:#e8836b; --warn-bg:#331a15;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;line-height:1.55;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:980px;margin:0 auto;padding-inline:16px;padding-block:0 56px}
+h1,h2,h3{text-wrap:balance;margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+
+header{border-bottom:1px solid var(--rule);background:var(--surface);margin-bottom:24px}
+.hd{max-width:980px;margin:0 auto;padding:26px 16px 22px}
+.eyebrow{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);
+  font-weight:600;margin-bottom:9px}
+h1{font-size:clamp(24px,3.4vw,34px);font-weight:700;letter-spacing:-.021em;line-height:1.12}
+.sub{margin-top:12px;max-width:70ch;color:var(--ink-2);font-size:15px}
+.sub b{color:var(--ink);font-weight:600}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:10px;
+  margin-top:20px}
+.tile{background:var(--surface-2);border:1px solid var(--rule);border-radius:9px;padding:11px 13px}
+.tile .k{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+  font-weight:600;line-height:1.3}
+.tile .v{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;
+  font-size:21px;font-weight:600;letter-spacing:-.02em;margin-top:5px;line-height:1.1}
+.tile .n{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.35}
+.tile.a .v{color:var(--pos)}
+.tile.b .v{color:var(--accent)}
+.tile.c .v{color:var(--muted)}
+
+.step{background:var(--surface);border:1px solid var(--rule);border-radius:11px;
+  box-shadow:var(--shadow);margin-bottom:18px;overflow:hidden}
+.sh{display:flex;align-items:baseline;gap:11px;padding:15px 16px 0}
+.sn{font:700 12px/1 "IBM Plex Mono",monospace;color:var(--bg);background:var(--accent);
+  border-radius:5px;padding:5px 7px;flex:none}
+.sh h2{font-size:17px;font-weight:600;letter-spacing:-.015em}
+.sb{padding:10px 16px 18px}
+.sb p{margin:0 0 10px;font-size:14px;color:var(--ink-2);max-width:76ch}
+.sb p b{color:var(--ink);font-weight:600}
+.sb ul{margin:0 0 10px;padding-left:20px;font-size:14px;color:var(--ink-2)}
+.sb li{margin-bottom:6px}
+code{font-family:"IBM Plex Mono",monospace;font-size:12.5px;background:var(--surface-2);
+  padding:1px 5px;border-radius:3px;border:1px solid var(--rule)}
+h3{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+  font-weight:600;margin:17px 0 7px}
+
+details.prov{background:var(--surface);border:1px solid var(--rule);border-radius:11px;
+  box-shadow:var(--shadow);margin-bottom:18px}
+details.prov>summary{cursor:pointer;list-style:none;padding:14px 16px;font-size:15px;
+  font-weight:600;display:flex;align-items:center;gap:9px}
+details.prov>summary::-webkit-details-marker{display:none}
+details.prov>summary::before{content:"▸";color:var(--accent);font-size:12px}
+details.prov[open]>summary::before{content:"▾"}
+details.prov>summary span.hint{font-weight:400;font-size:12.5px;color:var(--muted)}
+.provbody{padding:0 16px 18px;border-top:1px solid var(--rule);margin-top:2px;padding-top:12px}
+.provbody p{margin:0 0 10px;font-size:14px;color:var(--ink-2);max-width:76ch}
+.provbody p b{color:var(--ink);font-weight:600}
+
+table{width:100%;border-collapse:collapse;font-size:13px;margin:4px 0 12px}
+th,td{text-align:right;padding:6px 9px;border-bottom:1px solid var(--rule)}
+th:first-child,td:first-child{text-align:left}
+th{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);
+  font-weight:600;white-space:nowrap}
+td.mono,th.mono{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+tr.tot td{font-weight:600;border-top:1.5px solid var(--rule-2)}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+.flag{border-left:3px solid var(--warn);background:var(--warn-bg);padding:11px 14px;
+  border-radius:0 7px 7px 0;margin:12px 0;font-size:13.5px;color:var(--ink-2)}
+.flag b{color:var(--warn)}
+.good{border-left:3px solid var(--pos);background:var(--pos-bg);padding:11px 14px;
+  border-radius:0 7px 7px 0;margin:12px 0;font-size:13.5px;color:var(--ink-2)}
+.good b{color:var(--pos)}
+
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;
+  margin:6px 0 4px}
+.lg{border:1px solid var(--rule);border-radius:9px;padding:11px 13px;background:var(--surface-2)}
+.lg .lt{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.lg p{margin:0;font-size:12.5px;color:var(--ink-2);max-width:none}
+
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:22px;
+  font:600 11px/1 "IBM Plex Mono",monospace;border-radius:5px;padding:4px 6px;
+  border:1px solid var(--rule-2)}
+.badge.A{color:var(--pos);background:var(--pos-bg);border-color:var(--pos)}
+.badge.B{color:var(--accent);background:var(--accent-soft);border-color:var(--accent)}
+.badge.C{color:var(--muted);background:var(--surface-2)}
+
+.filters{display:flex;flex-direction:column;gap:8px;padding:12px 16px 0}
+.frow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.flab{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);
+  font-weight:600;margin-right:2px;flex:none}
+button.fb{font-family:inherit;font-size:12px;cursor:pointer;color:var(--ink-2);
+  background:var(--surface-2);border:1px solid var(--rule-2);border-radius:18px;
+  padding:4px 11px;font-weight:500;line-height:1.4}
+button.fb:hover{border-color:var(--accent);color:var(--accent)}
+button.fb[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);
+  color:var(--bg);font-weight:600}
+.count{font-size:12.5px;color:var(--muted);padding:10px 16px 0}
+.count b{color:var(--ink);font-weight:600;font-family:"IBM Plex Mono",monospace}
+
+table.rank{font-size:12.5px;min-width:760px;margin:0}
+table.rank th{position:sticky;top:0;background:var(--surface);z-index:1;
+  border-bottom:1.5px solid var(--rule-2)}
+table.rank tbody tr.row{cursor:pointer}
+table.rank tbody tr.row:hover td{background:var(--surface-2)}
+table.rank tbody tr.row.open td{background:var(--accent-soft)}
+table.rank td{white-space:nowrap;vertical-align:middle}
+.caret{color:var(--muted);font-size:10px;display:inline-block;width:9px}
+tr.row.open .caret{color:var(--accent)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;
+  vertical-align:middle;background:var(--rule-2)}
+.dot.t3{background:var(--pos)}
+.dot.t2{background:var(--accent)}
+.dot.t1{background:var(--rule-2)}
+.elb{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.02em}
+.elb.pz{color:var(--pos);background:var(--pos-bg);border:1px solid var(--pos);
+  border-radius:4px;padding:1px 5px;font-weight:600}
+.bar{display:inline-block;height:6px;border-radius:3px;background:var(--probe);
+  vertical-align:middle;margin-right:6px;min-width:2px}
+.sid{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--muted)}
+.biome{font-size:12px;color:var(--ink-2);white-space:normal;min-width:150px}
+.biome .acc{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--muted);
+  display:block}
+
+tr.evrow>td{padding:0;background:var(--surface-2)}
+.ev{padding:14px 16px 16px;border-bottom:1px solid var(--rule-2);white-space:normal}
+.ev h4{margin:0 0 8px;font-size:11px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--muted);font-weight:600}
+.lat{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:9px;
+  margin-bottom:12px}
+.lc{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:9px 11px}
+.lc .lid{font:600 11px/1.2 "IBM Plex Mono",monospace;color:var(--accent)}
+.lc .lrole{font-size:11px;color:var(--muted);margin-bottom:6px}
+.lc .lv{font-size:12px;color:var(--ink-2);font-family:"IBM Plex Mono",monospace;
+  font-variant-numeric:tabular-nums;line-height:1.7}
+.ok{color:var(--pos);font-weight:600}
+.miss{color:var(--warn);font-weight:600}
+.evmeta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip{font-size:11.5px;background:var(--surface);border:1px solid var(--rule);
+  border-radius:16px;padding:3px 10px;color:var(--ink-2)}
+.chip b{color:var(--ink);font-family:"IBM Plex Mono",monospace;font-weight:600}
+.seq{font-family:"IBM Plex Mono",monospace;font-size:12px;line-height:1.85;
+  letter-spacing:.055em;word-break:break-all;overflow-wrap:anywhere;white-space:normal;
+  background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:10px 12px;
+  color:var(--ink-2)}
+.seq .r{font-weight:600;color:var(--bg);background:var(--accent);border-radius:2px;
+  padding:1px 0;box-shadow:0 0 0 1px var(--accent)}
+.seq .r.m{background:var(--warn);box-shadow:0 0 0 1px var(--warn)}
+.seq .e{text-decoration:underline;text-decoration-thickness:2px;
+  text-underline-offset:3px;text-decoration-color:var(--pos);color:var(--ink);font-weight:600}
+.seqkey{font-size:11.5px;color:var(--muted);margin:8px 0 0;display:flex;flex-wrap:wrap;gap:12px}
+.seqkey span{display:inline-flex;align-items:center;gap:5px}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px}
+.sw.a{background:var(--accent)}
+.sw.w{background:var(--warn)}
+.sw.u{border-bottom:2px solid var(--pos);border-radius:0;height:7px}
+.nodata{padding:26px 16px;text-align:center;color:var(--muted);font-size:13.5px}
+
+footer{margin-top:26px;padding-top:18px;border-top:1px solid var(--rule);font-size:13px;
+  color:var(--ink-2);max-width:80ch}
+footer h3{margin-top:0}
+footer ul{margin:0;padding-left:20px}
+footer li{margin-bottom:7px}
+footer b{color:var(--ink);font-weight:600}
+@media (max-width:520px){
+  .tile .v{font-size:18px}
+  .sb,.provbody,.filters,.count{padding-left:14px;padding-right:14px}
+}
+</style>
+
+<header>
+  <div class="hd">
+    <div class="eyebrow">Application · metagenomic screen</div>
+    <h1>Metagenomic Plastizyme Screen</h1>
+    <p class="sub">The polyester-degradation probe — ESM-2 650M embeddings, trained on
+      PAZy/PlasticDB positives against fold-matched esterases — was run over unannotated
+      predicted proteins from three MGnify metagenome studies. Sequences were filtered to
+      α/β-hydrolase candidates carrying a nucleophile-elbow motif, collapsed to one
+      representative per 90%-identity family, and sampled. Each candidate is reported with
+      its probe score <b>and</b> the three SAE catalytic latents that the mechanistic half of
+      this project identified, so a nomination can be read as
+      <b>"scored high <i>and</i> the triad is where the latents say it should be"</b> rather
+      than a bare number. <b>Nothing here has been tested in a laboratory.</b></p>
+    <div class="tiles" id="tiles"></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<details class="prov">
+  <summary>Provenance and curation funnel <span class="hint">— studies, biomes, filters, family collapse</span></summary>
+  <div class="provbody">
+    <h3>Source studies</h3>
+    <p>Predicted CDS were pulled from MGnify assembly analyses. Nothing here is from UniProt
+      or from any curated plastizyme database — the point of the screen is sequences that no
+      one has annotated.</p>
+    <div class="tw"><table id="studies"></table></div>
+
+    <h3>Curation funnel</h3>
+    <p>Each step is a hard filter applied in order. The counts below are the population
+      surviving that step.</p>
+    <div class="tw"><table id="funnel"></table></div>
+
+    <h3>Family collapse</h3>
+    <p><b>One sequence was kept per 90%-identity family.</b> Metagenome assemblies are
+      redundant — the same enzyme recurs across samples, contigs and near-identical strains —
+      so without collapsing, a single abundant protein would occupy a large block of the
+      shortlist and the ranking would report assembly depth rather than distinct candidates.
+      The retained representative is the one sequence standing in for its whole family; the
+      family itself may contain many near-duplicates.</p>
+    <p>Candidates within reach of a <i>known</i> plastizyme were also removed, so what remains
+      cannot be a rediscovery of a database entry. That is a deliberate handicap: the easiest
+      true positives to find are exactly the ones excluded.</p>
+
+    <h3>Score distribution across the scored pool</h3>
+    <div class="tw"><table id="pcts"></table></div>
+  </div>
+</details>
+
+<div class="step">
+  <div class="sh"><span class="sn">01</span><h2>Tier definitions</h2></div>
+  <div class="sb">
+    <p>Tiers combine the two independent lines of evidence. The probe score is the classifier;
+      the triad count is how many of the three catalytic residues the SAE latents place on a
+      residue of the correct identity. A tier is <i>not</i> a confidence interval — it is a
+      description of which evidence agreed.</p>
+    <div class="legend" id="legend"></div>
+    <p style="margin-top:12px">Every tier requires <b>probe ≥ <span id="thr" class="mono">—</span></b>.
+      Candidates below the threshold are not shortlisted at all. Within a tier, rows are
+      ordered by probe score.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><span class="sn">02</span><h2>Ranked shortlist</h2></div>
+  <div class="filters">
+    <div class="frow" id="ftier"><span class="flab">Tier</span></div>
+    <div class="frow" id="fstudy"><span class="flab">Biome</span></div>
+  </div>
+  <div class="count" id="count"></div>
+  <div class="sb" style="padding-top:10px">
+    <div class="tw" id="tablewrap">
+      <table class="rank" id="tbl">
+        <thead><tr>
+          <th>Rank</th><th>Tier</th><th class="mono">Probe</th><th class="mono">Triad</th>
+          <th class="mono">Pocket</th><th>Elbow</th><th class="mono">Len</th>
+          <th>Study / biome</th><th>ID</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="nodata" id="empty" hidden>No candidates match these filters.</div>
+    <p style="margin-top:12px;font-size:12.5px">Click any row to open its evidence card.
+      <b>Pocket</b> is the mean activation of the substrate-pocket latent set;
+      <b>Elbow</b> is the nucleophile-elbow pentapeptide, highlighted in green when it is one
+      of the motifs seen in known plastizymes.</p>
+  </div>
+</div>
+
+<footer>
+  <h3>How to read this</h3>
+  <ul>
+    <li><b>These are computational nominations, not discoveries.</b> Every row is a
+      hypothesis about a sequence. Ranking them is the entire claim.</li>
+    <li><b>No experimental validation exists.</b> Not one candidate has been expressed,
+      purified or assayed against a polyester. A high score is not evidence of activity.</li>
+    <li><b>Precision here is far worse than the benchmark.</b> The probe was trained and
+      evaluated at <b>47.8% prevalence</b>. The true rate of polyester-degrading enzymes in a
+      metagenome is orders of magnitude lower, so at the same sensitivity the great majority
+      of positives at this threshold will be false. The test-set precision does not transfer.</li>
+    <li><b>Rank matters more than the absolute score.</b> The score is uncalibrated off-domain
+      and the reference line in the header shows how far below trained positives these sit.
+      Read the list as an ordering of what to try first, not as a probability.</li>
+    <li><b>BLAST was deliberately not run,</b> so no homology comparison is shown. A BLAST
+      column would make the shortlist collapse toward whatever is nearest a known plastizyme —
+      the opposite of the question being asked. The screen is left as the probe's own opinion,
+      audited by the SAE latents.</li>
+  </ul>
+</footer>
+</div>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function(){
+  "use strict";
+
+  var LATENTS=[
+    {id:"9529",role:"Ser nucleophile",res:"S"},
+    {id:"2661",role:"Asp acid",res:"D"},
+    {id:"7734",role:"His base",res:"H"}
+  ];
+  var TIERS=["A","B","C"];
+
+  function parseData(){
+    var el=document.getElementById("data");
+    if(!el) return null;
+    var raw=(el.textContent||"").trim();
+    if(!raw||raw.indexOf("__"+"DATA"+"__")===0) return null;
+    try{ return JSON.parse(raw); }catch(e){ return null; }
+  }
+  var D=parseData()||{};
+  var META=(D&&typeof D.meta==="object"&&D.meta)?D.meta:{};
+  var CANDS=Array.isArray(D.candidates)?D.candidates.filter(function(c){
+    return c&&typeof c==="object";
+  }):[];
+  var STUDIES=(META.studies&&typeof META.studies==="object")?META.studies:{};
+  var TC=(META.tier_counts&&typeof META.tier_counts==="object")?META.tier_counts:{};
+  var THR=num(META.threshold);
+
+  function num(v){ var n=typeof v==="number"?v:parseFloat(v); return isFinite(n)?n:null; }
+  function esc(s){
+    return String(s==null?"":s).replace(/[&<>"']/g,function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+  function fint(v){
+    var n=num(v);
+    return n===null?"—":Math.round(n).toLocaleString("en-US");
+  }
+  function f2(v){ var n=num(v); return n===null?"—":n.toFixed(2); }
+  function f3(v){ var n=num(v); return n===null?"—":n.toFixed(3); }
+  function tierOf(c){
+    var t=String(c.tier==null?"":c.tier).toUpperCase();
+    return TIERS.indexOf(t)>=0?t:"C";
+  }
+  function studyLabel(acc){
+    if(!acc) return "unassigned";
+    var s=STUDIES[acc];
+    return (typeof s==="string"&&s)?s:acc;
+  }
+  function biomeShort(acc){
+    var lab=studyLabel(acc);
+    var i=lab.indexOf(" — ");
+    return i>0?lab.slice(0,i):lab;
+  }
+  function shortId(c){
+    var id=String(c.cand_id==null?"":c.cand_id);
+    if(!id) return "—";
+    var parts=id.split("|");
+    var last=parts[parts.length-1]||id;
+    return last.length>18?last.slice(0,17)+"…":last;
+  }
+
+  /* ---------- header tiles ---------- */
+  (function(){
+    var host=document.getElementById("tiles");
+    if(!host) return;
+    var nA=num(TC.A), nB=num(TC.B), nC=num(TC.C);
+    var pc=(META.score_percentiles&&typeof META.score_percentiles==="object")?META.score_percentiles:{};
+    var ref=(META.reference&&typeof META.reference==="object")?META.reference:{};
+    var best=num(pc.max), refMed=num(ref.test_positive_median);
+    var bestNote;
+    if(best!==null&&refMed!==null){
+      bestNote="vs "+refMed.toFixed(2)+" median of trained test positives";
+    }else if(refMed!==null){
+      bestNote="reference median "+refMed.toFixed(2);
+    }else{
+      bestNote="best score in the scored pool";
+    }
+    var t=[
+      {k:"Candidates scored",v:fint(META.n_scored),n:"sampled from the curated pool",cls:""},
+      {k:"Families in pool",v:fint(META.n_families),n:"90%-identity families eligible",cls:""},
+      {k:"Tier A",v:nA===null?"—":fint(nA),n:"probe ≥ threshold, 3/3 triad",cls:"a"},
+      {k:"Tier B",v:nB===null?"—":fint(nB),n:"probe ≥ threshold, 2/3 triad",cls:"b"},
+      {k:"Tier C",v:nC===null?"—":fint(nC),n:"probe ≥ threshold, ≤1/3 triad",cls:"c"},
+      {k:"Best probe score",v:best===null?"—":best.toFixed(2),n:bestNote,cls:""}
+    ];
+    host.innerHTML=t.map(function(x){
+      return '<div class="tile '+x.cls+'"><div class="k">'+esc(x.k)+'</div>'+
+             '<div class="v">'+esc(x.v)+'</div><div class="n">'+esc(x.n)+'</div></div>';
+    }).join("");
+  })();
+
+  /* ---------- provenance: studies ---------- */
+  (function(){
+    var tb=document.getElementById("studies");
+    if(!tb) return;
+    var taken=(META.per_study_taken&&typeof META.per_study_taken==="object")?META.per_study_taken:{};
+    var accs=Object.keys(STUDIES);
+    Object.keys(taken).forEach(function(a){ if(accs.indexOf(a)<0) accs.push(a); });
+    if(!accs.length){ tb.innerHTML='<tr><td>No study metadata supplied.</td></tr>'; return; }
+    var rows=['<tr><th>accession</th><th>biome / description</th><th class="mono">families taken</th></tr>'];
+    var tot=0, any=false;
+    accs.forEach(function(a){
+      var n=num(taken[a]);
+      if(n!==null){ tot+=n; any=true; }
+      rows.push('<tr><td class="mono">'+esc(a)+'</td><td>'+esc(studyLabel(a))+
+        '</td><td class="mono">'+(n===null?"—":fint(n))+'</td></tr>');
+    });
+    if(any&&accs.length>1){
+      rows.push('<tr class="tot"><td>total</td><td></td><td class="mono">'+fint(tot)+'</td></tr>');
+    }
+    tb.innerHTML=rows.join("");
+  })();
+
+  /* ---------- provenance: funnel ---------- */
+  (function(){
+    var tb=document.getElementById("funnel");
+    if(!tb) return;
+    var f=(META.funnel&&typeof META.funnel==="object")?META.funnel:{};
+    var keys=Object.keys(f).sort(function(a,b){
+      var ra=parseInt(a,10), rb=parseInt(b,10);
+      if(isFinite(ra)&&isFinite(rb)&&ra!==rb) return ra-rb;
+      return a<b?-1:(a>b?1:0);
+    });
+    if(!keys.length){ tb.innerHTML='<tr><td>No funnel supplied.</td></tr>'; return; }
+    var first=num(f[keys[0]]);
+    var rows=['<tr><th>step</th><th class="mono">surviving</th><th class="mono">% of step 1</th></tr>'];
+    keys.forEach(function(k){
+      var n=num(f[k]);
+      var pretty=k.replace(/^\d+[_\-.]?\s*/,"").replace(/_/g," ");
+      var pct="—";
+      if(n!==null&&first!==null&&first>0){
+        var p=100*n/first;
+        pct=(p>=10?p.toFixed(1):(p>=1?p.toFixed(2):p.toFixed(3)))+"%";
+      }
+      rows.push('<tr><td>'+esc(pretty)+'</td><td class="mono">'+(n===null?"—":fint(n))+
+        '</td><td class="mono">'+esc(pct)+'</td></tr>');
+    });
+    tb.innerHTML=rows.join("");
+  })();
+
+  /* ---------- provenance: percentiles ---------- */
+  (function(){
+    var tb=document.getElementById("pcts");
+    if(!tb) return;
+    var pc=(META.score_percentiles&&typeof META.score_percentiles==="object")?META.score_percentiles:{};
+    var ref=(META.reference&&typeof META.reference==="object")?META.reference:{};
+    var rows=[['median (p50)',pc.p50],['p90',pc.p90],['p99',pc.p99],['max',pc.max]];
+    var out=['<tr><th>statistic</th><th class="mono">probe score</th></tr>'];
+    var any=false;
+    rows.forEach(function(r){
+      if(num(r[1])===null) return;
+      any=true;
+      out.push('<tr><td>'+esc(r[0])+' · scored pool</td><td class="mono">'+f2(r[1])+'</td></tr>');
+    });
+    [['test-positive median',ref.test_positive_median],['test-positive max',ref.test_positive_max]].forEach(function(r){
+      if(num(r[1])===null) return;
+      any=true;
+      out.push('<tr><td>'+esc(r[0])+' · trained reference</td><td class="mono">'+f2(r[1])+'</td></tr>');
+    });
+    tb.innerHTML=any?out.join(""):'<tr><td>No score distribution supplied.</td></tr>';
+  })();
+
+  /* ---------- tier legend ---------- */
+  (function(){
+    var host=document.getElementById("legend");
+    var thrEl=document.getElementById("thr");
+    if(thrEl) thrEl.textContent=THR===null?"threshold":THR.toFixed(2);
+    if(!host) return;
+    var t=THR===null?"the threshold":THR.toFixed(2);
+    var defs=[
+      {t:"A",h:"Strongest",p:"Probe ≥ "+t+" <b>and</b> all <b>3 of 3</b> catalytic triad "+
+        "residues located — each latent peaks on a residue of the expected identity."},
+      {t:"B",h:"Partial",p:"Probe ≥ "+t+" <b>and</b> <b>2 of 3</b> triad residues located. "+
+        "One latent peaks off-target or on the wrong residue."},
+      {t:"C",h:"Weakest",p:"Probe ≥ "+t+" but the triad is <b>1 of 3 or none</b>. The "+
+        "classifier is alone in its opinion; the mechanistic evidence does not corroborate it."}
+    ];
+    host.innerHTML=defs.map(function(d){
+      var n=num(TC[d.t]);
+      return '<div class="lg"><div class="lt"><span class="badge '+d.t+'">Tier '+d.t+'</span>'+
+        '<span style="font-size:12.5px;font-weight:600">'+esc(d.h)+'</span>'+
+        '<span style="font-size:11.5px;color:var(--muted);margin-left:auto" class="mono">'+
+        (n===null?"":fint(n))+'</span></div><p>'+d.p+'</p></div>';
+    }).join("");
+  })();
+
+  /* ---------- filters + table ---------- */
+  var state={tier:"all",study:"all"};
+  var tbody=document.getElementById("tbody");
+  var emptyEl=document.getElementById("empty");
+  var wrapEl=document.getElementById("tablewrap");
+  var countEl=document.getElementById("count");
+  var openKey=null;
+
+  function studyKeys(){
+    var seen={},out=[];
+    CANDS.forEach(function(c){
+      var s=String(c.study==null?"":c.study);
+      if(s&&!seen[s]){ seen[s]=1; out.push(s); }
+    });
+    Object.keys(STUDIES).forEach(function(s){ if(!seen[s]){ seen[s]=1; out.push(s); } });
+    return out;
+  }
+
+  function mkButtons(host,items,key){
+    if(!host) return;
+    items.forEach(function(it){
+      var b=document.createElement("button");
+      b.type="button";
+      b.className="fb";
+      b.textContent=it.label;
+      if(it.title) b.title=it.title;
+      b.setAttribute("aria-pressed",String(state[key]===it.val));
+      b.addEventListener("click",function(){
+        state[key]=it.val;
+        openKey=null;
+        Array.prototype.forEach.call(host.querySelectorAll("button.fb"),function(o){
+          o.setAttribute("aria-pressed","false");
+        });
+        b.setAttribute("aria-pressed","true");
+        render();
+      });
+      host.appendChild(b);
+    });
+  }
+
+  (function(){
+    var tierItems=[{label:"All",val:"all"}];
+    TIERS.forEach(function(t){
+      var n=num(TC[t]);
+      tierItems.push({label:"Tier "+t+(n===null?"":" ("+fint(n)+")"),val:t});
+    });
+    mkButtons(document.getElementById("ftier"),tierItems,"tier");
+
+    var sItems=[{label:"All biomes",val:"all"}];
+    studyKeys().forEach(function(s){
+      sItems.push({label:biomeShort(s),val:s,title:s+" — "+studyLabel(s)});
+    });
+    mkButtons(document.getElementById("fstudy"),sItems,"study");
+  })();
+
+  function visible(){
+    return CANDS.filter(function(c){
+      if(state.tier!=="all"&&tierOf(c)!==state.tier) return false;
+      if(state.study!=="all"&&String(c.study==null?"":c.study)!==state.study) return false;
+      return true;
+    });
+  }
+
+  function keyOf(c,i){ return String(c.cand_id==null?("i"+i):c.cand_id)+"#"+i; }
+
+  function triadCell(c){
+    var h=num(c.triad_hits);
+    var n=h===null?null:Math.max(0,Math.min(3,Math.round(h)));
+    var cls=n===3?"t3":(n===2?"t2":"t1");
+    return '<span class="dot '+cls+'"></span>'+(n===null?"—":n+"/3");
+  }
+
+  function probeCell(c){
+    var p=num(c.probe);
+    if(p===null) return '—';
+    var w=Math.max(2,Math.round(Math.max(0,Math.min(1,p))*38));
+    return '<span class="bar" style="width:'+w+'px"></span>'+p.toFixed(3);
+  }
+
+  function elbowCell(c){
+    var e=String(c.elbow==null?"":c.elbow);
+    if(!e) return '<span class="elb">—</span>';
+    var pz=num(c.plastizyme_elbow)===1;
+    return '<span class="elb'+(pz?" pz":"")+'"'+
+      (pz?' title="motif seen in known plastizymes"':'')+'>'+esc(e)+'</span>';
+  }
+
+  function rowHtml(c,i){
+    var t=tierOf(c);
+    var k=keyOf(c,i);
+    var acc=String(c.study==null?"":c.study);
+    return '<tr class="row'+(openKey===k?" open":"")+'" data-k="'+esc(k)+'" data-i="'+i+'" tabindex="0">'+
+      '<td class="mono"><span class="caret">'+(openKey===k?"▾":"▸")+'</span>'+
+        (num(c.rank)===null?(i+1):fint(c.rank))+'</td>'+
+      '<td><span class="badge '+t+'">'+t+'</span></td>'+
+      '<td class="mono">'+probeCell(c)+'</td>'+
+      '<td class="mono">'+triadCell(c)+'</td>'+
+      '<td class="mono">'+f2(c.pocket_act)+'</td>'+
+      '<td>'+elbowCell(c)+'</td>'+
+      '<td class="mono">'+fint(c.length)+'</td>'+
+      '<td class="biome">'+esc(biomeShort(acc))+
+        (acc?'<span class="acc">'+esc(acc)+'</span>':'')+'</td>'+
+      '<td class="sid" title="'+esc(String(c.cand_id==null?"":c.cand_id))+'">'+
+        esc(shortId(c))+'</td></tr>';
+  }
+
+  /* resolve a latent peak to a 0-based sequence index, preferring one whose
+     residue matches the predicted identity (peaks may be 0- or 1-based). */
+  function resolveIdx(seq,peak,res){
+    var p=num(peak);
+    if(p===null) return null;
+    p=Math.round(p);
+    if(!seq) return p;
+    var cands=[p,p-1,p+1];
+    for(var j=0;j<cands.length;j++){
+      var q=cands[j];
+      if(q>=0&&q<seq.length&&res&&seq.charAt(q).toUpperCase()===String(res).toUpperCase()) return q;
+    }
+    return (p>=0&&p<seq.length)?p:null;
+  }
+
+  function seqHtml(c){
+    var seq=(typeof c.sequence==="string")?c.sequence.replace(/\s+/g,"").toUpperCase():"";
+    if(!seq) return '<div class="seq">Sequence not included for this candidate.</div>';
+    var n=seq.length;
+    var mark=new Array(n);
+    var i;
+    for(i=0;i<n;i++) mark[i]=0;
+
+    LATENTS.forEach(function(L){
+      var res=c[L.id+"_res"];
+      var idx=resolveIdx(seq,c[L.id+"_peak"],res);
+      if(idx===null||idx<0||idx>=n) return;
+      var okFlag=num(c[L.id+"_ok"]);
+      var matches=res?seq.charAt(idx).toUpperCase()===String(res).toUpperCase():false;
+      var good=okFlag===null?matches:okFlag===1;
+      mark[idx]=mark[idx]===1?1:(good?1:2);
+    });
+
+    var und=new Array(n);
+    for(i=0;i<n;i++) und[i]=false;
+    var elb=String(c.elbow==null?"":c.elbow).replace(/\s+/g,"").toUpperCase();
+    if(elb){
+      var at=seq.indexOf(elb);
+      if(at>=0){ for(i=at;i<at+elb.length&&i<n;i++) und[i]=true; }
+    }
+
+    var out=[],buf="",curM=-1,curU=null;
+    function flush(){
+      if(!buf) return;
+      var cls=[];
+      if(curM===1) cls.push("r");
+      else if(curM===2) cls.push("r","m");
+      if(curU) cls.push("e");
+      out.push(cls.length?'<span class="'+cls.join(" ")+'">'+esc(buf)+'</span>':esc(buf));
+      buf="";
+    }
+    for(i=0;i<n;i++){
+      if(mark[i]!==curM||und[i]!==curU){ flush(); curM=mark[i]; curU=und[i]; }
+      buf+=seq.charAt(i);
+    }
+    flush();
+    return '<div class="seq">'+out.join("")+'</div>'+
+      '<p class="seqkey"><span><i class="sw a"></i>predicted triad residue (latent agrees)</span>'+
+      '<span><i class="sw w"></i>latent peak, residue mismatch</span>'+
+      '<span><i class="sw u"></i>nucleophile elbow</span>'+
+      '<span class="mono">'+n+' aa</span></p>';
+  }
+
+  function evHtml(c){
+    var seq=(typeof c.sequence==="string")?c.sequence.replace(/\s+/g,"").toUpperCase():"";
+    var cards=LATENTS.map(function(L){
+      var act=num(c[L.id+"_act"]);
+      var res=c[L.id+"_res"];
+      var pk=num(c[L.id+"_peak"]);
+      var okFlag=num(c[L.id+"_ok"]);
+      var idx=resolveIdx(seq,pk,res);
+      var matches=(seq&&idx!==null&&res)?seq.charAt(idx).toUpperCase()===String(res).toUpperCase():null;
+      var ok=okFlag===null?matches:okFlag===1;
+      var verdict=ok===null?'<span style="color:var(--muted)">unknown</span>'
+        :(ok?'<span class="ok">ok</span>':'<span class="miss">miss</span>');
+      return '<div class="lc"><div class="lid">latent '+esc(L.id)+'</div>'+
+        '<div class="lrole">'+esc(L.role)+' · expects '+esc(L.res)+'</div>'+
+        '<div class="lv">peak &nbsp;'+(pk===null?"—":fint(pk))+'<br>'+
+        'act &nbsp;&nbsp;'+(act===null?"—":act.toFixed(2))+'<br>'+
+        'res &nbsp;&nbsp;'+esc(res==null?"—":res)+' &nbsp;'+verdict+'</div></div>';
+    }).join("");
+
+    var chips=[];
+    chips.push('<span class="chip">pocket activation <b>'+f2(c.pocket_act)+'</b></span>');
+    chips.push('<span class="chip">triad <b>'+
+      (num(c.triad_hits)===null?"—":Math.round(num(c.triad_hits))+"/3")+'</b></span>');
+    chips.push('<span class="chip">elbow <b>'+esc(String(c.elbow==null?"—":c.elbow))+'</b>'+
+      (num(c.plastizyme_elbow)===1?' · known plastizyme motif':'')+'</span>');
+    chips.push('<span class="chip">probe <b>'+f3(c.probe)+'</b></span>');
+    if(c.cand_id) chips.push('<span class="chip">id <b>'+esc(String(c.cand_id))+'</b></span>');
+
+    return '<div class="ev"><h4>Catalytic latents</h4><div class="lat">'+cards+'</div>'+
+      '<h4>Evidence summary</h4><div class="evmeta">'+chips.join("")+'</div>'+
+      '<h4>Sequence</h4>'+seqHtml(c)+'</div>';
+  }
+
+  function render(){
+    if(!tbody) return;
+    var vis=visible();
+    if(countEl){
+      var total=CANDS.length;
+      countEl.innerHTML='Showing <b>'+fint(vis.length)+'</b> of <b>'+fint(total)+
+        '</b> shortlisted candidates'+
+        (state.tier==="all"&&state.study==="all"?"":" (filtered)")+'.';
+    }
+    if(!vis.length){
+      tbody.innerHTML="";
+      if(wrapEl) wrapEl.hidden=true;
+      if(emptyEl){
+        emptyEl.hidden=false;
+        emptyEl.textContent=CANDS.length?"No candidates match these filters."
+          :"No candidates in this screen yet.";
+      }
+      return;
+    }
+    if(wrapEl) wrapEl.hidden=false;
+    if(emptyEl) emptyEl.hidden=true;
+
+    var html=[];
+    vis.forEach(function(c,i){
+      var k=keyOf(c,CANDS.indexOf(c));
+      html.push(rowHtml(c,CANDS.indexOf(c)));
+      if(openKey===k){
+        html.push('<tr class="evrow"><td colspan="9">'+evHtml(c)+'</td></tr>');
+      }
+    });
+    tbody.innerHTML=html.join("");
+  }
+
+  if(tbody){
+    tbody.addEventListener("click",function(e){
+      var tr=e.target&&e.target.closest?e.target.closest("tr.row"):null;
+      if(!tr) return;
+      var k=tr.getAttribute("data-k");
+      openKey=(openKey===k)?null:k;
+      render();
+    });
+    tbody.addEventListener("keydown",function(e){
+      if(e.key!=="Enter"&&e.key!==" ") return;
+      var tr=e.target&&e.target.closest?e.target.closest("tr.row"):null;
+      if(!tr) return;
+      e.preventDefault();
+      var k=tr.getAttribute("data-k");
+      openKey=(openKey===k)?null:k;
+      render();
+    });
+  }
+
+  render();
+})();
+</script>

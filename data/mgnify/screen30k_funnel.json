@@ -1,0 +1,26 @@
+{
+ "funnel": {
+  "1_predicted_cds": 2104436,
+  "4_elbow_unique_in_range": 240964,
+  "5_not_near_a_known_plastizyme": 240961,
+  "6_families": 207316,
+  "7_sampled": 30000
+ },
+ "studies": {
+  "MGYS00005625": "Engineered \u2014 plastic metagenome (PRJEB15404)",
+  "MGYS00006544": "Marine \u2014 genomic signatures (PRJNA777294)",
+  "MGYS00005970": "Lab enrichment \u2014 PE film, in situ marine"
+ },
+ "per_study_families": {
+  "MGYS00005625": 82884,
+  "MGYS00005970": 51385,
+  "MGYS00006544": 73047
+ },
+ "per_study_taken": {
+  "MGYS00005625": 10000,
+  "MGYS00005970": 10000,
+  "MGYS00006544": 10000
+ },
+ "seed": 0,
+ "max_identity": 0.9
+}

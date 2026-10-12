@@ -1,0 +1,426 @@
+<title>BioPET-SAE Dataset v1</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: single reading column, house palette shared with the other BioPET-SAE pages */
+:root{
+  --bg:#f3f6f4; --surface:#fcfcfb; --surface-2:#eef2f0; --ink:#0b0b0b; --ink-2:#3d4e47;
+  --muted:#52514e; --rule:#d8e0dc; --rule-2:#c3cec9;
+  --accent:#0f6b57; --accent-soft:#e3f0ec;
+  --pos:#15803d; --pos-bg:#e6f4ea; --warn:#a3341f; --warn-bg:#fbeae6;
+  --shadow:0 1px 2px rgba(19,32,27,.06),0 4px 14px rgba(19,32,27,.05);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#0e1614; --surface:#15211d; --surface-2:#1b2a25; --ink:#e8efec; --ink-2:#b9c7c1;
+  --muted:#8b9a94; --rule:#25352f; --rule-2:#33453e;
+  --accent:#5ec5a8; --accent-soft:#12302a;
+  --pos:#5fd18a; --pos-bg:#12301f; --warn:#e8836b; --warn-bg:#331a15;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0e1614; --surface:#15211d; --surface-2:#1b2a25; --ink:#e8efec; --ink-2:#b9c7c1;
+  --muted:#8b9a94; --rule:#25352f; --rule-2:#33453e;
+  --accent:#5ec5a8; --accent-soft:#12302a;
+  --pos:#5fd18a; --pos-bg:#12301f; --warn:#e8836b; --warn-bg:#331a15;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;line-height:1.55;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:900px;margin:0 auto;padding-inline:20px;padding-block:0 60px}
+h1,h2,h3{text-wrap:balance;margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+
+header{border-bottom:1px solid var(--rule);background:var(--surface);margin-bottom:26px}
+.hd{max-width:900px;margin:0 auto;padding:28px 20px 24px}
+.eyebrow{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);
+  font-weight:600;margin-bottom:9px}
+h1{font-size:clamp(25px,3.4vw,35px);font-weight:700;letter-spacing:-.021em;line-height:1.12}
+.sub{margin-top:12px;max-width:68ch;color:var(--ink-2);font-size:15px}
+.sub b{color:var(--ink);font-weight:600}
+
+.step{background:var(--surface);border:1px solid var(--rule);border-radius:11px;
+  box-shadow:var(--shadow);margin-bottom:18px;overflow:hidden}
+.sh{display:flex;align-items:baseline;gap:11px;padding:15px 18px 0}
+.sh h2{font-size:17px;font-weight:600;letter-spacing:-.015em}
+.sb{padding:10px 18px 18px}
+.sb p{margin:0 0 10px;font-size:14px;color:var(--ink-2);max-width:74ch}
+.sb p b{color:var(--ink);font-weight:600}
+.sb ul,.sb ol{margin:0 0 10px;padding-left:20px;font-size:14px;color:var(--ink-2)}
+.sb li{margin-bottom:6px}
+code{font-family:"IBM Plex Mono",monospace;font-size:12.5px;background:var(--surface-2);
+  padding:1px 5px;border-radius:3px;border:1px solid var(--rule)}
+h3{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+  font-weight:600;margin:17px 0 7px}
+
+table{width:100%;border-collapse:collapse;font-size:13px;margin:4px 0 12px}
+th,td{text-align:right;padding:6px 9px;border-bottom:1px solid var(--rule);min-width:0}
+th:first-child,td:first-child{text-align:left}
+th{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);
+  font-weight:600}
+td.mono,th.mono{font-variant-numeric:tabular-nums}
+tr.tot td{font-weight:600;border-top:1.5px solid var(--rule-2)}
+tr.key td{background:var(--accent-soft)}
+.tw{overflow-x:auto}
+.hi{color:var(--warn);font-weight:600}
+
+.flag{border-left:3px solid var(--warn);background:var(--warn-bg);padding:11px 14px;
+  border-radius:0 7px 7px 0;margin:12px 0;font-size:13.5px;color:var(--ink-2)}
+.flag b{color:var(--warn)}
+.good{border-left:3px solid var(--pos);background:var(--pos-bg);padding:11px 14px;
+  border-radius:0 7px 7px 0;margin:12px 0;font-size:13.5px;color:var(--ink-2)}
+.good b{color:var(--pos)}
+
+.bound{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;
+  margin:4px 0 14px}
+.bcard{background:var(--surface-2);border:1px solid var(--rule-2);border-radius:9px;
+  padding:13px 15px}
+.bnum{font:700 30px/1 "IBM Plex Mono",monospace;color:var(--warn);
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.blab{font-size:12.5px;color:var(--ink-2);margin-top:6px}
+.blab b{color:var(--ink)}
+
+footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);font-size:12.5px;
+  color:var(--muted);max-width:80ch}
+</style>
+
+<header>
+  <div class="hd">
+    <div class="eyebrow">Dataset card · v1 · 2026-10-11</div>
+    <h1>BioPET-SAE Dataset v1</h1>
+    <p class="sub">A homology-bounded benchmark for detecting polyester-degrading enzymes
+      (plastizymes) from protein sequence, with the negative set classified by <b>fold</b>
+      rather than by EC class. <b>847 proteins</b> — 811 modelled, 36 held out. Every number
+      on this page was re-derived from the released file.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="step">
+  <div class="sh"><h2>Read this first</h2></div>
+  <div class="sb">
+    <p>Two properties bound every claim you can make with this dataset. They are not defects
+    to work around — they are the actual difficulty of the problem.</p>
+    <div class="bound">
+      <div class="bcard">
+        <div class="bnum">51</div>
+        <div class="blab">genuinely fold-matched negatives in the whole dataset, and
+          <b>1 of them is in validation</b></div>
+      </div>
+      <div class="bcard">
+        <div class="bnum">66%</div>
+        <div class="blab">of positives sit in <b>one homology component</b> —
+          <code>BPS0190</code>, 256 of 388</div>
+      </div>
+    </div>
+    <p>A classifier that separates plastizymes from random proteins has learned "is this a
+    hydrolase". Only the α/β-hydrolase-fold negatives test the real question, and there are
+    51 of them: 40 train, 1 val, 10 test.</p>
+    <div class="flag"><b>Bootstrap over <code>component</code>, never over proteins.</b> With
+      two thirds of the positives in a single family, a per-protein confidence interval counts
+      that family 256 times. It is wrong, not merely optimistic. In our own run, the per-protein
+      Cliff's δ of 0.72 for the strongest SAE latent fell to 0.12 and its interval spanned zero
+      once resampling respected homology.</div>
+    <p>Together these are why the headline test AU-ROC of 0.9681 becomes <b>0.8167</b> against
+    fold-matched negatives alone, with a 95% CI reaching 0.676.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><h2>Files and columns</h2></div>
+  <div class="sb">
+    <div class="tw"><table>
+      <tr><th>file</th><th>contents</th></tr>
+      <tr><td class="mono">data/release/biopet_sae_dataset_v1.tsv</td>
+          <td>847 rows × 20 columns, sequences included</td></tr>
+      <tr><td class="mono">data/release/biopet_sae_dataset_v1.fasta</td>
+          <td>same sequences; header carries split, class and group</td></tr>
+    </table></div>
+    <p>Rebuild with <code>uv run python -m biopet_sae.build_release</code>, adding
+    <code>--refresh</code> to re-query UniProt instead of reusing the cached annotation.</p>
+    <h3>Columns that matter</h3>
+    <div class="tw"><table>
+      <tr><th>column</th><th>meaning</th></tr>
+      <tr class="key"><td class="mono">negative_group</td>
+          <td><b>the corrected, fold-based negative classification — prefer this over
+          <code>class_label</code></b></td></tr>
+      <tr class="key"><td class="mono">component</td>
+          <td><b>homology component — group by this for any CV or bootstrap</b></td></tr>
+      <tr><td class="mono">y</td><td>1 = degrader (includes <code>heldout_pha</code>), 0 = negative</td></tr>
+      <tr><td class="mono">split</td><td><code>train</code> / <code>val</code> / <code>test</code> / <code>heldout</code></td></tr>
+      <tr><td class="mono">ab_hydrolase_fold</td><td>1 if InterPro <code>IPR029058</code></td></tr>
+      <tr><td class="mono">gxsxg_elbow</td><td>1 if the sequence contains a <code>G.[ST].G</code> nucleophile elbow</td></tr>
+      <tr><td class="mono">n_curated_active_sites</td><td>curated UniProt <code>ACT_SITE</code> count (negatives)</td></tr>
+      <tr><td class="mono">activity_verified</td><td>1 = degradation measured in the literature</td></tr>
+      <tr><td class="mono">extrapolated_only</td><td>1 = label inferred, never directly assayed</td></tr>
+      <tr><td class="mono">ec, pfam</td><td>UniProt EC numbers and Pfam accessions (negatives)</td></tr>
+      <tr><td class="mono">cluster, substrates, source, organism, phylum, seq_len, sequence</td>
+          <td>as named</td></tr>
+    </table></div>
+    <div class="flag"><b><code>3_fold_matched_esterase</code> is a misnomer.</b> Only 50 of its
+      185 members carry the α/β hydrolase fold. The column is kept for continuity with published
+      results; use <code>negative_group</code> instead.</div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><h2>Positives — 388 modelled, all from assay literature</h2></div>
+  <div class="sb">
+    <div class="tw"><table>
+      <tr><th>class</th><th class="mono">n</th><th class="mono">verified</th>
+          <th class="mono">unverified</th><th class="mono">extrap.</th>
+          <th class="mono">train</th><th class="mono">val</th><th class="mono">test</th></tr>
+      <tr><td class="mono">1_pet</td><td class="mono">320</td><td class="mono">301</td>
+          <td class="mono">19</td><td class="mono">15</td>
+          <td class="mono">257</td><td class="mono">32</td><td class="mono">31</td></tr>
+      <tr><td class="mono">2_other_polyester</td><td class="mono">68</td><td class="mono">39</td>
+          <td class="mono hi">29</td><td class="mono">14</td>
+          <td class="mono">46</td><td class="mono">11</td><td class="mono">11</td></tr>
+      <tr class="tot"><td>modelled total</td><td class="mono">388</td><td class="mono">340</td>
+          <td class="mono">48</td><td class="mono">29</td>
+          <td class="mono">303</td><td class="mono">43</td><td class="mono">42</td></tr>
+      <tr><td class="mono">heldout_pha</td><td class="mono">36</td><td class="mono">10</td>
+          <td class="mono">26</td><td class="mono">10</td>
+          <td class="mono">—</td><td class="mono">—</td><td class="mono">—</td></tr>
+    </table></div>
+    <p><b>Provenance.</b> PAZy only 161, PAZy and PlasticDB 179, PlasticDB only 48 — every row
+    carries a traceable <code>source_ids</code> in
+    <code>data/processed/plastizymes_merged.tsv</code>.</p>
+    <p><b>Substrate.</b> PET and aromatic polyester 284, aliphatic polyester 83, aromatic
+    copolyester 21. <code>2_other_polyester</code> is <b>43% unverified</b> — the weakest part
+    of the positive set. Filter on <code>activity_verified</code> for a stricter set at the cost
+    of n.</p>
+    <div class="good"><b><code>heldout_pha</code> is clean.</b> 36 polyhydroxyalkanoate
+      depolymerases, never used in training, tuning or feature selection. Available as an
+      unseen-substrate generalisation test — keep it unused until you want that number.</div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><h2>Negatives — 423, and none was ever assayed</h2></div>
+  <div class="sb">
+    <p>Every negative label is an assumption of non-degradation, not a measurement. The
+    classification below was re-derived by querying UniProt for InterPro, Pfam and
+    <code>ACT_SITE</code> on all 423, and ships as <code>negative_group</code>.</p>
+    <div class="tw"><table>
+      <tr><th>negative_group</th><th class="mono">n</th><th class="mono">tier 3</th>
+          <th class="mono">train</th><th class="mono">val</th><th class="mono">test</th></tr>
+      <tr class="key"><td class="mono">ab_hydrolase_hard_negative</td><td class="mono">51</td>
+          <td class="mono">50</td><td class="mono">40</td><td class="mono hi">1</td>
+          <td class="mono">10</td></tr>
+      <tr><td class="mono">ec311_wrong_fold</td><td class="mono">36</td><td class="mono">36</td>
+          <td class="mono">23</td><td class="mono hi">0</td><td class="mono">13</td></tr>
+      <tr><td class="mono">tRNA_processing_no_ser_nucleophile</td><td class="mono">99</td>
+          <td class="mono">99</td><td class="mono">56</td><td class="mono">40</td>
+          <td class="mono">3</td></tr>
+      <tr><td class="mono">naive_control</td><td class="mono">237</td><td class="mono">0</td>
+          <td class="mono">166</td><td class="mono">35</td><td class="mono">36</td></tr>
+      <tr class="tot"><td>total</td><td class="mono">423</td><td class="mono">185</td>
+          <td class="mono">285</td><td class="mono">76</td><td class="mono">62</td></tr>
+    </table></div>
+    <h3>Why tRNA-processing is separated out</h3>
+    <p>99 negatives are D-aminoacyl-tRNA deacylase (EC 3.1.1.96, <code>PF02580</code>, n=56) and
+    peptidyl-tRNA hydrolase (EC 3.1.1.29, <code>PF01195</code>, n=43). They match on EC
+    <i>reaction class</i> — carboxylic-ester hydrolase — but share neither the fold nor the
+    catalytic machinery. Of the 43 carrying a curated active site, every one is a single
+    histidine "proton acceptor"; the other 56 have no active-site annotation at all.
+    <b>Not one has an annotated serine nucleophile.</b> They are trivially separable and inflate
+    any metric computed against them. They are kept, and labelled, so you can exclude them
+    deliberately.</p>
+    <h3>Why wrong-fold EC 3.1.1 is separated out</h3>
+    <p>36 negatives are ester hydrolases with a serine nucleophile in a <i>different</i> fold —
+    GDSL/SGNH (<code>PF13472</code>, <code>PF00657</code>), patatin (<code>PF01734</code>),
+    β-lactamase-fold (<code>PF00144</code>). Intermediate difficulty, and a useful control for
+    whether a method detects a serine or a fold.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><h2>Catalytic machinery by group — measured, not assumed</h2></div>
+  <div class="sb">
+    <p>Curated UniProt active-site residues, and whether the SAE serine-neighbourhood latent
+    (9529, ESM-2 650M layer 33) fires above 0.3.</p>
+    <div class="tw"><table>
+      <tr><th>group</th><th class="mono">n</th><th>curated catalytic residues</th>
+          <th class="mono">latent fires</th></tr>
+      <tr><td>plastizymes</td><td class="mono">388</td><td>Ser–His–Asp triad</td>
+          <td class="mono">96.1%</td></tr>
+      <tr class="key"><td class="mono">ab_hydrolase_hard_negative</td><td class="mono">51</td>
+          <td>Ser–His–Asp triad, <b>identical</b></td><td class="mono">100.0%</td></tr>
+      <tr><td class="mono">ec311_wrong_fold</td><td class="mono">36</td>
+          <td>Ser nucleophile, other geometry</td><td class="mono">13.9%</td></tr>
+      <tr><td class="mono">tRNA_processing</td><td class="mono">99</td>
+          <td><b>His only — zero serines</b></td><td class="mono">0.0%</td></tr>
+      <tr><td class="mono">naive_control</td><td class="mono">237</td>
+          <td>scattered D/H/E/C</td><td class="mono">0.0%</td></tr>
+      <tr><td class="mono">heldout_pha</td><td class="mono">36</td>
+          <td>Ser–His–Asp triad</td><td class="mono">97.2%</td></tr>
+    </table></div>
+    <div class="good"><b>The hard negatives are not distinguishable from the positives by
+      catalytic machinery.</b> 100% of them carry the triad and fire the latent, against 96.1%
+      of the positives. That is the point of the benchmark: whatever separates a plastizyme from
+      a cutinase is not the active site.</div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><h2>Splits</h2></div>
+  <div class="sb">
+    <p>Homology-bounded by identity-based partitioning at a 40% ceiling.</p>
+    <div class="tw"><table>
+      <tr><th>split</th><th class="mono">pos</th><th class="mono">neg</th>
+          <th class="mono">total</th><th class="mono">prevalence</th>
+          <th class="mono">fold-matched neg</th></tr>
+      <tr><td>train</td><td class="mono">303</td><td class="mono">285</td>
+          <td class="mono">588</td><td class="mono">0.515</td><td class="mono">40</td></tr>
+      <tr><td>val</td><td class="mono">43</td><td class="mono">76</td>
+          <td class="mono">119</td><td class="mono">0.361</td><td class="mono hi">1</td></tr>
+      <tr><td>test</td><td class="mono">42</td><td class="mono">62</td>
+          <td class="mono">104</td><td class="mono">0.404</td><td class="mono hi">10</td></tr>
+    </table></div>
+    <p>Maximum cross-split sequence identity: train/val 0.3967, train/test 0.3800,
+    val/test 0.3983. No cross-split pair exceeds 40%.</p>
+    <div class="flag"><b>Validation is not a miniature of test.</b> Its 76 negatives are 40 tRNA
+      hydrolases, 35 naive controls and 1 genuine esterase. The 99 tRNA entries form only three
+      homology components, and identity-bounded splitting keeps a component intact — so one
+      component of 40 went wholly to val. Tuning on val is tuning against the easy task. In our
+      run this is why the threshold carried from val gave test precision of 0.830. If you tune
+      on val, say so, and report test decomposed by <code>negative_group</code>.</div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><h2>Reference results</h2></div>
+  <div class="sb">
+    <p>ESM-2 650M, max-pooled layer 33, linear probe. Test AU-ROC decomposed by negative group,
+    positives fixed at 42.</p>
+    <div class="tw"><table>
+      <tr><th>negatives</th><th class="mono">n</th><th class="mono">AU-ROC</th>
+          <th class="mono">AU-PRC</th></tr>
+      <tr><td>all — published headline</td><td class="mono">62</td><td class="mono">0.9681</td>
+          <td class="mono">0.9526</td></tr>
+      <tr><td class="mono">naive_control</td><td class="mono">36</td><td class="mono">1.0000</td>
+          <td class="mono">1.0000</td></tr>
+      <tr><td class="mono">tRNA_processing</td><td class="mono">3</td><td class="mono">1.0000</td>
+          <td class="mono">1.0000</td></tr>
+      <tr><td class="mono">ec311_wrong_fold</td><td class="mono">23</td><td class="mono">0.9141</td>
+          <td class="mono">0.9526</td></tr>
+      <tr class="key"><td class="mono">ab_hydrolase_hard_negative</td><td class="mono">10</td>
+          <td class="mono">0.8167</td><td class="mono">0.9550</td></tr>
+    </table></div>
+    <p><b>39 of 62 test negatives are separated perfectly</b>, so the headline is a weighted
+    blend in which most of the weight is free.</p>
+    <h3>Baselines on the same split</h3>
+    <div class="tw"><table>
+      <tr><th>method</th><th class="mono">test AU-ROC</th><th class="mono">test AU-PRC</th></tr>
+      <tr><td>ESM-2 650M linear probe</td><td class="mono">0.9681</td><td class="mono">0.9526</td></tr>
+      <tr><td>BLASTp, matched protocol</td><td class="mono">0.9040</td><td class="mono">0.7552</td></tr>
+      <tr><td>amino-acid composition</td><td class="mono">0.7020</td><td class="mono">—</td></tr>
+    </table></div>
+    <p>The composition baseline reaches <b>0.8926 under random CV</b> against 0.7020 on the
+    homology-bounded split — a 0.19 inflation, and a direct measure of what a
+    non-homology-aware split buys you.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><h2>How to report results on this dataset</h2></div>
+  <div class="sb">
+    <ol>
+      <li><b>Report test decomposed by <code>negative_group</code>.</b> A single headline
+      number is not interpretable here.</li>
+      <li><b>Bootstrap over <code>component</code>, not over proteins.</b> With 66% of
+      positives in one component, per-protein intervals are invalid.</li>
+      <li><b>Say whether you tuned on validation</b>, and remember it holds 1 fold-matched
+      negative.</li>
+      <li><b>State n for the fold-matched cell.</b> It is 10 in test. Any claim there is
+      low-powered, and should carry an interval.</li>
+      <li><b>Leave <code>heldout_pha</code> alone</b> until you want a generalisation number.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><h2>Known limitations</h2></div>
+  <div class="sb">
+    <ul>
+      <li><b>51 fold-matched negatives is too few</b>, and the val allocation of 1 makes val
+      unusable for the hard task. Expanding this is the highest-value fix: UniProt reviewed,
+      <code>IPR029058</code> plus three curated <code>ACT_SITE</code> residues, never assayed on
+      a plastic, excluding the cutinase and PETase families. Thousands are available; 300–400
+      would make every split usable.</li>
+      <li><b>Positive homology density</b> limits power independently of the negative set, and
+      no number of new negatives fixes it. Needs one-vote-per-family weighting, or genuine
+      positive diversity beyond the dominant cutinase clade.</li>
+      <li><b>Negative labels are assumptions.</b> No negative was assayed for polyester
+      degradation; some may be weak degraders. PEZy-miner's 36 assayed non-degraders are not yet
+      incorporated and would be a genuine measured-negative set.</li>
+      <li><b>48 of 388 positives are unverified</b>, 29 of those extrapolated-only.</li>
+      <li><b>Tier assignment used EC codes.</b> A rebuild on InterPro/Pfam fold is the right
+      design; <code>negative_group</code> approximates it post hoc.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><h2>Provenance</h2></div>
+  <div class="sb">
+    <p><b>Positives</b> from PAZy and PlasticDB. 118 candidates were excluded during assembly:
+    109 for a non-ester mechanism (polyamide, polyurethane, polyolefin, rubber, polycarbonate,
+    polyether), 8 for the wrong fold (proteases degrading PLA, chitinases), and 1 manually —
+    <code>BPS0023</code>, named a PETase by homology but only ever assayed on PCL.</p>
+    <p><b>Negatives</b> from UniProt queries in <code>src/biopet_sae/fetch_negatives.py</code>,
+    with a per-phylum quota matched to the positives (the PET class is 72.6% Actinomycetota) and
+    a filter removing anything resembling a known plastizyme. The quota could not be met for the
+    esterase tier — UniProt holds only 174 reviewed Actinomycetota EC 3.1.1 entries against a
+    quota of 177 — which is how the tRNA-processing hydrolases entered the set.</p>
+    <p><b>Annotation in this release</b> from the UniProt REST API, fields <code>ec</code>,
+    <code>xref_pfam</code>, <code>xref_interpro</code> and <code>ft_act_site</code>, fetched
+    2026-10-11 and cached at
+    <code>data/processed/uniprot_negative_annotation.json</code>.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><h2>References</h2></div>
+  <div class="sb">
+    <p>Bibliographic details verified against Crossref. The first two are the published basis
+    for how this dataset draws its boundaries; the third is what to cite if you use the
+    positives.</p>
+    <div class="tw"><table>
+      <tr><th>citation</th><th>DOI</th><th>supports</th></tr>
+      <tr><td>Danso D, Chow J, Streit WR (2019). Plastics: environmental and biotechnological
+          perspectives on microbial degradation. <i>Appl Environ Microbiol</i> 85, e01095-19.</td>
+          <td class="mono">10.1128/AEM.01095-19</td>
+          <td>hydrolysable backbone vs C–C backbone — the 109 non-ester-mechanism exclusions</td></tr>
+      <tr><td>Wei R, Tiso T, Bertling J, O'Connor K, Blank LM, Bornscheuer UT (2020).
+          Possibilities and limitations of biotechnological plastic degradation and recycling.
+          <i>Nature Catalysis</i> 3, 867–871.</td>
+          <td class="mono">10.1038/s41929-020-00521-w</td>
+          <td>scoping the task to polyester degraders, not plastic degraders</td></tr>
+      <tr class="key"><td>Buchholz PCF, Feuerriegel G, Zhang H, Perez-Garcia P, Nover L-L,
+          Chow J, Streit WR, Pleiss J (2022). Plastics degradation by hydrolytic enzymes: the
+          plastics-active enzymes database — PAZy. <i>Proteins</i> 90, 1443–1456.</td>
+          <td class="mono">10.1002/prot.26325</td>
+          <td><b>cite if you use the positives</b> — PAZy supplies 340 of 388</td></tr>
+      <tr><td>Wei R, Zimmermann W (2017). Microbial enzymes for the recycling of recalcitrant
+          petroleum-based plastics: how far are we? <i>Microbial Biotechnology</i> 10,
+          1308–1322.</td>
+          <td class="mono">10.1111/1751-7915.12710</td>
+          <td>PE/PS/PUR/PET side by side — why PET is 82.5% of the positives</td></tr>
+    </table></div>
+  </div>
+</div>
+
+<footer>
+  BioPET-SAE dataset card v1 · built by <code>src/biopet_sae/build_release.py</code> ·
+  every figure on this page re-derived from <code>biopet_sae_dataset_v1.tsv</code> and verified
+  against an independent annotation pass. Full experimental history, including every correction
+  to these numbers, is in <code>PROGRESS.md</code> — §21 negative set, §22 and §22b latent
+  selection and its homology confound, §22c catalytic machinery by group, §23 this release.
+</footer>
+
+</div>

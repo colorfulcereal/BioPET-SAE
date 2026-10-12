@@ -1,0 +1,42 @@
+{
+  "columns": {
+    "seq_id": "Stable identifier. BPS* for positives (internal), UniProt accession for negatives.",
+    "split": "train | val | test | unused. 'unused' rows are PHA depolymerases that carry no claim; they are not a held-out test and were never used for training, tuning or evaluation.",
+    "label": "1 = polyester degrader, 0 = negative.",
+    "negative_group": "For negatives only. ab_hydrolase_hard_negative | ec311_wrong_fold | trna_processing | naive_control. USE THIS, not class_label.",
+    "class_label": "Legacy label kept only for cross-referencing published results. '3_fold_matched_esterase' is a misnomer: only 50 of its 185 members carry the fold.",
+    "component": "Homology component id. Sequences in one component share >=40% identity. BOOTSTRAP OVER THIS COLUMN, never over individual proteins.",
+    "cluster": "Finer identity cluster inside a component.",
+    "substrates": "Pipe-separated plastics the enzyme is reported to degrade (positives only).",
+    "activity_verified": "1 = degradation measured in the literature; 0 = reported but not independently confirmed.",
+    "ab_hydrolase_fold": "1 if UniProt/InterPro IPR029058 (alpha/beta hydrolase fold). Blank where no UniProt accession exists.",
+    "gxsxg_elbow": "1 if the sequence contains the G-x-[ST]-x-G nucleophile elbow motif.",
+    "n_curated_active_sites": "Count of curated UniProt ACT_SITE residues (negatives only).",
+    "ec": "UniProt EC numbers (negatives only).",
+    "pfam": "Pfam accessions (negatives only).",
+    "organism": "Source organism.",
+    "phylum": "Source phylum. Positives are 72.6% Actinomycetota; negatives were drawn to match.",
+    "seq_len": "Sequence length in residues.",
+    "sequence": "Amino-acid sequence, standard 20 letters."
+  },
+  "order": [
+    "seq_id",
+    "split",
+    "label",
+    "negative_group",
+    "class_label",
+    "component",
+    "cluster",
+    "substrates",
+    "activity_verified",
+    "ab_hydrolase_fold",
+    "gxsxg_elbow",
+    "n_curated_active_sites",
+    "ec",
+    "pfam",
+    "organism",
+    "phylum",
+    "seq_len",
+    "sequence"
+  ]
+}

@@ -1,0 +1,503 @@
+<title>Plastizyme Detection Methods</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f3f6f4; --surface:#fcfcfb; --surface-2:#eef2f0; --ink:#0b0b0b; --ink-2:#3d4e47;
+  --muted:#52514e; --rule:#d8e0dc; --rule-2:#c3cec9;
+  --accent:#0f6b57; --accent-soft:#e3f0ec;
+  --probe:#2a78d6; --blast:#eb6834;
+  --pos:#15803d; --pos-bg:#e6f4ea; --warn:#a3341f; --warn-bg:#fbeae6;
+  --shadow:0 1px 2px rgba(19,32,27,.06),0 4px 14px rgba(19,32,27,.05);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#0e1614; --surface:#15211d; --surface-2:#1b2a25; --ink:#e8efec; --ink-2:#b9c7c1;
+  --muted:#8b9a94; --rule:#25352f; --rule-2:#33453e;
+  --accent:#5ec5a8; --accent-soft:#12302a;
+  --probe:#3987e5; --blast:#d95926;
+  --pos:#5fd18a; --pos-bg:#12301f; --warn:#e8836b; --warn-bg:#331a15;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0e1614; --surface:#15211d; --surface-2:#1b2a25; --ink:#e8efec; --ink-2:#b9c7c1;
+  --muted:#8b9a94; --rule:#25352f; --rule-2:#33453e;
+  --accent:#5ec5a8; --accent-soft:#12302a;
+  --probe:#3987e5; --blast:#d95926;
+  --pos:#5fd18a; --pos-bg:#12301f; --warn:#e8836b; --warn-bg:#331a15;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;line-height:1.55;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:900px;margin:0 auto;padding-inline:20px;padding-block:0 60px}
+h1,h2,h3{text-wrap:balance;margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+
+header{border-bottom:1px solid var(--rule);background:var(--surface);margin-bottom:26px}
+.hd{max-width:900px;margin:0 auto;padding:28px 20px 24px}
+.eyebrow{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);
+  font-weight:600;margin-bottom:9px}
+h1{font-size:clamp(25px,3.4vw,35px);font-weight:700;letter-spacing:-.021em;line-height:1.12}
+.sub{margin-top:12px;max-width:68ch;color:var(--ink-2);font-size:15px}
+.sub b{color:var(--ink);font-weight:600}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.links a{font-size:12px;text-decoration:none;color:var(--accent);background:var(--accent-soft);
+  border:1px solid var(--accent);border-radius:20px;padding:4px 12px;font-weight:500}
+.links a:hover{background:var(--accent);color:var(--bg)}
+
+.step{background:var(--surface);border:1px solid var(--rule);border-radius:11px;
+  box-shadow:var(--shadow);margin-bottom:18px;overflow:hidden}
+.sh{display:flex;align-items:baseline;gap:11px;padding:15px 18px 0}
+.sn{font:700 12px/1 "IBM Plex Mono",monospace;color:var(--bg);background:var(--accent);
+  border-radius:5px;padding:5px 7px;flex:none}
+.sh h2{font-size:17px;font-weight:600;letter-spacing:-.015em}
+.sb{padding:10px 18px 18px}
+.sb p{margin:0 0 10px;font-size:14px;color:var(--ink-2);max-width:74ch}
+.sb p b{color:var(--ink);font-weight:600}
+.sb ul,.sb ol{margin:0 0 10px;padding-left:20px;font-size:14px;color:var(--ink-2)}
+.sb li{margin-bottom:5px}
+code{font-family:"IBM Plex Mono",monospace;font-size:12.5px;background:var(--surface-2);
+  padding:1px 5px;border-radius:3px;border:1px solid var(--rule)}
+h3{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+  font-weight:600;margin:17px 0 7px}
+
+table{width:100%;border-collapse:collapse;font-size:13px;margin:4px 0 12px}
+th,td{text-align:right;padding:6px 9px;border-bottom:1px solid var(--rule)}
+th:first-child,td:first-child{text-align:left}
+th{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);
+  font-weight:600}
+td.mono,th.mono{font-variant-numeric:tabular-nums}
+tr.tot td{font-weight:600;border-top:1.5px solid var(--rule-2)}
+.win{color:var(--pos);font-weight:600}
+.tw{overflow-x:auto}
+
+.flag{border-left:3px solid var(--warn);background:var(--warn-bg);padding:11px 14px;
+  border-radius:0 7px 7px 0;margin:12px 0;font-size:13.5px;color:var(--ink-2)}
+.flag b{color:var(--warn)}
+.good{border-left:3px solid var(--pos);background:var(--pos-bg);padding:11px 14px;
+  border-radius:0 7px 7px 0;margin:12px 0;font-size:13.5px;color:var(--ink-2)}
+.good b{color:var(--pos)}
+
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:6px 0 14px;font-size:12px}
+.fb{background:var(--surface-2);border:1px solid var(--rule-2);border-radius:6px;
+  padding:6px 10px;font-family:"IBM Plex Mono",monospace}
+.fa{color:var(--muted)}
+
+footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);font-size:12.5px;
+  color:var(--muted);max-width:80ch}
+</style>
+
+<header>
+  <div class="hd">
+    <div class="eyebrow">Materials and methods · detection half</div>
+    <h1>Detecting Polyester-Degrading Enzymes</h1>
+    <p class="sub">How the dataset was built, how the ESM-2 650M probe and the BLASTp
+      baseline were trained and compared, what the results were, and what is and is not
+      supported by them. The mechanistic half — which SAE features the decision rests on —
+      is a separate page.</p>
+    <div class="links">
+      <a href="https://claude.ai/artifact/S1rzDp1cJYxA39xSTPZteE">Precision–recall curves →</a>
+      <a href="https://claude.ai/artifact/KcdU4xp1QUSvuWzrL4pGwS">Catalytic Latent Atlas →</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="step">
+  <div class="sh"><span class="sn">01</span><h2>The question, stated precisely</h2></div>
+  <div class="sb">
+    <p>The label reads <i>"does this enzyme degrade a polyester"</i> — a substrate criterion.
+    Two further constraints are applied in building the set, and naming all three is what
+    makes the task honest:</p>
+    <p style="font-size:15px;padding:10px 14px;background:var(--surface-2);border-radius:7px">
+      <b>Is this an α/β-hydrolase-fold enzyme that hydrolyses a polyester plastic?</b></p>
+    <div class="tw"><table>
+      <tr><th>constraint</th><th>kept</th><th>removed</th></tr>
+      <tr><td>substrate</td>
+          <td>aromatic polyester (PET, PEF); aromatic–aliphatic copolyester (PBAT, PBSeT,
+              Ecovio-FT); aliphatic polyester (PLA, PCL, PBS, PES, PBSA, PEA, PPL)</td>
+          <td class="mono">109 — polyamide 65, polyurethane 15, polyolefin/vinyl 13,
+              rubber 8, polycarbonate 4, polyether 2, unknown 2</td></tr>
+      <tr><td>fold</td><td>esterase / α-β-hydrolase</td>
+          <td class="mono">8 — proteases 6, chitinases 2</td></tr>
+      <tr><td>primary substrate class</td><td>any polyester, PHA included</td>
+          <td class="mono">36 PHA depolymerases set aside, carrying no claim</td></tr>
+    </table></div>
+    <p>Substrate names in full: PET polyethylene terephthalate · PEF polyethylene furanoate ·
+    PBAT poly(butylene adipate-<i>co</i>-terephthalate) · PBSeT poly(butylene
+    sebacate-<i>co</i>-terephthalate) · PLA polylactic acid · PCL polycaprolactone ·
+    PBS polybutylene succinate · PES polyethylene <b>succinate</b> (not polyethersulfone) ·
+    PBSA poly(butylene succinate-<i>co</i>-adipate) · PEA polyethylene adipate ·
+    PPL poly(β-propiolactone).</p>
+    <div class="flag"><b>The third row carries no claim.</b> 36 PHA depolymerases are set
+      aside and simply unused — they are not a generalisation test. They would qualify as
+      positives under the substrate rule, and the positive set already contains <b>25 enzymes
+      that degrade a PHA</b>, so nothing about them is unseen. The kept positives are also not
+      one lineage: they span <b>74 homology components</b>.</div>
+    <div class="flag"><b>The fold constraint is not in the task name.</b> Eight excluded
+      enzymes <i>do</i> degrade a polyester — five are experimentally verified PLA-degrading
+      proteases. They were removed because they have a subtilisin fold, not an α/β-hydrolase
+      fold. They are precisely the cases that would test whether the model tracks polyester
+      activity or tracks the fold. Eight sequences across two folds cannot train anything, so
+      excluding them is the pragmatic call — but it narrows the task and should be stated.</div>
+    <p><b>Why polyesters, when they are not the most common plastic.</b> By volume,
+    polyethylene is ~30% of production, polypropylene ~19%, PET ~7%. The case is
+    tractability, not volume: PE, PP, PVC and PS have carbon–carbon backbones with no bond a
+    hydrolase can cleave. The ester bond is the exception, polyester is over half of global
+    fibre production, and enzymatic PET recycling already operates industrially on this exact
+    enzyme family.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><span class="sn">02</span><h2>Dataset assembly</h2></div>
+  <div class="sb">
+    <div class="flow">
+      <span class="fb">PAZy + PlasticDB</span><span class="fa">→</span>
+      <span class="fb">merge, dedup</span><span class="fa">→</span>
+      <span class="fb">542 rows</span><span class="fa">→</span>
+      <span class="fb">exclusions</span><span class="fa">→</span>
+      <span class="fb">388 positives</span>
+    </div>
+    <p><b>Positives</b> come from PAZy and PlasticDB only — 232 PAZy-only, 210 in both, 100
+    PlasticDB-only. Every row carries a traceable <code>source_ids</code>.</p>
+    <p><b>Negatives</b> come from UniProt only, in two tiers:</p>
+    <div class="tw"><table>
+      <tr><th>tier</th><th>query</th><th class="mono">n</th><th>role</th></tr>
+      <tr><td>3 · fold-matched</td><td class="mono">ec:3.1.1.- AND reviewed</td>
+          <td class="mono">185</td><td>hard — same subclass as PETase</td></tr>
+      <tr><td>4 · naive control</td><td class="mono">reviewed NOT ec:3.1.*</td>
+          <td class="mono">238</td><td>easy — outside EC 3.1</td></tr>
+    </table></div>
+    <p><code>ec:3.1.1.-</code> is the exact-subclass form. The loose <code>ec:3.1.1.*</code>
+    is a string prefix that also matches 3.1.10–3.1.14 (nucleases) — 6,174 reviewed entries
+    against 4,294, so 1,880 would have been spurious.</p>
+
+    <h3>Keeping plastizymes out of the negatives</h3>
+    <p>EC 3.1.1 <i>contains</i> PETase (3.1.1.101), MHETase (3.1.1.102) and cutinase
+    (3.1.1.74), so the query asks for them too. Three filters remove them: accession
+    exclusion against the positive set; a name/keyword/EC regex
+    (<code>PETase|cutinase|terephthalate|plastic|…</code>); and removal of anything ≥90%
+    identical to a positive during clustering.</p>
+    <div class="good"><b>Verified against live UniProt, not assumed.</b> All 72 reviewed
+      entries carrying a plastic-degrading EC code were re-queried: 10/10 PET hydrolases,
+      1/1 MHETase, 61/61 cutinases are caught. 0 of the 423 delivered negatives carry any of
+      those codes.</div>
+    <div class="flag"><b>Known fragility.</b> Only 152 of 388 positives have a UniProt
+      accession, so for 60% of them the <i>name</i> filter is the only barrier. It holds
+      because UniProt names these enzymes informatively — but the regex matched names, not EC
+      codes. The EC codes have since been added to the pattern.</div>
+
+    <h3>Phylum quota</h3>
+    <p>The PET class is <b>72.6% Actinomycetota</b>. Without matching, a probe could score
+    well by detecting phylum rather than function. Negatives were drawn per-phylum to the
+    positives' distribution. Tier 3 fell short — 213 of 240 — because UniProt holds only 174
+    reviewed Actinomycetota EC 3.1.1 entries against a quota of 177.</p>
+    <div class="flag"><b>Limitation found later.</b> That shortfall forced the tier to take
+      whatever passed the EC filter, and <b>EC 3.1.1 is a reaction class, not a fold</b>. The
+      tier labelled "fold-matched" is <b>27% fold-matched</b>: only 50 of its 185 members carry
+      the α/β hydrolase fold (InterPro <code>IPR029058</code>), confirmed independently by
+      Pfam.</div>
+
+    <h3>What the negatives actually are</h3>
+    <p>Re-derived by querying UniProt for InterPro, Pfam and <code>ACT_SITE</code> on all 423
+    negatives. This classification ships as the <code>negative_group</code> column of the
+    released dataset and should be preferred over <code>class_label</code>.</p>
+    <div class="tw"><table>
+      <tr><th>what they are</th><th class="mono">n</th><th class="mono">train</th>
+          <th class="mono">val</th><th class="mono">test</th><th>catalytic machinery</th></tr>
+      <tr><td><b>α/β hydrolase fold — true hard negative</b></td><td class="mono">51</td>
+          <td class="mono">40</td><td class="mono">1</td><td class="mono">10</td>
+          <td>Ser–His–Asp triad, identical to the positives</td></tr>
+      <tr><td>EC 3.1.1 but wrong fold</td><td class="mono">36</td>
+          <td class="mono">23</td><td class="mono">0</td><td class="mono">13</td>
+          <td>Ser nucleophile, other geometry (GDSL-SGNH, patatin, β-lactamase)</td></tr>
+      <tr><td>tRNA-processing</td><td class="mono">99</td>
+          <td class="mono">56</td><td class="mono">40</td><td class="mono">3</td>
+          <td><b>His only — zero annotated serine nucleophiles</b></td></tr>
+      <tr><td>naive control</td><td class="mono">237</td>
+          <td class="mono">166</td><td class="mono">35</td><td class="mono">36</td>
+          <td>scattered D/H/E/C</td></tr>
+      <tr class="tot"><td>total</td><td class="mono">423</td><td class="mono">285</td>
+          <td class="mono">76</td><td class="mono">62</td><td></td></tr>
+    </table></div>
+    <p>The 99 tRNA-processing entries are D-aminoacyl-tRNA deacylase (<code>PF02580</code>,
+    n=56) and peptidyl-tRNA hydrolase (<code>PF01195</code>, n=43). Of the 43 with a curated
+    active site, every one is a single histidine "proton acceptor"; the other 56 have no
+    active-site annotation at all. They cleave an ester bond by an unrelated mechanism and are
+    trivially separable.</p>
+    <div class="flag"><b>Validation has one fold-matched negative.</b> Its 76 negatives are 40
+      tRNA hydrolases, 35 naive controls and 1 genuine esterase. Model selection and threshold
+      tuning were done on val, so they were tuned against the easy task — which is the
+      mechanism behind test precision of 0.830 at the carried threshold.</div>
+
+    <div class="tw"><table>
+      <tr><th>class</th><th class="mono">n</th><th>role</th></tr>
+      <tr><td>1_pet</td><td class="mono">320</td>
+          <td>positive — acts on PET <i>at all</i>, whatever else it also does; 44 of the 320
+              have more than one recorded substrate</td></tr>
+      <tr><td>2_other_polyester</td><td class="mono">68</td>
+          <td>positive — degrades a polyester but never PET; 53 aliphatic and 15 aromatic
+              copolyester by primary class, 20 acting on PBAT</td></tr>
+      <tr><td>3_fold_matched_esterase</td><td class="mono">185</td><td>negative, hard</td></tr>
+      <tr><td>4_naive_control</td><td class="mono">238</td><td>negative, easy</td></tr>
+      <tr><td>heldout_pha</td><td class="mono">36</td><td>held out entirely</td></tr>
+      <tr class="tot"><td>modelled</td><td class="mono">811</td>
+          <td class="mono">388 positive / 423 negative — prevalence 0.478</td></tr>
+    </table></div>
+    <p><b>Label asymmetry.</b> A positive means somebody measured degradation. A negative
+    means nobody has reported it — an assumption, never an assay. 48 of the 388 positives are
+    unverified (29 of 68 in <code>2_other_polyester</code>), and 29 of those 48 are
+    extrapolated-only, i.e. the label was inferred and never directly assayed.</p>
+    <div class="flag"><b>Positive homology density bounds everything.</b> The 388 modelled
+      positives collapse into 74 homology components and the largest, <code>BPS0190</code>,
+      holds <b>256 of them — 66%</b>. Any per-protein metric counts that one cutinase family
+      256 times, so confidence intervals on this dataset must be bootstrapped over the
+      <code>component</code> column, never over proteins.</div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><span class="sn">03</span><h2>Homology-aware splitting</h2></div>
+  <div class="sb">
+    <div class="flow">
+      <span class="fb">mmseqs2 all-vs-all</span><span class="fa">→</span>
+      <span class="fb">global NW realign</span><span class="fa">→</span>
+      <span class="fb">union-find components</span><span class="fa">→</span>
+      <span class="fb">stratified assignment</span>
+    </div>
+    <p>Pairs are prefiltered with mmseqs2, then <b>realigned globally</b> (Needleman–Wunsch,
+    BLOSUM62, free terminal gaps, identity = matches / shorter length) because mmseqs reports
+    local identity and would understate relatedness. Components are connected components
+    under a 40% identity edge; whole components are assigned to splits, largest first, to
+    whichever split is furthest below target across the classes it contains.</p>
+    <div class="tw"><table>
+      <tr><th>split</th><th class="mono">positives</th><th class="mono">negatives</th>
+          <th class="mono">total</th><th class="mono">prevalence</th></tr>
+      <tr><td>train</td><td class="mono">303</td><td class="mono">285</td>
+          <td class="mono">588</td><td class="mono">0.515</td></tr>
+      <tr><td>val</td><td class="mono">43</td><td class="mono">76</td>
+          <td class="mono">119</td><td class="mono">0.361</td></tr>
+      <tr><td>test</td><td class="mono">42</td><td class="mono">62</td>
+          <td class="mono">104</td><td class="mono">0.404</td></tr>
+    </table></div>
+    <p><b>Verified bound:</b> max cross-split identity 0.3967 train/val, 0.3800 train/test,
+    0.3983 val/test.</p>
+    <div class="flag"><b>A 30% bound was tested and rejected.</b> It is achievable
+      (max 0.2996) but makes the benchmark <i>easier</i>: a negative 40% identical to a
+      positive must join that positive's component and therefore its split, so tightening the
+      bound evicts the hard negatives from test. Hard negatives in test fall from <b>8 to
+      1</b>, test positives from 42 to 25, and all six negatives that BLASTp ranks above its
+      own median positive move into validation.</div>
+    <div class="flag"><b>Effective sample size is far below the sequence count.</b> The 42
+      test positives occupy only <b>20 homology components</b> — Kish effective n
+      <b>10.6</b>, giving a 95% CI half-width on recall of <b>±18 pp</b>. Cluster k-fold CV
+      does not fix this: one component holds <b>256 of 303</b> training positives, so folds
+      are degenerate (tested — two of five folds produce no metric at all).</div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><span class="sn">04</span><h2>Confound baselines — the floor to clear</h2></div>
+  <div class="sb">
+    <div class="tw"><table>
+      <tr><th>baseline</th><th class="mono">AU-ROC</th><th class="mono">AU-PRC</th></tr>
+      <tr><td>amino-acid composition (20 features)</td><td class="mono">0.7020</td>
+          <td class="mono">0.6737</td></tr>
+      <tr><td>prevalence (AU-PRC floor)</td><td class="mono">—</td><td class="mono">0.4784</td></tr>
+    </table></div>
+    <p><b>0.7020 is the floor a real result must clear, not 0.5.</b> Composition alone carries
+    substantial signal because the classes differ in more than function.</p>
+    <div class="flag"><b>Why the split matters.</b> The same composition baseline scores
+      <b>0.8926</b> under random 5-fold CV and <b>0.7020</b> on the homology-bounded split —
+      an inflation of 0.19 from near-duplicates leaking across folds.</div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><span class="sn">05</span><h2>Embeddings and the linear probe</h2></div>
+  <div class="sb">
+    <p>ESM-2 650M (<code>facebook/esm2_t33_650M_UR50D</code>) via HuggingFace
+    <code>transformers</code>. Residue embeddings from layers 1/9/18/24/30/33, pooled both
+    mean and max — twelve representations, each 1,280-dimensional. Pooling is recorded in the
+    output path because it materially changes performance.</p>
+    <div class="tw"><table>
+      <tr><th>setting</th><th>value</th></tr>
+      <tr><td>classifier</td><td class="mono">SGDClassifier, log_loss, L2</td></tr>
+      <tr><td>regularization</td><td class="mono">C = 1e-02, alpha = 1/(C·n_train)</td></tr>
+      <tr><td>learning rate</td><td class="mono">eta0 = 1e-04, constant, 5000 epochs, tol=None</td></tr>
+      <tr><td>preprocessing</td><td class="mono">StandardScaler, fitted on train, persisted</td></tr>
+      <tr><td>selected on</td><td class="mono">val log-loss, using max_L33 only</td></tr>
+    </table></div>
+    <p>Hyperparameters were swept over C × eta0 and chosen on <code>max_L33</code> alone, then
+    applied unchanged to all twelve representations.</p>
+    <div class="flag"><b>Selection used log-loss, not AU-PRC, and that mattered.</b> Val
+      AU-PRC <i>saturates</i> — several cells tie at 0.9995 and one reaches a perfect
+      <b>1.0000</b> at C=1, eta=1e-1, which is the corner where log-loss is <b>2.72</b>: wildly
+      miscalibrated and not converged. AU-PRC would have selected a broken model. Log-loss is
+      a proper scoring rule and does not saturate.</div>
+    <p>Best representation: <b><code>max_L33</code></b>, val AU-ROC 0.9976 ± 0.0000 across
+    five seeds.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><span class="sn">06</span><h2>BLASTp baseline — matched protocol</h2></div>
+  <div class="sb">
+    <p>The database holds <b>only the 303 training positives</b>, so BLASTp gets exactly the
+    information the probe was trained on. Each query keeps its single best hit; the score is
+    that hit's e-value.</p>
+    <ol>
+      <li>Sweep the e-value cutoff <b>on validation</b>.</li>
+      <li>Carry the chosen cutoff — <code>e ≤ 3.16e-2</code> — to test <b>unchanged</b>.</li>
+    </ol>
+    <div class="flag"><b>An earlier version tuned BLASTp's cutoff on test</b>, giving F1 0.820.
+      Carrying the validation threshold honestly gives <b>0.598</b> on the PET task — an
+      inflation of 0.22. Both methods now select their operating point on validation only.</div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><span class="sn">07</span><h2>Results</h2></div>
+  <div class="sb">
+    <h3>Ranking metrics</h3>
+    <div class="tw"><table>
+      <tr><th>split · method</th><th class="mono">AU-ROC</th><th class="mono">AU-PRC</th></tr>
+      <tr><td>Validation · ESM-2 650M</td><td class="mono">0.9976</td><td class="mono">0.9954</td></tr>
+      <tr><td>Validation · BLASTp</td><td class="mono">0.9910</td><td class="mono">0.9895</td></tr>
+      <tr><td><b>Test · ESM-2 650M</b></td><td class="mono win">0.9681</td>
+          <td class="mono win">0.9526</td></tr>
+      <tr><td><b>Test · BLASTp</b></td><td class="mono">0.9040</td><td class="mono">0.7552</td></tr>
+    </table></div>
+    <h3>At the operating point carried from validation</h3>
+    <div class="tw"><table>
+      <tr><th>split · method</th><th class="mono">P</th><th class="mono">R</th>
+          <th class="mono">F1</th><th class="mono">TP</th><th class="mono">FP</th>
+          <th class="mono">FN</th></tr>
+      <tr><td>Val · probe</td><td class="mono">0.977</td><td class="mono">1.000</td>
+          <td class="mono">0.989</td><td class="mono">43</td><td class="mono">1</td><td class="mono">0</td></tr>
+      <tr><td>Val · BLASTp</td><td class="mono">0.955</td><td class="mono">0.977</td>
+          <td class="mono">0.966</td><td class="mono">42</td><td class="mono">2</td><td class="mono">1</td></tr>
+      <tr><td>Test · probe</td><td class="mono">0.830</td><td class="mono">0.929</td>
+          <td class="mono">0.876</td><td class="mono">39</td><td class="mono">8</td><td class="mono">3</td></tr>
+      <tr><td>Test · BLASTp</td><td class="mono">0.833</td><td class="mono">0.952</td>
+          <td class="mono">0.889</td><td class="mono">40</td><td class="mono">8</td><td class="mono">2</td></tr>
+    </table></div>
+    <h3>Paired bootstrap over homology components</h3>
+    <p>Both methods scored on the same resamples of the 66 test components — components, not
+    sequences, because members of a component are ≥40% identical and are one family seen
+    several times.</p>
+    <div class="tw"><table>
+      <tr><th>metric</th><th class="mono">Δ (probe − BLAST)</th><th class="mono">95% CI</th>
+          <th class="mono">P(probe &gt; BLAST)</th><th>verdict</th></tr>
+      <tr><td>AU-ROC</td><td class="mono win">+0.0603</td>
+          <td class="mono">[+0.0058, +0.1237]</td><td class="mono">0.988</td>
+          <td class="win">significant</td></tr>
+      <tr><td>AU-PRC</td><td class="mono win">+0.1708</td>
+          <td class="mono">[+0.0136, +0.2722]</td><td class="mono">0.989</td>
+          <td class="win">significant</td></tr>
+    </table></div>
+    <p>For contrast, the same test on the earlier PET-only task: AU-ROC +0.0074
+    [−0.0959, +0.1232] and AU-PRC −0.0412 [−0.1899, +0.0756] — <b>neither significant, with
+    BLAST ahead on AU-PRC</b>. The task redefinition is what produced a real win.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><span class="sn">08</span><h2>Observations</h2></div>
+  <div class="sb">
+    <h3>The two methods tie at the operating point and separate in the curve</h3>
+    <p>Both make <b>exactly 8 false positives</b> on test. BLASTp catches one more true
+    positive, so its precision denominator is 48 rather than 47 — the 0.004 difference is
+    arithmetic, not a difference in error behaviour. The separation is in the ranking.</p>
+    <h3>Why BLASTp's test curve is a flat shelf</h3>
+    <p>Its curve sits at ~0.84 precision from recall 0.05 to 0.95 with no high-precision
+    region. Walking down its ranking explains it:</p>
+    <div class="tw"><table>
+      <tr><th class="mono">rank</th><th>sequence</th><th>truth</th><th class="mono">e-value</th>
+          <th class="mono">running precision</th></tr>
+      <tr><td class="mono">1</td><td>BPS0080</td><td>PET hydrolase</td>
+          <td class="mono">4e-79</td><td class="mono">1.000</td></tr>
+      <tr><td class="mono">2</td><td>P86325</td><td style="color:var(--warn)">esterase</td>
+          <td class="mono">1e-74</td><td class="mono">0.500</td></tr>
+      <tr><td class="mono">3</td><td>Q47M62</td><td style="color:var(--warn)">esterase</td>
+          <td class="mono">3e-74</td><td class="mono">0.333</td></tr>
+      <tr><td class="mono">4</td><td>BPS0079</td><td>PET hydrolase</td>
+          <td class="mono">3e-74</td><td class="mono">0.500</td></tr>
+      <tr><td class="mono">5</td><td>Q01470</td><td style="color:var(--warn)">esterase</td>
+          <td class="mono">4e-55</td><td class="mono">0.400</td></tr>
+    </table></div>
+    <p>BLASTp's second- and third-best hits in the entire test split are non-degraders.
+    <b>Once a false positive occupies rank 2, precision can never recover</b> — tightening the
+    cutoff removes true positives from the bottom long before it reaches these three. Six of
+    62 test negatives beat BLASTp's own median positive.</p>
+    <p><b>P86325 and BPS0080 match the same training protein</b> (BPS0004) at 35% and 36%
+    identity, e=1e-74 and 4e-79. One degrades polyester, one does not. No e-value cutoff
+    separates them. The probe scores them 0.525 and 0.652 — barely, but in the right order.</p>
+    <h3>What the separation costs, in enzymes returned</h3>
+    <div class="tw"><table>
+      <tr><th>precision required</th><th class="mono">ESM-2 650M</th><th class="mono">BLASTp</th>
+          <th class="mono">of 42 positives</th></tr>
+      <tr><td class="mono">≥ 95%</td><td class="mono win">59.5%</td><td class="mono">2.4%</td>
+          <td class="mono">25 vs 1</td></tr>
+      <tr><td class="mono">≥ 90%</td><td class="mono win">78.6%</td><td class="mono">2.4%</td>
+          <td class="mono">33 vs 1</td></tr>
+      <tr><td class="mono">≥ 85%</td><td class="mono win">92.9%</td><td class="mono">2.4%</td>
+          <td class="mono">39 vs 1</td></tr>
+      <tr><td class="mono">≥ 80%</td><td class="mono win">97.6%</td><td class="mono">95.2%</td>
+          <td class="mono">41 vs 40</td></tr>
+    </table></div>
+    <h3>Validation and test are not equally hard</h3>
+    <p>Test drew markedly harder negatives: <b>8 of 62</b> clear BLASTp's cutoff against
+    <b>2 of 76</b> in validation. Test positives are actually <i>closer</i> to the database
+    (median best e-value 3.7e-15 vs 1e-09). Part of the measured gap therefore reflects which
+    negatives happened to land in test, and the paired bootstrap resamples <i>within</i> test
+    so cannot account for it.</p>
+    <p><b>The structural reason, found later.</b> The 99 tRNA-processing negatives form only
+    three homology components, and identity-bounded splitting keeps a component intact — so
+    one component of 40 went wholly to validation. Val therefore holds <b>1</b> fold-matched
+    negative against test's <b>10</b>. The asymmetry is not sampling luck; it is a determinate
+    consequence of a homology-dense family meeting a homology-aware split.</p>
+    <div class="good"><b>The defensible claim.</b> "The probe degrades more gracefully as
+      negatives get harder" — not "the probe is uniformly better". On validation the two are
+      within 0.006 AU-PRC of each other.</div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><span class="sn">09</span><h2>What this does not show</h2></div>
+  <div class="sb">
+    <ul>
+      <li><b>Not remote-homolog detection.</b> 283 of 320 PET sequences fall into a single
+      homology component; 45% of all positive–positive pairs are ≥30% identical. This is
+      within-family discrimination.</li>
+      <li><b>Against fold-matched esterases the advantage is much smaller.</b> Decomposing the
+      test set by what the negatives actually are, positives fixed at 42: all 62 negatives
+      <b>0.9681</b>; the 36 naive controls <b>1.0000</b>; the 3 tRNA entries <b>1.0000</b>;
+      the 23 wrong-fold EC 3.1.1 <b>0.9141</b>; the <b>10 α/β-hydrolase-fold negatives
+      0.8167</b> (95% CI 0.676–0.926). 39 of 62 test negatives are separated perfectly, so the
+      headline is a weighted blend in which most of the weight is free. Much of it is
+      separating hydrolases from non-hydrolases.</li>
+      <li><b>Test is spent.</b> Final metrics were read off test; further tuning must return
+      to validation or use a fresh set.</li>
+      <li><b>Wide intervals.</b> 42 test positives in 20 components — the significant deltas
+      have lower bounds of +0.006 and +0.014, close to zero.</li>
+      <li><b>No causal evidence yet</b> about which features drive the decision — that is the
+      Catalytic Latent Atlas, and it is correlational.</li>
+    </ul>
+  </div>
+</div>
+
+<footer>
+  Every number here is reproducible from <code>data/processed/dataset_splits_id40.tsv</code>
+  and <code>data/sae_650M_L33/</code>. Detailed tables live in
+  <code>artifacts/EDA_polyester_task.md</code>,
+  <code>artifacts/ESM2_650M_Polyester_Run.md</code> and
+  <code>artifacts/BLAST_vs_ESM2_650M_Polyester.md</code>; the decision log is
+  <code>PROGRESS.md</code>. Metrics were re-derived from raw scores and a fresh BLASTp run
+  rather than read back from cached outputs.
+</footer>
+</div>

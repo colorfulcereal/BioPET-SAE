@@ -1,0 +1,728 @@
+<title>Catalytic Latent Atlas for Plastizymes</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.4/3Dmol-min.js"></script>
+<style>
+:root{
+  --bg:#f3f6f4; --surface:#fff; --surface-2:#eef2f0; --ink:#13201b; --ink-2:#3d4e47;
+  --muted:#5f6f68; --rule:#d8e0dc; --rule-2:#c3cec9; --accent:#0f6b57; --accent-soft:#e3f0ec;
+  --pos:#15803d; --pos-bg:#e6f4ea; --neg:#a3341f; --neg-bg:#fbeae6;
+  --a0:#1e3a8a; --a1:#3b82c4; --a2:#7fb8ae; --a3:#e0a13c; --a4:#8f1d1d;
+  --shadow:0 1px 2px rgba(19,32,27,.06),0 4px 14px rgba(19,32,27,.05);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#0e1614; --surface:#15211d; --surface-2:#1b2a25; --ink:#e8efec; --ink-2:#b9c7c1;
+  --muted:#8b9a94; --rule:#25352f; --rule-2:#33453e; --accent:#5ec5a8; --accent-soft:#12302a;
+  --pos:#5fd18a; --pos-bg:#12301f; --neg:#e8836b; --neg-bg:#331a15;
+  --a0:#4763c9; --a1:#5b9fd6; --a2:#8fc9bf; --a3:#e8b25c; --a4:#c93a3a;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0e1614; --surface:#15211d; --surface-2:#1b2a25; --ink:#e8efec; --ink-2:#b9c7c1;
+  --muted:#8b9a94; --rule:#25352f; --rule-2:#33453e; --accent:#5ec5a8; --accent-soft:#12302a;
+  --pos:#5fd18a; --pos-bg:#12301f; --neg:#e8836b; --neg-bg:#331a15;
+  --a0:#4763c9; --a1:#5b9fd6; --a2:#8fc9bf; --a3:#e8b25c; --a4:#c93a3a;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;line-height:1.5;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:1420px;margin:0 auto;padding-inline:20px;padding-block:0 56px}
+h1,h2,h3{text-wrap:balance;margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+
+header{border-bottom:1px solid var(--rule);background:var(--surface)}
+.hd{max-width:1420px;margin:0 auto;padding:26px 20px 22px}
+.eyebrow{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);
+  font-weight:600;margin-bottom:9px}
+h1{font-size:clamp(25px,3.4vw,36px);font-weight:700;letter-spacing:-.021em;line-height:1.1}
+.thesis{margin-top:12px;max-width:70ch;color:var(--ink-2);font-size:15px}
+.thesis b{color:var(--ink);font-weight:600}
+
+/* aggregate scoreboard */
+.agg{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:10px;margin-top:18px}
+.ag{background:var(--surface-2);border:1px solid var(--rule);border-radius:8px;padding:11px 13px}
+.ag .r{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+  font-weight:600}
+.ag .n{font-size:22px;font-weight:600;letter-spacing:-.02em;margin-top:2px;display:block}
+.ag .d{font-size:11px;color:var(--muted);margin-top:1px}
+.ag.tot{background:var(--accent-soft);border-color:var(--accent)}
+.ag.tot .n,.ag.tot .r{color:var(--accent)}
+
+/* methods */
+details.meth{margin-top:18px;border:1px solid var(--rule);border-radius:9px;
+  background:var(--surface-2);overflow:hidden}
+details.meth summary{cursor:pointer;padding:11px 14px;font-weight:600;font-size:13px;
+  list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+details.meth summary::-webkit-details-marker{display:none}
+details.meth summary::after{content:"show";font-size:11px;color:var(--muted);font-weight:500}
+details.meth[open] summary::after{content:"hide"}
+.methbody{padding:0 14px 14px;font-size:13px;color:var(--ink-2);max-width:78ch}
+.methbody h4{margin:14px 0 5px;font-size:11px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--accent);font-weight:600}
+.methbody p{margin:0 0 8px}
+.methbody code{font-family:"IBM Plex Mono",monospace;font-size:12px;background:var(--surface);
+  padding:1px 4px;border-radius:3px;border:1px solid var(--rule)}
+.methbody ol{margin:0 0 8px;padding-left:20px}
+.methbody li{margin-bottom:4px}
+.survtab{width:100%;border-collapse:collapse;margin:8px 0;font-size:12.5px}
+.survtab th,.survtab td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--rule)}
+.survtab th{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.survtab td.mono{font-family:"IBM Plex Mono",monospace}
+
+.grid{display:grid;grid-template-columns:292px minmax(0,1fr);gap:20px;align-items:start;
+  margin-top:22px}
+@media(max-width:940px){.grid{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:10px;
+  box-shadow:var(--shadow)}
+
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--rule)}
+.tab{background:none;border:0;border-bottom:2px solid transparent;padding:10px 6px;
+  font:600 11.5px/1.25 "IBM Plex Sans",sans-serif;color:var(--muted);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:3px}
+.tab span{font-family:"IBM Plex Mono",monospace;font-size:10.5px;background:var(--surface-2);
+  border-radius:9px;padding:1px 6px;color:var(--muted)}
+.tab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+.tab[aria-selected="true"] span{background:var(--accent-soft);color:var(--accent)}
+.tabnote{margin:0;padding:10px 14px;font-size:11.5px;line-height:1.45;color:var(--muted);
+  background:var(--surface-2);border-bottom:1px solid var(--rule)}
+.tabnote b{color:var(--ink-2);font-weight:600}
+
+#list{max-height:min(70vh,660px);overflow-y:auto}
+@media(max-width:940px){#list{max-height:270px}}
+.row{display:grid;grid-template-columns:1fr auto;gap:2px 9px;align-items:center;width:100%;
+  text-align:left;background:none;border:0;border-bottom:1px solid var(--rule);
+  padding:8px 14px;cursor:pointer;color:inherit;font:inherit}
+.row:hover{background:var(--surface-2)}
+.row[aria-current="true"]{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.row .nm{font-weight:600;font-size:13px;letter-spacing:-.01em;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.row .og{grid-column:1;font-size:10.5px;color:var(--muted);overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;font-style:italic}
+.row .sc{grid-column:2;grid-row:1;font-size:10px;font-family:"IBM Plex Mono",monospace;
+  color:var(--muted)}
+.row .hits{grid-column:2;grid-row:2;font-size:10px;font-weight:700;letter-spacing:.04em}
+.row .hits.full{color:var(--pos)} .row .hits.part{color:var(--neg)}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:12px 14px;border-bottom:1px solid var(--rule)}
+.chip{border:1px solid var(--rule-2);background:var(--surface);color:var(--ink-2);
+  border-radius:6px;padding:5px 9px;font:500 12px/1 "IBM Plex Mono",monospace;cursor:pointer;
+  display:flex;align-items:center;gap:6px}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip.pocket{border-style:dashed}
+.chip .rl{font-family:"IBM Plex Sans",sans-serif;font-size:11px;opacity:.78}
+.chiplab{width:100%;font:600 10px/1 "IBM Plex Sans",sans-serif;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--muted);margin:2px 0 -2px}
+
+.vwrap{display:grid;grid-template-columns:minmax(0,1fr) 252px;gap:0}
+@media(max-width:820px){.vwrap{grid-template-columns:1fr}}
+#viewer{position:relative;height:420px;background:var(--surface-2);border-radius:10px 0 0 0;
+  overflow:hidden}
+@media(max-width:820px){#viewer{border-radius:10px 10px 0 0;height:330px}}
+#viewer.hidden{display:none}
+.vwrap.noviewer{grid-template-columns:1fr}
+.side{border-left:1px solid var(--rule);padding:14px}
+.vwrap.noviewer .side{border-left:0}
+@media(max-width:820px){.side{border-left:0;border-top:1px solid var(--rule)}}
+.side h3{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+  font-weight:600;margin-bottom:8px}
+.side h3:not(:first-child){margin-top:16px}
+.kv{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:3px 0;
+  border-bottom:1px solid var(--rule)}
+.kv:last-child{border-bottom:0}
+.kv dt{color:var(--muted)} .kv dd{margin:0;font-weight:500;text-align:right}
+dl{margin:0}
+
+.gt{border:1px solid var(--rule-2);border-radius:7px;overflow:hidden;margin-top:6px}
+.gth{background:var(--surface-2);padding:6px 9px;font:600 10px/1.3 "IBM Plex Sans",sans-serif;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted);
+  display:flex;justify-content:space-between;gap:8px}
+.gtr{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;
+  padding:6px 9px;font-size:12.5px;border-top:1px solid var(--rule)}
+.gtr .lb{color:var(--muted);font-size:11px}
+.gtr .v{font:600 12.5px/1 "IBM Plex Mono",monospace;text-align:right}
+.gtr .tk{font-weight:700;font-size:13px}
+.gtr.ok .tk{color:var(--pos)} .gtr.no .tk{color:var(--neg)}
+.gtr.rec .tk{color:var(--a3)}
+.gtr.no{background:var(--neg-bg)}
+.slide{padding:0 9px 6px;font-size:10.5px;color:var(--muted);line-height:1.4}
+.numnote{margin:7px 0 0;font-size:10.5px;line-height:1.45;color:var(--muted)}
+.numnote b{color:var(--ink-2);font-weight:600}
+
+.seqbox{margin-top:20px}
+.seqhead{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:baseline;
+  padding:12px 14px;border-bottom:1px solid var(--rule)}
+.seqhead h2{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+  font-weight:600}
+#seq{padding:14px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:2.05;
+  word-break:break-all;overflow-x:auto}
+#seq .aa{padding:1px 0;border-radius:2px}
+#seq .cur{outline:2px solid var(--ink);outline-offset:0;font-weight:700;border-radius:2px}
+#seq .pk{box-shadow:0 2px 0 var(--accent)}
+.ruler{color:var(--muted);font-size:10.5px;user-select:none;white-space:pre;
+  display:inline-block;width:5ch;text-align:right}
+.legend{display:flex;align-items:center;gap:9px;font-size:11px;color:var(--muted)}
+.ramp{width:132px;height:9px;border-radius:5px;
+  background:linear-gradient(90deg,var(--a0),var(--a1),var(--a2),var(--a3),var(--a4))}
+.note{font-size:12.5px;color:var(--muted);padding:11px 14px;border-top:1px solid var(--rule);
+  max-width:94ch}
+.note b{color:var(--ink-2);font-weight:600}
+footer{margin-top:30px;padding-top:18px;border-top:1px solid var(--rule);font-size:12px;
+  color:var(--muted);max-width:86ch}
+footer code{font-family:"IBM Plex Mono",monospace;font-size:11.5px;background:var(--surface-2);
+  padding:1px 4px;border-radius:3px}
+</style>
+
+<header>
+  <div class="hd">
+    <div class="eyebrow">ESM-2 650M · layer 33</div>
+    <h1>Catalytic Latent Atlas for Plastizymes</h1>
+    <p class="thesis">Seven SAE latents were selected on <b>train + validation only</b>, by a
+      rank statistic, with no structural information and no look at where they fire. They were
+      then frozen and localised. Three fire in a <b>catalytic-residue neighbourhood</b> — not on the residue itself, but a
+      fixed one to three positions before it. That offset was learned on train+val, then
+      applied unchanged to test and to external proteins. Scored against every protein with a
+      <b>curated UniProt active site</b> — never an estimate or a motif proxy.</p>
+
+    <div class="agg" id="agg"></div>
+
+    <details class="meth" id="meth">
+      <summary>Materials and methods — how the latents were found</summary>
+      <div class="methbody">
+        <h4>1 · Representation</h4>
+        <p>Each sequence passes through ESM-2 650M; layer-33 residue embeddings (1,280-d) go
+        into the InterPLM sparse autoencoder, giving <b>10,240 latents per residue</b>. Each
+        latent is max-pooled over residues, so every protein becomes one 10,240-vector.</p>
+
+        <h4>2 · Selection statistic — Cliff's delta</h4>
+        <p>For each latent, <code>δ = 2·AUC − 1</code> between polyester degraders and
+        non-degraders. It is rank-based, so it never divides by a variance — which matters
+        because 1,104 latents are exactly zero across all negatives and would blow up a
+        mean-difference statistic. Ties push δ toward zero, so a latent firing in &lt;5% of
+        positives cannot score highly (279 such latents; max δ 0.04, none in the top 100).
+        No threshold parameter is needed.</p>
+
+        <h4>3 · Split discipline</h4>
+        <p>δ was computed on <b>train + validation only</b> (707 sequences, 346 positives).
+        The test split took no part in selection, and no structural or active-site
+        information was used at any point.</p>
+
+        <h4>4 · Stability — 200-draw bootstrap, and the cutoff</h4>
+        <p>Selection was repeated on 200 random halves of train+val, recomputing δ each time
+        and recording how often each latent stayed in the top 10. A latent surviving most
+        resamples is a finding; one appearing in a single fit is not.</p>
+        <p>The criterion is <b>top-10 in ≥75% of draws (≥150/200) and δ ≥ 0.9</b>. Two notes
+        on why. First, <b>the δ floor is not what selects</b> — 26 latents clear δ 0.9 but
+        only 7 clear the frequency bar, so the bootstrap does all the work. Second, <b>75%
+        sits in a gap</b>: thresholds anywhere from 70% to 78% return the identical seven,
+        because the next latent down (5965, 139/200) is 18 draws below the seventh (5271,
+        157/200). An 80% cutoff would instead have excluded 7734 by a single draw (159/200).
+        The gap argument is suggestive rather than decisive — 18 draws at 75% against 15 at
+        80% — but the one-draw exclusion is the clearer objection.</p>
+
+        <h4>5 · What survived</h4>
+        <table class="survtab" id="survtab"></table>
+        <p><b>The ordering is not resolvable.</b> The gap between rank 1 and rank 10 (0.031)
+        is smaller than the median bootstrap CI width (0.067), so this is a stable
+        <i>set</i> of latents, not a ranking.</p>
+        <p>This is the complete list of latents meeting the criterion — every latent with
+        δ ≥ 0.9 that reached the top 10 in at least 150 of 200 draws. The cutoff row and the
+        first excluded latent are shown so the boundary is visible rather than implied.</p>
+
+        <h4>6 · Freeze, then localise — the neighbourhood protocol</h4>
+        <p>These latents do <b>not</b> fire on the catalytic residue. They peak one to three
+        positions before it, and by the residue itself the activation has fallen to a median
+        <b>0.24</b> (Ser), <b>0.21</b> (Asp) and <b>0.43</b> (His) of the peak, across all 59
+        proteins. It is above half in <b>0/59</b>, <b>0/58</b> and <b>13/59</b> of them. The
+        mapping is indirect, so it is scored that way:</p>
+        <ol>
+          <li>The seven latents were fixed. Nothing below fed back into selection.</li>
+          <li>The residue with the highest activation is the latent's <b>peak</b>.</li>
+          <li>The <b>offset</b> from peak to catalytic residue was learned on
+              <b>train+val only</b>: <code>Ser +1</code> (13/14), <code>Asp +3</code> (9/14),
+              <code>His +1</code> (12/14). Those offsets were then applied unchanged.</li>
+          <li><b>Exact</b> — the learned offset lands on the curated residue.</li>
+          <li><b>Recovered</b> — it does not, so the window slides <code>±3</code> to the
+              nearest residue of the right type (S / D-E / H) that still carries non-zero
+              activation. Counted and reported separately, never merged into "exact".</li>
+          <li><b>Miss</b> — no such residue in the window.</li>
+        </ol>
+        <p><b>The unit is the protein, not the residue.</b> Within a protein the three
+        latents agree <b>100%</b> of the time — either all three residues are located or none
+        is, because a canonical α/β-hydrolase active site either is present or it is not.
+        Counting 176 residue-level outcomes would treat one failure as three, so results are
+        reported per protein: <b>57 of 59 fully located</b>, with the residue breakdown
+        (172/176) shown beneath. The two failures are BPS0016, a polyamidase and the only
+        non-α/β-hydrolase in the set, and Q9Y7G8.</p>
+        <p><b>Null control.</b> Applying the same ±3 rule from a <i>random</i> position lands
+        on the curated residue in <b>3.2%</b> of trials (41/1,280). Widening to ±5 recovers
+        nothing further, so the window is correcting one-residue offsets rather than
+        searching until something is found.</p>
+        <p>Four of the seven had no curated target to score against. Mapped onto solved
+        structures, three (5201, 7942, 5255) peak a <b>median 8–10 Å from the catalytic
+        serine</b> (range 8–25 Å) while a median of <b>20–75 residues away in sequence</b>
+        (range 11–128): the substrate pocket, not catalytic residues. The fourth
+        (<b>5271</b>) sits further out — median <b>14.1 Å</b> (range 9.4–20.0) and a median
+        88 residues away, in the C-terminal third of the chain (mean relative position 0.89),
+        peaking one residue after a tyrosine in 33 of 59 proteins. Second shell, not
+        pocket-lining.</p>
+
+        <h4>7 · What each stage rests on</h4>
+        <table class="survtab">
+          <tr><th>stage</th><th>question</th><th>data</th><th>held out</th><th>result</th></tr>
+          <tr><td>1 · Selection</td><td>separates degraders from non-degraders?</td>
+              <td>train+val, 707</td><td>no</td><td class="mono">7 of 10,240</td></tr>
+          <tr><td>2 · Offset</td><td>residue a constant distance from the peak?</td>
+              <td>train+val, 14 curated</td><td>no</td>
+              <td class="mono">Ser +1 (13/14) · Asp +3 (9/14) · His +1 (12/14)</td></tr>
+          <tr><td>3 · Localisation</td><td>does the offset transfer?</td>
+              <td>45 held out</td><td><b>yes</b></td>
+              <td class="mono">57/59 proteins = 96.6%</td></tr>
+          <tr><td>4 · Null</td><td>would an arbitrary latent do as well?</td>
+              <td>all 10,240</td><td><b>yes</b></td>
+              <td class="mono">median 4.4% vs 98–100%</td></tr>
+        </table>
+        <p><b>Stage 2 assigns each latent to a residue, not stage 3.</b> Each latent has one
+        target whose gap repeats; against the other two the modal gap appears 5–6 times of
+        14, which is a mode of noise.</p>
+
+        <h4>8 · The null that matters — random features</h4>
+        <p>Every one of the 10,240 latents went through the <i>identical</i> pipeline: peak →
+        offset learned on train+val → applied to the 45 held-out entries → exact or ±3
+        recovered. Each random latent gets its own fitted offset and is held to a
+        <i>looser</i> rule than the real ones (no activation requirement).</p>
+        <table class="survtab">
+          <tr><th>latent</th><th>role</th><th>its rate</th><th>random median</th>
+              <th>scoring higher</th><th>percentile</th></tr>
+          <tr><td class="mono">9529</td><td>Ser</td><td class="mono"><b>100.0%</b></td>
+              <td class="mono">4.4%</td><td class="mono">0 / 10,240</td>
+              <td class="mono">99.75%</td></tr>
+          <tr><td class="mono">2661</td><td>Asp</td><td class="mono"><b>100.0%</b></td>
+              <td class="mono">4.5%</td><td class="mono">0 / 10,240</td>
+              <td class="mono">99.92%</td></tr>
+          <tr><td class="mono">7734</td><td>His</td><td class="mono"><b>97.8%</b></td>
+              <td class="mono">4.4%</td><td class="mono">0 / 10,240</td>
+              <td class="mono">99.91%</td></tr>
+        </table>
+        <p>A typical latent localises at <b>4.4%</b>. The floor is not zero because a wrong
+        position plus a ±3 window often lands on <i>some</i> serine: latent 77, whose gaps
+        across train+val run from −125 to +67 and whose rule is a mode seen 4 times in 14,
+        still scores <b>58%</b> on held-out proteins. Measuring that floor is what makes
+        97.7% mean something.</p>
+        <p><b>Shuffled-position null</b> (real latents, protein A's peak used on protein B,
+        200 permutations): Ser 12.0%, Asp 7.5%, His 6.5% — against 97.8–100% real.</p>
+        <p><b>They are not unique.</b> 26 latents tie with 9529 on Ser, 8 with 2661, 9 with
+        7734; ten of the 26 correlate above 0.8 with 9529 and are redundant copies. But
+        <b>none of the ties passes selection</b> — the best reaches 0.695 on the bootstrap
+        against a 0.75 cutoff. They localise without separating the classes, which is what
+        the two-stage filter exists to catch. The supportable claim is a percentile, not
+        "the serine detector".</p>
+
+        <h4>9 · Evidence for the localisation claim, ranked</h4>
+        <table class="survtab">
+          <tr><th>evidence</th><th>n</th><th>ground truth</th><th>plastizymes?</th>
+              <th>held out</th><th>result</th></tr>
+          <tr><td>train+val curated</td><td class="mono">18</td><td>experimental</td>
+              <td>ours</td><td>no</td>
+              <td class="mono">Ser 17/18 · Asp 11/18 · His 15/18</td></tr>
+          <tr><td>test curated</td><td class="mono">2</td><td>experimental</td>
+              <td>ours</td><td><b>yes</b></td><td class="mono">2/2 · 2/2 · 2/2</td></tr>
+          <tr><td>unseen curated cutinases</td><td class="mono">46</td><td>experimental</td>
+              <td>family</td><td><b>yes</b></td>
+              <td class="mono">100% · 97.8% · 95.7%</td></tr>
+          <tr><td>test GxSxG motif</td><td class="mono">38</td><td>motif (regex)</td>
+              <td>ours</td><td><b>yes</b></td><td class="mono">38/38</td></tr>
+        </table>
+        <p>The 38/38 uses a sequence motif rather than an experimental annotation, so it is
+        weaker than its size suggests — it confirms the peak sits on a nucleophile elbow, not
+        that the serine is catalytically active. Still, <b>7 of the 38</b> use an elbow
+        variant that appears in no train+val positive (<code>GISLG</code>, <code>GNSVG</code>,
+        <code>GFSLG</code>, <code>GHSFG</code>, <code>GCSLG</code>, <code>GLSLG</code>), so
+        the latent is locating a structural position, not matching a memorised string.</p>
+        <p><b>The uncomfortable number:</b> experimental ground truth on <i>held-out
+        plastizymes</i> is <b>2 sequences</b>. Everything larger is either not held out (18),
+        motif-based (38), or the wrong organisms. The 46 curated cutinases are the best
+        compromise — experimental, outside this dataset, right family — but they are curated
+        <i>cutinases</i>, not enzymes assayed on plastic.</p>
+
+        <h4>Caveat</h4>
+        <p>The seven latents correlate at <b>0.88</b> on average and <b>90%</b> of their
+        variance is a single axis — "how canonical is this active site". (Computed over the
+        474 polyester positives plus genuine, non-tRNA tier-3 esterases; six latents give
+        0.881 / 90.1% on that basis and seven give 0.882 / 89.9%, so adding 5271 changes
+        nothing.) Against genuine esterases, which share the same triad, they reach only
+        0.79 AU-ROC on test. These features explain catalytic machinery, not plastic
+        specificity.</p>
+      </div>
+    </details>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="grid">
+  <div class="panel">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-v="view1" aria-selected="true">Train + val<span></span></button>
+      <button class="tab" role="tab" data-v="view2" aria-selected="false">Test<span></span></button>
+      <button class="tab" role="tab" data-v="view3" aria-selected="false">External cutinases<span></span></button>
+    </div>
+    <p class="tabnote" id="tabnote"></p>
+    <div id="list"></div>
+  </div>
+
+  <div>
+    <div class="panel">
+      <div class="chips" id="chips"></div>
+      <div class="vwrap" id="vwrap">
+        <div id="viewer"></div>
+        <div class="side">
+          <h3>Entry</h3>
+          <dl id="pred"></dl>
+          <h3>Curated vs predicted</h3>
+          <div id="gtbox"></div>
+          <p class="numnote" id="numnote"></p>
+          <h3 id="geomh">Sequence vs space</h3>
+          <dl id="geom"></dl>
+        </div>
+      </div>
+      <p class="note" id="vnote"></p>
+    </div>
+
+    <div class="panel seqbox">
+      <div class="seqhead">
+        <h2>Sequence, coloured by latent activation</h2>
+        <div class="legend"><span>0.0</span><span class="ramp"></span><span>1.0+</span></div>
+      </div>
+      <div id="seq"></div>
+      <p class="note"><b>Boxed</b> residues are UniProt's curated active sites. An
+        <b>underline</b> marks the selected latent's peak. Colour is that latent's activation
+        at each position — most of the chain is dark blue (silent) with a sharp red spike
+        where the motif sits.</p>
+    </div>
+  </div>
+</div>
+
+<footer id="foot"></footer>
+</div>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function(){
+  var D=JSON.parse(document.getElementById('data').textContent);
+  var L=D.latents;
+  var LIDS=Object.keys(L).sort(function(a,b){return (L[a].order||0)-(L[b].order||0)});
+  var TRIAD={'9529':'Ser','2661':'Asp','7734':'His'};
+  var view='view1', cur=0, curLat='9529', viewer=null;
+  var STOPS=[[30,58,138],[59,130,196],[127,184,174],[224,161,60],[143,29,29]];
+  function ramp(v){
+    var t=Math.max(0,Math.min(1,v)), s=t*(STOPS.length-1), i=Math.floor(s), f=s-i;
+    if(i>=STOPS.length-1) return 'rgb('+STOPS[STOPS.length-1].join(',')+')';
+    var a=STOPS[i], b=STOPS[i+1];
+    return 'rgb('+a.map(function(c,k){return Math.round(c+(b[k]-c)*f)}).join(',')+')';
+  }
+  function fmt(n,d){ return (n==null||isNaN(n))?'—':Number(n).toFixed(d==null?2:d) }
+  function rows(){ return D.views[view] }
+
+  // ---- aggregate scoreboard ----
+  var A=D.aggregate.all, agg=document.getElementById('agg');
+  ['9529','2661','7734'].forEach(function(j){
+    var a=A[j], hit=a.exact+a.recovered;
+    var el=document.createElement('div'); el.className='ag';
+    el.innerHTML='<div class="r">'+TRIAD[j]+' neighbourhood · '+j+'</div>'+
+      '<span class="n mono">'+hit+'/'+a.n+'</span>'+
+      '<div class="d">'+a.exact+' at the learned offset'+
+      (a.recovered?' · '+a.recovered+' recovered within \u00b13':'')+
+      (a.miss?' · '+a.miss+' missed':'')+'</div>';
+    agg.appendChild(el);
+  });
+  var th=0,tn=0,tx=0,tr=0;
+  ['9529','2661','7734'].forEach(function(j){
+    th+=A[j].exact+A[j].recovered; tn+=A[j].n; tx+=A[j].exact; tr+=A[j].recovered });
+  var PA=D.aggregate_protein.all;
+  var tot=document.createElement('div'); tot.className='ag tot';
+  tot.innerHTML='<div class="r">Proteins fully located</div><span class="n mono">'+
+    PA.all_located+'/'+PA.n_proteins+'</span><div class="d">'+
+    (100*PA.all_located/PA.n_proteins).toFixed(1)+'% · '+th+'/'+tn+
+    ' residues, but the three latents agree within a protein 100% of the time, so the '+
+    'protein is the independent unit</div>';
+  agg.appendChild(tot);
+
+  // ---- survivor table in methods ----
+  var SURV=[['9529','0.959','200/200','triad — Ser neighbourhood'],
+            ['5201','0.949','200/200','pocket wall'],
+            ['7942','0.937','189/200','pocket wall'],
+            ['5255','0.936','176/200','pocket wall'],
+            ['2661','0.936','174/200','triad — Asp neighbourhood'],
+            ['7734','0.934','159/200','triad — His neighbourhood'],
+            ['5271','0.934','157/200','C-terminal second shell'],
+            ['—','—','<i>cutoff 150</i>','<i>—</i>'],
+            ['5965','0.934','139/200','<i>excluded</i>']];
+  var st=document.getElementById('survtab');
+  st.innerHTML='<tr><th>latent</th><th>Cliff’s δ</th><th>bootstrap top-10</th>'+
+    '<th>assignment after localisation</th></tr>'+
+    SURV.map(function(r){return '<tr><td class="mono">'+r[0]+'</td><td class="mono">'+r[1]+
+      '</td><td class="mono">'+r[2]+'</td><td>'+r[3]+'</td></tr>'}).join('');
+
+  // ---- tabs ----
+  var NOTES={
+    view1:'<b>__N__</b> proteins from the training and validation splits that have both a '+
+      'curated UniProt active site <b>and</b> a solved structure. <b>13 of the 14</b> have '+
+      'usable coordinates — BPS0393\u2019s deposited structure turned out to be a homolog '+
+      'rather than the protein itself, and was removed.',
+    view2:'<b>__N__</b> proteins from the held-out test split with a curated active site. '+
+      'Neither has a solved structure, so there is no 3D view. This is the entire '+
+      'experimentally-annotated test evidence that exists — small, and reported as such.',
+    view3:'<b>__N__</b> curated UniProt cutinases that are <b>not in our dataset at all</b> '+
+      'and have no solved structure. The model never saw these during training or selection, '+
+      'so this is the cleanest generalisation test in the atlas.'};
+  ['view1','view2','view3'].forEach(function(v){
+    document.querySelector('.tab[data-v="'+v+'"] span').textContent=D.views[v].length;
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(tb){
+    tb.addEventListener('click',function(){
+      view=tb.dataset.v; cur=0;
+      Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(o){
+        o.setAttribute('aria-selected', o===tb?'true':'false') });
+      buildList(); paint();
+    });
+  });
+
+  // ---- latent chips ----
+  var chips=document.getElementById('chips'), lastGrp=null;
+  LIDS.forEach(function(id){
+    var g=L[id].group||'';
+    if(g!==lastGrp){
+      var lb=document.createElement('div'); lb.className='chiplab';
+      lb.textContent = g==='triad' ? 'Catalytic triad — scored below'
+                     : g==='pocket' ? 'Substrate pocket — no curated target'
+                                    : 'Second shell — no curated target';
+      chips.appendChild(lb); lastGrp=g;
+    }
+    var c=document.createElement('button');
+    c.className='chip'+(g!=='triad'?' pocket':''); c.type='button';
+    c.setAttribute('data-lat',id);
+    c.innerHTML='<span class="sw" style="background:'+ramp(.85)+
+      ';width:9px;height:9px;border-radius:2px;flex:none"></span>'+id+
+      ' <span class="rl">'+L[id].role+'</span>';
+    c.addEventListener('click',function(){ curLat=id; paint(); });
+    chips.appendChild(c);
+  });
+
+  // ---- list ----
+  var list=document.getElementById('list');
+  function buildList(){
+    var R=rows();
+    document.getElementById('tabnote').innerHTML=NOTES[view].replace('__N__',R.length);
+    list.innerHTML='';
+    R.forEach(function(e,i){
+      var h=0,n=0;
+      ['9529','2661','7734'].forEach(function(j){
+        if(e.lat[j] && 'hit' in e.lat[j]){ n++; if(e.lat[j].hit) h++ }
+      });
+      var b=document.createElement('button'); b.className='row'; b.type='button';
+      b.innerHTML='<span class="nm"></span><span class="sc"></span>'+
+        '<span class="og"></span><span class="hits '+(h===n?'full':'part')+'">'+h+'/'+n+'</span>';
+      b.querySelector('.nm').textContent=e.name||e.id;
+      b.querySelector('.og').textContent=e.organism||e.acc;
+      b.querySelector('.sc').textContent=e.pdb_id||e.acc;
+      b.addEventListener('click',function(){ cur=i; paint() });
+      list.appendChild(b);
+    });
+  }
+
+  function kv(k,v){ return '<div class="kv"><dt>'+k+'</dt><dd>'+v+'</dd></div>' }
+
+  function paint(){
+    var R=rows(), e=R[cur]; if(!e) return;
+    var acts=e.activations[curLat], lat=L[curLat];
+    Array.prototype.forEach.call(list.children,function(el,k){
+      el.setAttribute('aria-current', k===cur?'true':'false');
+      if(k===cur) el.scrollIntoView({block:'nearest'});
+    });
+    Array.prototype.forEach.call(chips.querySelectorAll('.chip'),function(el){
+      el.setAttribute('aria-pressed', el.getAttribute('data-lat')===curLat?'true':'false');
+    });
+
+    document.getElementById('pred').innerHTML=
+      kv('UniProt',e.acc)+ kv('Split',e.split)+
+      (e.pdb_id?kv('PDB',e.pdb_id+' · chain '+(e.pdb_chain||'—')):'')+
+      kv('Length',e.sequence.length+' aa')+
+      (e.probe_score!=null?kv('Probe confidence',fmt(e.probe_score,3)):'');
+
+    // curated vs predicted
+    var sh=e.uniprot_shift||0, gt='', nh=0, nn=0;
+    ['9529','2661','7734'].forEach(function(j){
+      var d=e.lat[j];
+      if(!d || !('hit' in d)){
+        gt+='<div class="gtr"><span class="lb">'+TRIAD[j]+'</span>'+
+          '<span class="v">not annotated</span><span class="tk">—</span></div>'; return;
+      }
+      nn++; if(d.hit) nh++;
+      var cls = d.tier==='exact'?'ok':(d.tier==='recovered'?'rec':'no');
+      var mk  = d.tier==='exact'?'✓':(d.tier==='recovered'?'↻':'✗');
+      var shown = d.tier==='recovered'
+        ? d.pred_res+(d.pred-sh)+' → '+d.cur_res+(d.curated-sh)
+        : d.pred_res+(d.pred-sh);
+      gt+='<div class="gtr '+cls+'"><span class="lb">'+TRIAD[j]+'</span>'+
+        '<span class="v">'+d.cur_res+(d.curated-sh)+' &nbsp;/&nbsp; '+shown+
+        '</span><span class="tk">'+mk+'</span></div>'+
+        (d.tier==='recovered'
+          ? '<div class="slide">learned offset gave '+d.pred_res+(d.pred-sh)+
+            '; slid '+(d.slide>0?'+':'')+d.slide+' to the nearest '+TRIAD[j]+
+            ' with non-zero activation</div>'
+          : '');
+    });
+    document.getElementById('gtbox').innerHTML=
+      '<div class="gt"><div class="gth"><span>curated / predicted</span><span>'+nh+'/'+nn+
+      '</span></div>'+gt+'</div>';
+
+    // numbering note
+    var nn2=document.getElementById('numnote');
+    if(e.resmap && e.lat['9529'] && e.lat['9529'].curated!=null){
+      var pn=e.resmap[String(e.lat['9529'].curated-1)];
+      if(pn!=null && pn!==(e.lat['9529'].curated-sh)){
+        var off2=(e.lat['9529'].curated-sh)-pn;
+        nn2.innerHTML='Values are <b>UniProt numbering</b>. '+e.pdb_id+' numbers this serine '+
+          '<b>'+pn+'</b> (offset '+(off2>0?'+':'')+off2+')'+
+          (off2>0?'; N-terminal residues absent from the structure.'
+                : '; the structure numbers higher than UniProt here.');
+      } else nn2.innerHTML='Values are UniProt numbering, which '+e.pdb_id+' shares.';
+    } else nn2.innerHTML='Values are UniProt numbering.';
+
+    // geometry
+    var gh=document.getElementById('geomh'), gd=document.getElementById('geom');
+    if(e.dist_to_ser && Object.keys(e.dist_to_ser).length){
+      var d3=e.dist_to_ser[curLat], pk=e.lat[curLat].peak;
+      var serIdx=e.lat['9529'].curated!=null?e.lat['9529'].curated-1:null;
+      gh.style.display=''; gd.style.display='';
+      gd.innerHTML=kv('This latent → Ser, sequence',
+          serIdx!=null?Math.abs(pk-serIdx)+' residues':'—')+
+        kv('This latent → Ser, space', d3!=null?fmt(d3,1)+' Å':'—');
+    } else { gh.style.display='none'; gd.style.display='none'; }
+
+    // branch on whether this latent HAS a curated target, not on its group name —
+    // group 'shell' has no offset and no TRIAD entry, and fell through to the triad
+    // branch producing "undefined" three times.
+    var tail;
+    if(lat.group==='triad'){
+      tail='. The latent peaks <b>'+D.protocol.offsets[curLat]+' residue'+
+        (D.protocol.offsets[curLat]===1?'':'s')+' before</b> the catalytic '+TRIAD[curLat]+
+        ' — that offset was learned on train+val and applied unchanged here. Where it '+
+        'misses, the window slides ±'+D.protocol.window+' to the nearest '+TRIAD[curLat]+
+        ' with non-zero activation, counted separately as recovered.';
+    } else if(lat.group==='pocket'){
+      tail='. No curated target exists for this one, so it is not scored. On solved '+
+        'structures it peaks a median 8–10 Å from the catalytic serine (range 8–25 Å) '+
+        'while tens of residues away in sequence — pocket wall, not a catalytic residue.';
+    } else {
+      tail='. No curated target exists for this one, so it is not scored. It peaks in the '+
+        'C-terminal third of the chain, a median <b>14.1 Å</b> from the catalytic serine '+
+        '(range 9.4–20.0) and a median 88 residues away — second shell, further out than '+
+        'the pocket latents. Its most conserved feature is a tyrosine immediately before '+
+        'the peak, in 33 of 59 proteins.';
+    }
+    document.getElementById('vnote').innerHTML='Latent <b>'+curLat+'</b> — '+lat.role+tail;
+
+    drawSeq(e,acts,sh);
+    draw3D(e,acts);
+  }
+
+  function drawSeq(e,acts,sh){
+    var s=e.sequence, peak=e.lat[curLat].peak, W=60;
+    var sites={};
+    ['9529','2661','7734'].forEach(function(j){
+      if(e.lat[j] && e.lat[j].curated!=null) sites[e.lat[j].curated-1]=1;
+    });
+    var mx=Math.max.apply(null,acts)||1, out=[];
+    for(var i=0;i<s.length;i+=W){
+      out.push('<span class="ruler">'+String(i+1-(sh||0)).padStart(4,' ')+' </span>');
+      for(var j=i;j<Math.min(i+W,s.length);j++){
+        var v=acts[j]/mx, cls='aa';
+        if(sites[j]) cls+=' cur';
+        if(j===peak) cls+=' pk';
+        out.push('<span class="'+cls+'" style="background:'+ramp(v)+
+          (v>0.62?';color:#fff':'')+'" title="'+(j+1-(sh||0))+' '+s[j]+'  act '+
+          acts[j].toFixed(3)+'">'+s[j]+'</span>');
+      }
+      out.push('<br>');
+    }
+    document.getElementById('seq').innerHTML=out.join('');
+  }
+
+  function draw3D(e,acts){
+    var el=document.getElementById('viewer'), wrap=document.getElementById('vwrap');
+    if(!e.pdb_data){
+      el.classList.add('hidden'); wrap.classList.add('noviewer');
+      if(e.structure_note){
+        el.classList.remove('hidden'); wrap.classList.remove('noviewer');
+        el.innerHTML='<p style="padding:24px;font-size:12.5px;line-height:1.5;'+
+          'color:var(--muted);max-width:52ch">No usable structure. '+e.structure_note+'</p>';
+      }
+      return }
+    el.classList.remove('hidden'); wrap.classList.remove('noviewer');
+    if(!window.$3Dmol){ el.innerHTML='<p style="padding:20px;color:var(--muted)">'+
+      'Structure viewer unavailable.</p>'; return }
+    if(!viewer) viewer=$3Dmol.createViewer(el,{backgroundColor:'rgba(0,0,0,0)'});
+    viewer.clear(); viewer.addModel(e.pdb_data,'pdb');
+    var rm=e.resmap, byRes={}, mx=Math.max.apply(null,acts)||1;
+    Object.keys(rm).forEach(function(k){ byRes[rm[k]]=acts[+k]/mx });
+    viewer.setStyle({},{cartoon:{colorfunc:function(a){
+      var v=byRes[a.resi]; return v==null?'#8899a0':ramp(v) },thickness:.32,arrows:true}});
+    var tri=[];
+    ['9529','2661','7734'].forEach(function(j){
+      if(e.lat[j] && e.lat[j].curated!=null){
+        var r=rm[String(e.lat[j].curated-1)]; if(r!=null) tri.push({r:r,l:TRIAD[j]});
+      }
+    });
+    if(tri.length){
+      viewer.setStyle({resi:tri.map(function(t){return t.r})},
+        {cartoon:{colorfunc:function(a){var v=byRes[a.resi];return v==null?'#8899a0':ramp(v)},
+          thickness:.32}, stick:{radius:.19,colorscheme:'whiteCarbon'}});
+      tri.forEach(function(t){
+        viewer.addLabel(t.l+t.r,{fontSize:11,fontColor:'#fff',backgroundColor:'#0f6b57',
+          backgroundOpacity:.86,borderThickness:0,inFront:true},{resi:t.r,atom:'CA'});
+      });
+    }
+    viewer.zoomTo(); viewer.render();
+  }
+
+  // ---- footer ----
+  var a1=D.aggregate.view1,a2=D.aggregate.view2,a3=D.aggregate.view3;
+  function line(a){ return ['9529','2661','7734'].map(function(j){
+    return TRIAD[j]+' '+(a[j].exact+a[j].recovered)+'/'+a[j].n }).join(' · ') }
+  document.getElementById('foot').innerHTML=
+    '<b>Per-view results.</b> Proteins fully located, then the residue breakdown.<br>'+
+    'Train + validation: <b>'+D.aggregate_protein.view1.all_located+'/'+
+      D.aggregate_protein.view1.n_proteins+'</b> proteins · Test: <b>'+
+      D.aggregate_protein.view2.all_located+'/'+D.aggregate_protein.view2.n_proteins+
+      '</b> · External cutinases: <b>'+D.aggregate_protein.view3.all_located+'/'+
+      D.aggregate_protein.view3.n_proteins+'</b><br><br>'+
+    'Train + validation, curated + structure (n='+D.views.view1.length+'): '+line(a1)+'<br>'+
+    'Test, curated (n='+D.views.view2.length+'): '+line(a2)+'<br>'+
+    'External cutinases, curated (n='+D.views.view3.length+'): '+line(a3)+
+    '<br><br><b>What is not shown.</b> Only proteins with a curated UniProt '+
+    '<code>ACT_SITE</code> appear here. Of our 388 polyester positives just 20 are annotated '+
+    'that way, which is why the test view holds 2 entries: the held-out split contains no '+
+    'protein that is both curated and solved. Structures give coordinates, not catalytic '+
+    'assignments, so a solved structure alone is not ground truth.'+
+    '<br><br><b>Offsets.</b> Learned on train+val only: Ser +1, Asp +3, His +1. Across '+
+    'esterases at large 2661 prefers +2, but within the cutinase family +3 \u2014 which is '+
+    'why the window exists. Ser and His are stable at +1 in both. '+
+    '<br><br><b>Why \u201cneighbourhood\u201d.</b> Activation at the catalytic residue is '+
+    'about a quarter of the peak for Ser and Asp and half for His; it is never above half '+
+    'for Ser or Asp in any of the 59 proteins. The latents detect a motif adjacent to the '+
+    'residue, not the residue.'+
+    '<br><br><b>Not shown here.</b> The same latents localise the catalytic residues in '+
+    '1,326 curated UniProt esterases that are <i>not</i> plastic degraders. That supports '+
+    '\u201c9529 fires at the catalytic serine\u201d but it cannot support the headline \u2014 '+
+    'if these features mark the catalytic machinery of any esterase, they are esterase '+
+    'features, not plastizyme features. It is the reason the probe reaches only 0.79 AU-ROC '+
+    'against genuine esterases, and it belongs under limitations rather than results.';
+
+  buildList(); paint();
+  window.addEventListener('resize',function(){ if(viewer) viewer.resize() });
+})();
+</script>

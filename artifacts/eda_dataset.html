@@ -1,0 +1,292 @@
+<title>Polyester Degrader Dataset</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column; house palette shared with the other BioPET-SAE pages */
+:root{
+  --bg:#f3f6f4; --surface:#fcfcfb; --surface-2:#eef2f0; --ink:#0b0b0b; --ink-2:#3d4e47;
+  --muted:#52514e; --rule:#d8e0dc; --rule-2:#c3cec9;
+  --accent:#0f6b57; --accent-soft:#e3f0ec;
+  --pos:#15803d; --pos-bg:#e6f4ea; --warn:#a3341f; --warn-bg:#fbeae6;
+  --shadow:0 1px 2px rgba(19,32,27,.06),0 4px 14px rgba(19,32,27,.05);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#0e1614; --surface:#15211d; --surface-2:#1b2a25; --ink:#e8efec; --ink-2:#b9c7c1;
+  --muted:#8b9a94; --rule:#25352f; --rule-2:#33453e;
+  --accent:#5ec5a8; --accent-soft:#12302a;
+  --pos:#5fd18a; --pos-bg:#12301f; --warn:#e8836b; --warn-bg:#331a15;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0e1614; --surface:#15211d; --surface-2:#1b2a25; --ink:#e8efec; --ink-2:#b9c7c1;
+  --muted:#8b9a94; --rule:#25352f; --rule-2:#33453e;
+  --accent:#5ec5a8; --accent-soft:#12302a;
+  --pos:#5fd18a; --pos-bg:#12301f; --warn:#e8836b; --warn-bg:#331a15;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;line-height:1.55;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding-inline:20px;padding-block:0 60px}
+h1,h2,h3{text-wrap:balance;margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+
+header{border-bottom:1px solid var(--rule);background:var(--surface);margin-bottom:26px}
+.hd{max-width:860px;margin:0 auto;padding:30px 20px 26px}
+.eyebrow{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);
+  font-weight:600;margin-bottom:9px}
+h1{font-size:clamp(26px,3.6vw,37px);font-weight:700;letter-spacing:-.021em;line-height:1.12}
+.sub{margin-top:12px;max-width:66ch;color:var(--ink-2);font-size:15px}
+
+.step{background:var(--surface);border:1px solid var(--rule);border-radius:11px;
+  box-shadow:var(--shadow);margin-bottom:18px;overflow:hidden}
+.sh{padding:16px 18px 0}
+.sh h2{font-size:17px;font-weight:600;letter-spacing:-.015em}
+.sb{padding:10px 18px 18px}
+.sb p{margin:0 0 10px;font-size:14px;color:var(--ink-2);max-width:72ch}
+.sb p b{color:var(--ink);font-weight:600}
+code{font-family:"IBM Plex Mono",monospace;font-size:12.5px;background:var(--surface-2);
+  padding:1px 5px;border-radius:3px;border:1px solid var(--rule)}
+h3{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+  font-weight:600;margin:18px 0 7px}
+
+.def{font-size:16px;line-height:1.5;padding:14px 16px;background:var(--accent-soft);
+  border:1px solid var(--accent);border-radius:8px;margin:2px 0 14px;color:var(--ink)}
+.def b{font-weight:700}
+
+table{width:100%;border-collapse:collapse;font-size:13px;margin:4px 0 12px}
+th,td{text-align:right;padding:6px 9px;border-bottom:1px solid var(--rule);min-width:0}
+th:first-child,td:first-child,th:nth-child(2),td:nth-child(2){text-align:left}
+th{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);
+  font-weight:600}
+tr.fam td{background:var(--surface-2);font-weight:600;font-size:11px;
+  text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+tr.tot td{font-weight:600;border-top:1.5px solid var(--rule-2)}
+tr.key td{background:var(--accent-soft)}
+.tw{overflow-x:auto}
+.hi{color:var(--warn);font-weight:600}
+
+.flag{border-left:3px solid var(--warn);background:var(--warn-bg);padding:11px 14px;
+  border-radius:0 7px 7px 0;margin:12px 0;font-size:13.5px;color:var(--ink-2)}
+.flag b{color:var(--warn)}
+footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);font-size:12.5px;
+  color:var(--muted);max-width:78ch}
+</style>
+
+<header>
+  <div class="hd">
+    <div class="eyebrow">Dataset definition · 811 modelled proteins</div>
+    <h1>Polyester Degrader Dataset</h1>
+    <p class="sub">What counts as a positive, what counts as a negative, and every polyester
+      substrate behind the positive label — with the bond each enzyme has to cut.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="step">
+  <div class="sh"><h2>Positive</h2></div>
+  <div class="sb">
+    <p class="def"><b>An enzyme experimentally reported to degrade a plastic whose backbone
+      is joined by ester bonds.</b></p>
+    <p>That is the whole criterion. A polyester is a polymer whose chain is held together by
+    the ester linkage <code>–C(=O)–O–</code>, and degrading it means hydrolysing that bond so
+    the chain breaks. Every record comes from PAZy or PlasticDB, which document measured
+    activity on a named material.</p>
+    <p><b>388 positives</b> — 340 with verified activity, 48 reported but not independently
+    confirmed. All 388 act on at least one of the 21 substrates below.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><h2>The 21 polyester substrates</h2></div>
+  <div class="sb">
+    <p>Counts are enzymes recorded as acting on that substrate. They sum past 388 because a
+    single enzyme often degrades several.</p>
+    <div class="tw"><table>
+      <tr><th>substrate</th><th>full name</th><th>backbone bond</th><th class="mono">enzymes</th></tr>
+
+      <tr class="fam"><td colspan="4">Aromatic polyesters</td></tr>
+      <tr class="key"><td class="mono">PET</td><td>polyethylene terephthalate</td>
+          <td>ester, aromatic diacid</td><td class="mono">320</td></tr>
+      <tr><td class="mono">PEF</td><td>polyethylene furanoate</td>
+          <td>ester, furan diacid</td><td class="mono">7</td></tr>
+
+      <tr class="fam"><td colspan="4">Aromatic–aliphatic copolyesters</td></tr>
+      <tr><td class="mono">PBAT</td><td>poly(butylene adipate-<i>co</i>-terephthalate)</td>
+          <td>ester, mixed aromatic and aliphatic</td><td class="mono">31</td></tr>
+      <tr><td class="mono">PBSeT</td><td>poly(butylene sebacate-<i>co</i>-terephthalate)</td>
+          <td>ester, mixed</td><td class="mono">2</td></tr>
+      <tr><td class="mono">Ecovio-FT</td><td>commercial PBAT / PLA blend</td>
+          <td>ester, mixed</td><td class="mono">2</td></tr>
+
+      <tr class="fam"><td colspan="4">Aliphatic polyesters</td></tr>
+      <tr><td class="mono">PLA</td><td>polylactic acid</td>
+          <td>ester, α-hydroxy acid</td><td class="mono">52</td></tr>
+      <tr><td class="mono">PCL</td><td>polycaprolactone</td>
+          <td>ester, lactone-derived</td><td class="mono">43</td></tr>
+      <tr><td class="mono">PBS</td><td>polybutylene succinate</td>
+          <td>ester, aliphatic diacid</td><td class="mono">22</td></tr>
+      <tr><td class="mono">PES</td><td>polyethylene succinate</td>
+          <td>ester, aliphatic diacid</td><td class="mono">16</td></tr>
+      <tr><td class="mono">PBSA</td><td>poly(butylene succinate-<i>co</i>-adipate)</td>
+          <td>ester, aliphatic diacid</td><td class="mono">15</td></tr>
+      <tr><td class="mono">PEA</td><td>polyethylene adipate</td>
+          <td>ester, aliphatic diacid</td><td class="mono">3</td></tr>
+      <tr><td class="mono">PPL</td><td>poly(β-propiolactone)</td>
+          <td>ester, lactone-derived</td><td class="mono">1</td></tr>
+
+      <tr class="fam"><td colspan="4">Polyhydroxyalkanoates — bacterial polyesters</td></tr>
+      <tr><td class="mono">PHA</td><td>polyhydroxyalkanoate</td>
+          <td>ester, β-hydroxy acid</td><td class="mono">23</td></tr>
+      <tr><td class="mono">PHB</td><td>poly(3-hydroxybutyrate)</td>
+          <td>ester, β-hydroxy acid</td><td class="mono">11</td></tr>
+      <tr><td class="mono">PHBV</td><td>poly(3-hydroxybutyrate-<i>co</i>-3-hydroxyvalerate)</td>
+          <td>ester, β-hydroxy acid</td><td class="mono">5</td></tr>
+      <tr><td class="mono">P3HP</td><td>poly(3-hydroxypropionate)</td>
+          <td>ester, β-hydroxy acid</td><td class="mono">3</td></tr>
+      <tr><td class="mono">P4HB</td><td>poly(4-hydroxybutyrate)</td>
+          <td>ester, ω-hydroxy acid</td><td class="mono">3</td></tr>
+      <tr><td class="mono">PHO</td><td>poly(3-hydroxyoctanoate)</td>
+          <td>ester, β-hydroxy acid</td><td class="mono">2</td></tr>
+      <tr><td class="mono">PHBH</td><td>poly(3-hydroxybutyrate-<i>co</i>-3-hydroxyhexanoate)</td>
+          <td>ester, β-hydroxy acid</td><td class="mono">1</td></tr>
+      <tr><td class="mono">PHBVH</td><td>PHB-<i>co</i>-valerate-<i>co</i>-hexanoate terpolymer</td>
+          <td>ester, β-hydroxy acid</td><td class="mono">1</td></tr>
+      <tr><td class="mono">PHPV</td><td>poly(hydroxypropionate-<i>co</i>-valerate)</td>
+          <td>ester, β-hydroxy acid</td><td class="mono">1</td></tr>
+    </table></div>
+    <p>Every bond in that column is an ester. That is the point of the table: whatever the
+    polymer is called, the enzyme's job is the same reaction.</p>
+    <p><b>On the PHA rows.</b> Polyhydroxyalkanoates are polyesters bacteria make as
+    carbon-storage granules. They qualify like any other ester-bonded plastic, and the counts
+    above are enzymes in the positive set that degrade one.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><h2>What is not in the positive set, and why</h2></div>
+  <div class="sb">
+    <p>Plastics are excluded when their backbone is not joined by a carboxylic ester. The
+    reason matters, and it is not the same reason in every row.</p>
+    <div class="tw"><table>
+      <tr><th>plastic</th><th>backbone bond</th><th>why it is out</th></tr>
+      <tr><td>polyamide — nylon</td><td class="mono">amide &ndash;C(=O)&ndash;NH&ndash;</td>
+          <td>hydrolysable, but by an <b>amidase</b> — a different catalytic machine</td></tr>
+      <tr><td>polyurethane</td><td class="mono">urethane &ndash;NH&ndash;C(=O)&ndash;O&ndash;</td>
+          <td>hydrolysable, but by a different machine</td></tr>
+      <tr><td>polycarbonate</td><td class="mono">carbonate &ndash;O&ndash;C(=O)&ndash;O&ndash;</td>
+          <td>an ester, but not a carboxylic one; few enzymes act on it</td></tr>
+      <tr><td>polyether — PEG</td><td class="mono">ether &ndash;C&ndash;O&ndash;C&ndash;</td>
+          <td>very stable; needs oxidative chemistry</td></tr>
+      <tr><td>polyolefins and vinyls — PE, PP, PS, PVC</td><td class="mono">C&ndash;C only</td>
+          <td><b>no hydrolysable bond exists</b> — oxidative attack only</td></tr>
+      <tr><td>rubber</td><td class="mono">C&ndash;C / C=C</td>
+          <td>same — nothing for a hydrolase to cut</td></tr>
+    </table></div>
+
+    <h3>Why the ester is the bond that works</h3>
+    <p>An ester's carbonyl carbon is electrophilic and its leaving group is good, so a serine
+    nucleophile attacks it with a modest energy barrier. In an <b>amide</b>, the nitrogen lone
+    pair delocalises into the carbonyl and gives the C&ndash;N bond partial double-bond
+    character, raising that barrier by orders of magnitude for the uncatalysed reaction. In a
+    <b>C&ndash;C backbone</b> there is no polarised bond and no heteroatom at all, so hydrolysis
+    is not chemically available — degradation needs radical chemistry with cofactors and
+    oxygen.</p>
+    <p>There is also an evolutionary reason. <b>Cutin, the waxy polymer of plant cuticle, is a
+    natural polyester</b>, so cutinases already existed when PET was invented in 1941. PET's
+    ester is close enough that those enzymes partly work on it. Nothing in nature ever resembled
+    polyethylene, and nothing evolved to eat it.</p>
+
+    <div class="flag"><b>These plastics are not excluded for being unbreakable.</b> The source
+      databases contain <b>65 polyamide-degrading and 15 polyurethane-degrading enzymes</b>, and
+      92 of the 118 excluded entries have experimentally verified activity. Nylonases and
+      polyurethanases are real. They are excluded because a different bond needs a different
+      catalytic machine, so pooling them with PETases would mean training one classifier on
+      unrelated enzyme families and calling the mixture a plastic degrader. Only the polyolefins
+      and rubber are excluded on chemistry alone.</div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><h2>Negative</h2></div>
+  <div class="sb">
+    <p class="def"><b>A protein never reported to degrade any plastic</b> — drawn from UniProt
+      and graded by how closely it resembles a polyester hydrolase.</p>
+    <p>Every negative label is an assumption of inactivity, not a measurement. None of the 423
+    was assayed on a plastic. What makes the set useful is the grading: resemblance was
+    measured by <b>fold</b> and by <b>catalytic machinery</b>, not by enzyme class.</p>
+    <div class="tw"><table>
+      <tr><th>negative group</th><th>catalytic machinery</th><th class="mono">n</th>
+          <th class="mono">train</th><th class="mono">val</th><th class="mono">test</th></tr>
+      <tr class="key"><td><b>α/β hydrolase — the real hard negative</b></td>
+          <td>Ser–His–Asp triad, <b>identical to the positives</b></td>
+          <td class="mono">51</td><td class="mono">40</td><td class="mono hi">1</td>
+          <td class="mono">10</td></tr>
+      <tr><td>ester-active, different fold</td>
+          <td>serine nucleophile, other geometry</td>
+          <td class="mono">36</td><td class="mono">23</td><td class="mono">0</td>
+          <td class="mono">13</td></tr>
+      <tr><td>tRNA-processing hydrolase</td>
+          <td>histidine only — <b>no serine nucleophile</b></td>
+          <td class="mono">99</td><td class="mono">56</td><td class="mono">40</td>
+          <td class="mono">3</td></tr>
+      <tr><td>naive control</td><td>unrelated — kinases, gyrases, oxygenases</td>
+          <td class="mono">237</td><td class="mono">166</td><td class="mono">35</td>
+          <td class="mono">36</td></tr>
+      <tr class="tot"><td>total</td><td></td><td class="mono">423</td><td class="mono">285</td>
+          <td class="mono">76</td><td class="mono">62</td></tr>
+    </table></div>
+    <p><b>Only the first row is a hard negative.</b> Those 51 proteins carry the same fold and
+    the same catalytic triad as the positives and have simply never been reported to touch a
+    plastic. Separating them is the actual task; the other 372 are separated trivially.</p>
+    <div class="flag"><b>One hard negative is in validation.</b> Validation's 76 negatives are
+      40 tRNA hydrolases, 35 naive controls and 1 genuine esterase, because the tRNA family
+      forms three homology components and identity-bounded splitting sent one of them wholly
+      to val. Any threshold or model tuned on validation was tuned against the easy task.</div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><h2>Splits</h2></div>
+  <div class="sb">
+    <div class="tw"><table>
+      <tr><th>split</th><th class="mono">positives</th><th class="mono">negatives</th>
+          <th class="mono">total</th><th class="mono">prevalence</th>
+          <th class="mono">hard negatives</th></tr>
+      <tr><td>train</td><td class="mono">303</td><td class="mono">285</td>
+          <td class="mono">588</td><td class="mono">0.515</td><td class="mono">40</td></tr>
+      <tr><td>val</td><td class="mono">43</td><td class="mono">76</td>
+          <td class="mono">119</td><td class="mono">0.361</td><td class="mono hi">1</td></tr>
+      <tr><td>test</td><td class="mono">42</td><td class="mono">62</td>
+          <td class="mono">104</td><td class="mono">0.404</td><td class="mono hi">10</td></tr>
+    </table></div>
+    <p>No cross-split pair exceeds 40% sequence identity — train/val 0.3967, train/test 0.3800,
+    val/test 0.3983. <b>811 proteins in all</b>: 388 positives and 423 negatives.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="sh"><h2>The two numbers that bound every claim</h2></div>
+  <div class="sb">
+    <p><b>51 hard negatives</b>, one of them in validation. And <b>66% of the positives are a
+    single homology component</b> — <code>BPS0190</code>, 256 of 388, with 74 components in
+    all. Any per-protein confidence interval counts that one family 256 times, so intervals on
+    this dataset must be bootstrapped over the homology component, never over proteins.</p>
+    <p>Together they are why the headline test AU-ROC of 0.9681 against all negatives becomes
+    <b>0.8167</b> against the 10 fold-matched negatives in test, with a 95% interval reaching
+    down to 0.676.</p>
+  </div>
+</div>
+
+<footer>
+  Polyester Degrader Dataset · every figure re-derived from
+  <code>data/release/biopet_sae_dataset_v1.tsv</code> and
+  <code>data/processed/plastizymes_merged.tsv</code>. Positive substrate activity from PAZy and
+  PlasticDB; negative fold and machinery from UniProt InterPro, Pfam and curated
+  <code>ACT_SITE</code> annotations. Full history in <code>PROGRESS.md</code>.
+</footer>
+
+</div>

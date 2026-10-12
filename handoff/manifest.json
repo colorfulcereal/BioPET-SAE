@@ -1,0 +1,100 @@
+{
+  "name": "polyester-degrader-benchmark",
+  "version": "1.0",
+  "built": "2026-10-11",
+  "task": "binary classification: does this protein degrade a polyester?",
+  "counts": {
+    "rows_total": 847,
+    "modelled": 811,
+    "unused": 36,
+    "positives": 388,
+    "negatives": 423,
+    "by_split": {
+      "train": 588,
+      "val": 119,
+      "test": 104,
+      "unused": 36
+    },
+    "negatives_by_group": {
+      "ab_hydrolase_hard_negative": 51,
+      "ec311_wrong_fold": 36,
+      "trna_processing": 99,
+      "naive_control": 237
+    },
+    "hard_negatives_by_split": {
+      "train": 40,
+      "val": 1,
+      "test": 10
+    }
+  },
+  "constraints": {
+    "max_cross_split_identity": {
+      "train_val": 0.3967,
+      "train_test": 0.38,
+      "val_test": 0.3983
+    },
+    "hard_negatives_total": 51,
+    "hard_negatives_in_val": 1,
+    "largest_positive_component": {
+      "id": "BPS0190",
+      "n": 256,
+      "fraction": 0.66
+    },
+    "positive_components": 74
+  },
+  "baselines_to_reproduce": {
+    "probe": {
+      "model": "facebook/esm2_t33_650M_UR50D",
+      "representation": "max-pool over residues, hidden_states[33]",
+      "classifier": "sklearn SGDClassifier(loss='log_loss', penalty='l2', alpha=1/(1e-2*n_train), learning_rate='constant', eta0=1e-4, max_iter=5000, tol=None, random_state=0)",
+      "scaler": "StandardScaler fit on train only",
+      "threshold": 0.1455,
+      "threshold_selected_on": "val log-loss",
+      "test_au_roc": 0.9681,
+      "test_au_prc": 0.9526,
+      "val_au_roc": 0.9976,
+      "val_au_prc": 0.9954,
+      "test_by_negative_group": {
+        "naive_control": {
+          "n": 36,
+          "au_roc": 1.0
+        },
+        "trna_processing": {
+          "n": 3,
+          "au_roc": 1.0
+        },
+        "ec311_wrong_fold": {
+          "n": 23,
+          "au_roc": 0.9141
+        },
+        "ab_hydrolase_hard_negative": {
+          "n": 10,
+          "au_roc": 0.8167,
+          "ci95": [
+            0.676,
+            0.926
+          ]
+        }
+      }
+    },
+    "blastp": {
+      "test_au_roc": 0.904,
+      "test_au_prc": 0.7552
+    },
+    "aa_composition": {
+      "test_au_roc": 0.702,
+      "random_cv_au_roc": 0.8926,
+      "note": "the 0.19 gap is what a non-homology-aware split buys"
+    }
+  },
+  "files": {
+    "dataset.tsv": {
+      "sha256": "3f2fef4e7e9c7a4ea2bcdfdce4e410facbaf9daf334e21136fad1eddee4576d8",
+      "bytes": 397295
+    },
+    "dataset.fasta": {
+      "sha256": "9e2390127b35cbe5989c521d55282d0d710f5684b9e32e126abe24c15775e9a7",
+      "bytes": 341441
+    }
+  }
+}
