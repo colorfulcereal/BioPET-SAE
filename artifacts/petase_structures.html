@@ -255,8 +255,11 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:11.5px;background:va
         is, because a canonical α/β-hydrolase active site either is present or it is not.
         Counting 176 residue-level outcomes would treat one failure as three, so results are
         reported per protein: <b>57 of 59 fully located</b>, with the residue breakdown
-        (172/176) shown beneath. The two failures are BPS0016, a polyamidase and the only
-        non-α/β-hydrolase in the set, and Q9Y7G8.</p>
+        (172/176) shown beneath. The two failures are BPS0016 — a PLA-degrading
+        <b>subtilisin protease</b> (InterPro IPR034193, Proteinase K-like catalytic domain)
+        and the only non-α/β-hydrolase in the set, where all three latents are correctly
+        silent because there is no charge-relay geometry to detect — and Q9Y7G8. On the 58
+        proteins that do have the fold, the rate is 57/58.</p>
         <p><b>Null control.</b> Applying the same ±3 rule from a <i>random</i> position lands
         on the curated residue in <b>3.2%</b> of trials (41/1,280). Widening to ±5 recovers
         nothing further, so the window is correcting one-residue offsets rather than

@@ -2469,10 +2469,21 @@ latents, 176 residue outcomes are not 176 independent observations. The headline
 counting sequences instead of homology components, which was flagged for the test split and
 then reproduced here.
 
-The 2 failing proteins: **BPS0016** (PAM), a polyamidase and the only
-non-alpha/beta-hydrolase present, where all three latents are silent (peak activations 0.070,
-0.054, 0.007) — they signal "not my motif" rather than firing wrongly; and **Q9Y7G8**
-(cutinase pbc1), which misses on His only.
+The 2 failing proteins: **BPS0016** (PAM), which degrades **PLA** and is the only
+non-alpha/beta-hydrolase among the 59. InterPro assigns it `IPR034193` (Proteinase K-like
+catalytic domain) and `IPR023827` (peptidase S8, subtilisin, Asp active site) — it is a
+**subtilisin protease**, not an esterase, and the same family as the six PLA-degrading
+proteases that *were* excluded as "not an esterase fold". It entered the positive set because
+the fold filter matched enzyme-name strings and its label reads "PAM" (see §26). All three
+latents are silent on it (peak activations 0.070, 0.054, 0.007), which is the correct
+behaviour: with no alpha/beta charge-relay geometry present there is nothing for them to
+detect, so they signal "not my motif" rather than firing wrongly. **Counting it as a
+localisation failure understates the latents** — on the 58 proteins that actually have the
+fold, the rate is 57/58. And **Q9Y7G8** (cutinase pbc1), which misses on His only.
+
+*(Corrected 2026-10-12. This entry previously called BPS0016 "a polyamidase", which is wrong
+on both counts: its substrate is PLA, a polyester, and its fold is subtilisin. The revised
+reading strengthens rather than weakens the result.)*
 
 Data: `data/sae_650M_L33/atlas_views.json`, `learned_offsets.json`.
 Atlas rebuilt around this protocol: `https://claude.ai/artifact/KcdU4xp1QUSvuWzrL4pGwS`
