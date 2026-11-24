@@ -9,7 +9,7 @@
     "cluster": "Finer identity cluster inside a component.",
     "substrates": "Pipe-separated plastics the enzyme is reported to degrade (positives only).",
     "activity_verified": "1 = degradation measured in the literature; 0 = reported but not independently confirmed.",
-    "ab_hydrolase_fold": "1 if UniProt/InterPro IPR029058 (alpha/beta hydrolase fold). Blank where no UniProt accession exists.",
+    "ab_hydrolase_fold": "1 if UniProt/InterPro IPR029058 (alpha/beta hydrolase fold). Populated for NEGATIVES ONLY (all 423 are 0/1); blank for every positive and unused row, because the annotation pass was never run on them. See AGENTS.md, known data issues.",
     "gxsxg_elbow": "1 if the sequence contains the G-x-[ST]-x-G nucleophile elbow motif.",
     "n_curated_active_sites": "Count of curated UniProt ACT_SITE residues (negatives only).",
     "ec": "UniProt EC numbers (negatives only).",

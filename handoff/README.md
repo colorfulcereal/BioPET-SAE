@@ -139,7 +139,7 @@ training, tuning or evaluation.
 homology component** — `BPS0190`, 256 of 388, with 74 components in all.
 
 Together they are why the headline test AU-ROC of 0.9681 against all negatives becomes
-**0.8167** against the 10 fold-matched negatives in test, with a 95% interval reaching 0.676.
+**0.8167** against the 10 fold-matched negatives in test, with a 95% interval of 0.606 to 0.963, bootstrapped over homology components.
 
 Neither is fixable by modelling. Read `EVALUATION.md` before reporting anything.
 

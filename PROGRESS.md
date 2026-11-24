@@ -1322,7 +1322,7 @@ held fixed at 42; CIs are 5,000-draw bootstrap over both classes:
 | all — published headline | 62 | 0.9681 | 0.9526 |
 | naive controls | 36 | 1.0000 | 1.0000 |
 | tRNA-processing | 3 | 1.0000 | 1.0000 |
-| EC 3.1.1 non-tRNA | 23 | 0.9141 [0.840, 0.971] | 0.9526 |
+| EC 3.1.1 non-tRNA (= 13 wrong-fold + 10 α/β; see §28g) | 23 | 0.9141 [0.840, 0.971] | 0.9526 |
 | α/β hydrolase fold | 10 | 0.8167 [0.676, 0.926] | 0.9550 |
 | α/β fold + GxSxG + triad | 9 | 0.7963 [0.659, 0.910] | 0.9550 |
 
@@ -1986,6 +1986,271 @@ counts recomputed from the data.
 
 ---
 
+### 28. Fold audit of the positives, BPS0016 reclassified, BPS0383, the three nulls, artifact bookkeeping (2026-10-12)
+
+Written up on 2026-11-14 from the 2026-10-12 session. Everything below was re-derived from
+`build_dataset.py`, `plastizymes_merged.tsv`, the splits file and live InterPro/UniProt lookups,
+not recalled.
+
+#### 28a. The fold of the positives was never verified
+
+Prompted by "how do you verify the esterase fold?" The honest answer is that we do not.
+
+**The code.** `build_dataset.py` classifies in this order: manual exclusion, then
+`is_pet` → `1_pet` (returns immediately), then PHA group → `heldout_pha`, then the
+`CLASS2_GROUPS` branch, which is the *only* place the fold check runs, then everything else →
+"non-ester mechanism". The check, `is_esterase_fold_candidate`, is
+`not any(label.lower() in NON_ESTERASE_ENZYMES ...)` — a **16-string blocklist** (protease,
+serine protease, chitinase, peg dehydrogenase, laccase, peroxidase, manganese peroxidase, lignin
+peroxidase, alkane hydroxylase, monooxygenase, dehydrogenase, oxidase, amidase, nitrilase,
+urease) matched against the PlasticDB `Enzyme` field.
+
+Three weaknesses, in increasing severity:
+
+1. It is a deny-list: anything not on those 16 strings passes. Nothing is ever positively
+   confirmed as an alpha/beta hydrolase.
+2. **161 of 388 positives (41.5%) carry no enzyme label** (141 of 320 `1_pet`, 20 of 68
+   `2_other_polyester`), so the list cannot fire on them. All 388 have
+   `esterase_fold_candidate = 1`.
+3. **It was only ever applied to 68 of 388 proteins.** All 320 `1_pet` returned before reaching
+   it.
+
+**Independent annotation.** Only 152 of 388 positives (39%) have a UniProt accession; fold is
+checkable for those only.
+
+| result | n | detail |
+|---|---|---|
+| carry `IPR029058` (alpha/beta hydrolase fold) | 111 | 73% of the 152 |
+| no InterPro annotation at all | 38 | unreviewed TrEMBL |
+| **carry InterPro showing a different fold** | **3** | below |
+
+| id | accession | name | InterPro | actual fold |
+|---|---|---|---|---|
+| `BPS0013` | W0M2H4 | Esterase\|MGS0010 | IPR001466, IPR012338 | beta-lactamase-related |
+| `BPS0394` | A0A4P1LYH5 | E4 | IPR013830, IPR036514 | SGNH hydrolase |
+| `BPS0016` | A0A0U5AS91 | PAM | IPR034193, IPR000209, IPR023827 | **Proteinase K-like subtilisin (peptidase S8)** |
+
+(Accession names resolved against the InterPro API: `IPR034193` = Proteinase K-like catalytic
+domain, `IPR023827` = peptidase S8 subtilisin Asp active site, `IPR013830` = SGNH hydrolase-type
+esterase domain, `IPR029058` = alpha/beta hydrolase fold.)
+
+These are the *detectable* cases among 152, not a bound on the other 236. `BPS0016` is the
+sharpest: a Proteinase K-like subtilisin degrading PLA sits in `2_other_polyester`, while
+`BPS0018` — actual Proteinase K — was excluded as "not an esterase fold: Protease". Same family,
+opposite fate, because one label reads "PAM" and did not match the string "protease". Also
+suspect: `BPS0060`, enzyme label "Oxidoreductase", substrates PBAT|PU, activity unverified; it
+passed only because that string is not on the list.
+
+**Correction to this session's earlier statements.** `BPS0016` was repeatedly described as "a
+PAM polyamidase". It is not: its substrate is PLA (a polyester) and its fold is subtilisin.
+That wording is now fixed in §16, the atlas and the hand-off docs.
+
+**Resolution (user's decision).** The positive definition drops any fold clause: *an enzyme
+experimentally reported to degrade a plastic whose backbone is joined by carboxylic ester
+bonds*. Fold becomes something reported, not something enforced. **Open:** the eight enzymes
+excluded as "not an esterase fold" (six PLA-degrading proteases, two chitinases) genuinely
+degrade polyesters and would qualify under that definition; they remain excluded and the
+choice has not been made explicitly. InterProScan over all 388 sequences — which needs no
+accession — would settle the fold question and has not been run.
+
+#### 28b. BPS0016 is a correct rejection, not a localisation failure
+
+§16 logged `BPS0016` as one of the two proteins where all three triad latents are silent (peak
+activations 0.070, 0.054, 0.007) and treated it as a limitation. With the fold identified it is
+the opposite: a subtilisin has no alpha/beta charge-relay geometry, so there is nothing for
+those latents to detect and silence is the correct behaviour. It is the only non-alpha/beta
+protein among the 59 (`BPS0013` and `BPS0394` are not in the localisation set). **On the 58
+proteins that actually have the fold the protein-level rate is 57/58.** The remaining failure is
+`Q9Y7G8` (cutinase pbc1), His only. Edited in §16, in `petase_structures.html` and in the
+published atlas (v20).
+
+#### 28c. BPS0383 — keep it, and say what the polyamide tag is
+
+§24b left `BPS0383` (mechanism `amide|carboxylic_ester`, substrates `PA|PET`, verified) as a
+decision. Resolved as far as the evidence goes:
+
+- It is ***Fusarium solani* cutinase (FsC), UniProt P00590, PDB 1AGY** — the canonical
+  cutinase, split `val`, component `BPS0054` (13 members).
+- Its two sources: doi `10.1021/ma9005318`, "Cutinase-Catalyzed Hydrolysis of Poly(ethylene
+  terephthalate)", *Macromolecules* 2009 (the PET record), and doi `10.1002/pola.20684`,
+  "Cutinase — A new tool for biomodification of synthetic fibers", *J Polym Sci A* 2005 (the PA
+  record). The polyamide tag therefore comes from a **fibre surface-modification** study, not
+  from polyamide depolymerisation.
+- Probe score 0.5657, well above the 0.1455 threshold, so removing it deletes a correct call.
+
+| effect of removal | before | after |
+|---|---|---|
+| modelled positives | 388 | 387 |
+| `1_pet` | 320 | 319 |
+| val | 43 / 76, prevalence 0.361 | 42 / 76, prevalence 0.356 |
+| val AU-ROC / AU-PRC | 0.9976 / 0.9954 | 0.9975 / 0.9952 |
+| test | unchanged | unchanged |
+| component `BPS0054` | 13 | 12 |
+
+The one real cost is explainability: it is `view1[8]` of the 14 train+val proteins on which the
+neighbourhood offsets were learned (Ser +1 13/14, Asp +3 9/14, His +1 12/14), so removing it
+changes those denominators. **Recommendation: keep it and document the PA tag** (done in
+`handoff/AGENTS.md`). The user has not ruled otherwise.
+
+#### 28d. An abstract sentence audited against the run
+
+A draft sentence read: *"…stable across 100 bootstrap resamples, localize to experimentally
+verified catalytic residues in 172 of 176 plastizymes (97.7%), against a ~3.2% background rate
+when all remaining latents are run through the identical pipeline."* Three figures were wrong,
+two of them reversions to numbers already corrected:
+
+| in the sentence | actual | note |
+|---|---|---|
+| 172 of 176 plastizymes (97.7%) | **57 of 59 proteins (96.6%)** | corrected 2026-09-29 at the user's direction; 176 is a count of residue outcomes, and the three latents agree pairwise at 1.0 |
+| 100 bootstrap resamples | **200** | random-half draws |
+| ~3.2% background | **4.4% median** (for the all-latents null) | 3.2% is a different null |
+
+**There are three nulls and they answer different questions.**
+
+| null | asks | result |
+|---|---|---|
+| random position (§16) | is the ±3 window doing the work? | **3.2%** (41/1,280); ±5 adds nothing |
+| **random latent (§17)** | are these latents special among all 10,240? | **4.4% median**, mean ≈ 10–13%, 95th percentile 57–60%; **0 of 10,240 score higher** |
+| shuffled position (§17) | — | 12.0 / 7.5 / 6.5% |
+
+The sentence's clause "when all remaining latents are run through the identical pipeline"
+describes the random-latent null, so the figure is 4.4%, not 3.2%.
+
+**"None scores higher" needs its ties stated.** 9529 scores 100%, which cannot be beaten, and
+**25 other latents tie it** on the Ser task (7 on Asp, 8 on His). What makes 9529 special is
+that it was chosen from model behaviour alone before any catalytic residue was examined, and
+none of the 25 ties passes that selection (best stability 0.695 against the 0.75 cutoff). State
+the ties; do not leave a reviewer to find them.
+
+**Like-for-like comparison.** The random-latent null was run on the **45 held-out** proteins
+(offsets learned on the other 14). The 57/59 headline includes those 14. The matching figure is
+the held-out one — 44/45 = 97.8% protein-level (test 2/2 + external 42/43), with the per-latent
+rates 100 / 100 / 97.8% that appear in the null table. Quote the 45-protein figure next to the
+null, or the 59-protein figure with the denominators stated.
+
+**"Stable across 200 resamples" is literally true and means less than it sounds.** Stability is
+the fraction of 200 random-half draws in which a latent stays in the top 10 of 10,240 by Cliff's
+δ, with criterion ≥150/200 and δ ≥ 0.9 (9529 200, 5201 200, 7942 189, 5255 176, 2661 174, 7734
+159, 5271 157). It is stability against a negative set that is 88% not fold-matched; against the
+51 fold-matched negatives all seven fall to 0/200 (§22).
+
+Suggested wording:
+
+> We then interpret the probe using pretrained InterPLM sparse autoencoders: latent features
+> selected from model behaviour alone, with no catalytic-residue supervision and stable across
+> 200 bootstrap resamples, localize to experimentally verified catalytic residues in 57 of 59
+> proteins (96.6%), against a 4.4% median rate when all 10,240 latents are run through the
+> identical pipeline, where no latent scores higher and the 25 that tie on the serine task do
+> not pass selection.
+
+#### 28e. Artifact and repository bookkeeping
+
+**Published artifacts** (all private — each needs sharing from its Share menu before anyone else
+can open it):
+
+| artifact | URL | version | local source |
+|---|---|---|---|
+| Catalytic Latent Atlas for Plastizymes | `claude.ai/artifact/KcdU4xp1QUSvuWzrL4pGwS` | **v20** | **`artifacts/petase_structures.html`** |
+| Plastizyme Detection Methods | `claude.ai/artifact/US29Zu7ScaoAKSoepRQeMg` | **v6** | `artifacts/methods_detection.html` |
+| Polyester Degrader Dataset | `claude.ai/artifact/299aZWX8LjJM5E7bTQ4k7r` | **v3** | `artifacts/eda_dataset.html` |
+| Polyester Classifier Curves | `claude.ai/artifact/S1rzDp1cJYxA39xSTPZteE` | v1 | `artifacts/pr_curves.html` |
+| Metagenomic Plastizyme Screen | `claude.ai/artifact/9UVa672uQUXExrESd2xvtv` | v1 | `artifacts/screen30k.html` or `screen30k_page.html` — **not verified, diff against the live page before republishing** |
+| BioPET-SAE Dataset v1 | `claude.ai/artifact/TrmNy5H5KtFTNRgkKcLS8y` | — | **deleted from the account** (not by this session); source `artifacts/dataset_card.html` is unpublished |
+
+**The atlas trap.** The live atlas is built from `petase_structures.html` (2.3 MB, embedded PDB
+data), **not** `atlas_page.html` (42 KB), which was a different page that never backed it.
+After a context compaction this session lost the path-to-artifact mapping, published
+`atlas_page.html` without a `url`, and created a stray duplicate
+(`57sw1mMGXwmsJc47TMxRLz`, deleted at the user's instruction). The correct identification came
+from downloading the live page and diffing it against both candidates: it differed from
+`petase_structures.html` only by the platform's publish skeleton. **Rule: before publishing to
+an artifact from an earlier context, read it and diff against the candidate source; never
+publish without `url` to "update" something.**
+
+**Repository.** Two commits were made by the user after the last logged state — `b2356d2`
+"adding metagenome predictions and cleaner dataset card" and `8d35185` "fixing atlas" (which
+deleted `artifacts/atlas_page.html` and carried the BPS0016 fix). Both are pushed
+(`main...origin/main`, nothing ahead). **`b2356d2` committed `data/mgnify/raw/` — six `.faa.gz`
+files, 277 MB — plus `data/mgnify/sample_cds.faa` (99.9 MB), so `.git` is now 455 MB and that
+data is on GitHub.** `.gitignore` has no `mgnify` entry. Fixing it going forward is
+non-destructive:
+
+```
+git rm -r --cached data/mgnify/raw data/mgnify/sample_cds.faa
+printf 'data/mgnify/raw/\ndata/mgnify/sample_cds.faa\n' >> .gitignore
+```
+
+Removing it from *history* needs `git filter-repo` or BFG plus a force-push, which rewrites the
+public history and is the user's decision. Not done.
+
+**Process.** The shell permission layer denied every form of `rm` in this session, so file
+deletion had to be run by the user (`! rm …`) or arrive via their commit. Per CLAUDE.md this
+session never ran `git commit` or `git push`.
+
+#### 28f. Hand-off package corrected
+
+Two corrections to `handoff/` (§27), neither touching the data files — `dataset.tsv`,
+`dataset.fasta` and `manifest.json` are byte-identical to the committed copies:
+
+- `schema.json` described `ab_hydrolase_fold` as "blank where no UniProt accession exists".
+  It is in fact populated for **all 423 negatives and blank for every positive and unused
+  row**, because the annotation pass was only ever run on negatives. Description fixed in
+  `build_handoff.py`.
+- `handoff/AGENTS.md` gained a **"Known data issues in the positives"** section: the unverified
+  fold, `BPS0016` / `BPS0013` / `BPS0394`, the suspect `BPS0060`, the `BPS0383` polyamide tag,
+  the 23 positives carrying PU/PUR/PC/PA tags (19 + 3 PC-only + 1 PA), and the fact that the 36
+  `unused` rows are not a held-out test. A first draft of that section said "25"; the union is
+  **23**, and the 25 elsewhere in this log is a different count (any non-carboxylic-ester
+  mechanism tag, including two "unknown").
+
+`DATASET_CARD.md` and `artifacts/dataset_card.html` had still described PHA as "an unseen-substrate
+generalisation test"; both now say it is unused and carries no claim. `artifacts/SAE_Feature_Interpretation.md`
+now opens with a pointer to §15–§18 and §22 and a statement that it documents only the superseded
+PET-only run. The root `README.md`, previously a two-line stub, now describes the project and its
+caveats.
+
+#### 28g. A mislabelled cell and an invalid interval, both inside the hand-off package
+
+Found on 2026-11-14 while re-deriving the numbers for the status section. Both were my errors.
+
+**The cell.** §21 correctly reported AU-ROC 0.9141 for **"EC 3.1.1 non-tRNA", n = 23**. That
+group is the 13 `ec311_wrong_fold` plus the 10 `ab_hydrolase_hard_negative` negatives in test.
+It was then transcribed into the hand-off package and the dataset card as the figure for
+`ec311_wrong_fold` alone, with n = 23, which is wrong on both counts. Recomputed from
+`polyester_scores_650M.npz` with the 42 test positives held fixed:
+
+| test negatives | n | AU-ROC | AU-PRC |
+|---|---|---|---|
+| all | 62 | 0.9681 | 0.9526 |
+| `naive_control` | 36 | 1.0000 | 1.0000 |
+| `trna_processing` | 3 | 1.0000 | 1.0000 |
+| **`ec311_wrong_fold` alone** | **13** | **0.9890** | **0.9967** |
+| `ab_hydrolase_hard_negative` | 10 | 0.8167 | 0.9550 |
+| wrong-fold + alpha/beta combined (the old "23") | 23 | 0.9141 | 0.9526 |
+
+So **the probe separates the wrong-fold group almost as easily as the naive controls**, and the
+alpha/beta hard negatives are the only cell that is actually hard. That contradicts the
+"intermediate difficulty" wording I had written into the card; the accurate statement is that
+the probe finds them easy (0.989) while the SAE serine latent fires on only 13.9% of them, which
+is what makes them a control for "serine versus fold" rather than a hard negative.
+
+**The interval.** The 95% CI of [0.676, 0.926] on the 0.8167 was a *per-protein* bootstrap —
+the form this project's own rule rejects. Resampling homology components instead (5,000 draws;
+20 positive and 7 negative components) gives **[0.606, 0.963]**, wider on both sides. For the
+wrong-fold cell the component interval is [0.951, 1.000] (20 and 8 components). The per-protein
+interval is kept in the manifest under `ci95_protein_bootstrap_not_valid` so the difference is
+visible rather than silently replaced. §21's intervals for the 23-protein and 10-protein cells
+([0.840, 0.971] and [0.676, 0.926]) are per-protein and stand only as logged.
+
+**Corrected in:** `handoff/EVALUATION.md`, `handoff/README.md`, `handoff/manifest.json` (via
+`build_handoff.py`), `DATASET_CARD.md`, `artifacts/dataset_card.html`,
+`artifacts/EDA_polyester_task.md`, `artifacts/eda_dataset.html` (published v3) and
+`artifacts/methods_detection.html` (published v6). `dataset.tsv` and `dataset.fasta` are
+byte-identical to the committed copies. The 39-of-62 "separated perfectly" figure (36 naive + 3
+tRNA) is unaffected.
+
+---
+
 ### 20. Full metagenomic screen — 30,000 families, 165 ranked candidates (2026-10-03)
 
 Scaled the 500-sequence pilot (section 19) to **30,000 protein families**. 13.5 h of ESM-2
@@ -2622,150 +2887,175 @@ Atlas updated to the corrected offset: `https://claude.ai/artifact/KcdU4xp1QUSvu
 
 ---
 
-## Current status (checkpoint, 2026-09-28)
+## Current status (checkpoint, 2026-11-14; last work session 2026-10-12)
 
-Dataset built and verified. Detection half complete: dense-embedding probes at two model
-scales, a BLASTp baseline, and the task redefined from PET-only to polyester-degrader.
-Explainability half complete **but against the PET-only task**, which the redefinition
-superseded — porting it is the main open work (Still open #1).
-**Test is spent** on both tasks — further tuning must return to val or use a fresh set.
+*Rewritten 2026-11-14. The previous version of this section was a 2026-09-28 checkpoint that
+still described the explainability half as unported, PHA as generalising at 83%, and tier 3 as
+~46% fold-matched. All three are superseded — see §21, §25–§26 and §22.*
 
-**Assembled set: 847 sequences.** 320 `1_pet`, 68 `2_other_polyester`, 185
-`3_fold_matched_esterase`, 238 `4_naive_control`, 36 `heldout_pha`, 118 excluded.
+**The task is locked (§26).** Positive: an enzyme experimentally reported to degrade a plastic
+whose backbone is joined by carboxylic ester bonds — 388 enzymes, 21 polyester substrates, PET
+the largest at 320. Hard negative: an alpha/beta-hydrolase-fold protein with the same Ser-His-Asp
+triad, never reported to degrade a plastic — 51. Easy negatives: 372. There is **no fold clause**
+in the positive definition; fold is reported, not enforced (§28a). The PHA generalisation claim
+is withdrawn (§25–§26).
 
-**Headline: polyester-degrader classifier, test AU-ROC 0.9681 / AU-PRC 0.9526, beating
-BLASTp significantly on both (paired bootstrap over homology components). Generalises to a
-held-out enzyme lineage at 83%.** See section 14.
+**Dataset.** 847 rows: 811 modelled (388 positive, 423 negative) plus 36 PHA depolymerases that
+are unused and carry no claim.
 
-**Best single interpretable feature (PET-only task): SAE latent 9529 alone, AU-ROC 0.9160**
-— a catalytic-serine detector, above dense (0.8856), the full SAE probe (0.8900) and BLASTp
-(0.8778). *On that superseded task* the best test F1 was BLASTp's 0.800 and no pairwise
-difference between methods was significant; the probe's significant win over BLASTp is a
-result of the **polyester** task only. The two must not be quoted side by side without
-their task labels.
+| split | positives | negatives | total | prevalence | hard negatives |
+|---|---|---|---|---|---|
+| train | 303 | 285 | 588 | 0.515 | 40 |
+| val | 43 | 76 | 119 | 0.361 | **1** |
+| test | 42 | 62 | 104 | 0.404 | 10 |
 
-**Main mechanistic result so far (section 13, PET-only task):** the model's best feature is
-an interpretable nucleophile-elbow detector. It detects the alpha/beta-hydrolase fold, not
-PET specificity, which explains the ~0.68 ceiling on the `2b_aliphatic` contrast across
-every model scale and BLAST — and is precisely why the task was redefined. The equivalent
-analysis for the polyester classifier has not been run.
+The negatives by what they actually are (§21; this supersedes the EC-based tiers, and tier 3 is
+27% fold-matched, not 46%): 51 alpha/beta hydrolase, 36 ester-active in a different fold, 99
+tRNA-processing hydrolases with no serine nucleophile, 237 naive controls. Positives: 74 homology
+components, **66% in one** (`BPS0190`, 256 of 388). Max cross-split identity 0.3967 / 0.3800 /
+0.3983.
 
-**Artifacts** (all numbers reproducible, each with a machine-readable `.json`):
+**Detection.** ESM-2 650M layer 33, max-pooled, linear probe on val log-loss. Test, positives
+fixed at 42:
+
+| test negatives | n | AU-ROC | AU-PRC |
+|---|---|---|---|
+| all — blended headline | 62 | 0.9681 | 0.9526 |
+| naive controls | 36 | 1.0000 | 1.0000 |
+| tRNA-processing | 3 | 1.0000 | 1.0000 |
+| ester-active, different fold | 13 | 0.9890 | 0.9967 |
+| **alpha/beta hard negatives** | **10** | **0.8167** | 0.9550 |
+
+The hard-negative interval is [0.606, 0.963] bootstrapped over homology components (§28g).
+BLASTp on the same split: test AU-ROC 0.9040, AU-PRC 0.7552. The paired bootstrap over test
+homology components puts the probe ahead on the *blended* comparison (AU-ROC +0.0603, AU-PRC
++0.1708, both significant), but **that comparison has not been decomposed by negative group**, so
+it is not known whether the probe's advantage survives on the 10 hard negatives. 39 of 62 test
+negatives are separated perfectly, so the blended number is mostly free weight. An amino-acid
+composition baseline gets 0.7020 on this split and 0.8926 under random CV, a 0.19 inflation that
+measures what a non-homology-aware split buys. **Test is spent**, and validation holds one hard
+negative, so no further tuning on the hard task is possible without new data.
+
+**Explainability.** Seven latents selected on train+val by Cliff's δ ≥ 0.9 and top-10 stability
+≥ 150/200 random-half draws: 9529 (Ser), 2661 (Asp), 7734 (His), 7942/5201/5255 (pocket wall),
+5271 (C-terminal second shell). They localise to curated catalytic residues in **57 of 59
+proteins (96.6%)**, 44/45 on the held-out proteins, with offsets Ser +1, Asp +3, His +1 learned
+on 14. `BPS0016` is a subtilisin and its silence is a correct rejection, so 57/58 on proteins that
+have the fold (§28b). Nulls (§16, §17, §28d): 3.2% for a random position, **4.4% median for all
+10,240 latents with none scoring higher** (25 tie 9529 on Ser, none passing selection).
+
+**What the latents do not show.** They are a validated readout of serine-hydrolase catalytic
+machinery: 100% of alpha/beta hard negatives fire the Ser latent, against 13.9% of
+wrong-fold serine hydrolases and 0.0% of tRNA hydrolases (§22c). They are **not shown to separate
+polyester degraders from fold-matched esterases.** Against the 41 fold-matched negatives in
+train+val, δ falls to 0.506–0.716 per protein, 0.116 to −0.178 per homology component, and every
+cluster-bootstrap interval includes zero; no latent anywhere in the dictionary reaches δ ≥ 0.9
+there (max 0.847). The selection criterion was powered by easy negatives (§22, §22b). The honest
+verdict is **undetermined, not refuted** — the test lacks power, not the effect. Single-latent
+explanation of the hard-task margin does not exist at this layer; if the margin is real it is
+distributed. No latent has been ablated, so everything here is correlational.
+
+**Metagenomic screen (§19–§20).** 30,000 MGnify plastisphere families, probe ≥ 0.5, 165 shortlisted
+(Tier A 40: probe ≥ 0.5 and 3/3 triad). No BLAST was run, so no homology claim is made. Caveat from
+§22c: "3/3 triad" in Tier A now means alpha/beta-hydrolase-like, not polyester-specific. Follow-ups
+named in §20 are not done (BLAST Tier A against the 542 known; ESMFold the top 10; hand-inspect
+the 0.938 anomaly).
+
+**Hand-off (§27, §28f–§28g).** `handoff/` holds `dataset.tsv`, `dataset.fasta`, `schema.json`,
+`manifest.json` (sha256, counts, baselines to reproduce), and three documents: `README.md`,
+`AGENTS.md` (six hard rules, known data issues in the positives, mistakes already made) and
+`EVALUATION.md` (five reporting rules). Not yet given to the intern; it carries no license.
+
+**Repository (§28e).** Latest commits `b2356d2` and `8d35185`, both pushed. Uncommitted as of
+2026-11-14: `DATASET_CARD.md`, `PROGRESS.md`, `README.md`, `artifacts/{BLAST_vs_ESM2_650M_Polyester.md,
+EDA_polyester_task.md, SAE_Feature_Interpretation.md, dataset_card.html, eda_dataset.html,
+methods_detection.html}`,
+`handoff/{AGENTS.md, EVALUATION.md, README.md, manifest.json, schema.json}`,
+`src/biopet_sae/build_handoff.py`. **`data/mgnify/raw/` (277 MB) and `sample_cds.faa` (99.9 MB)
+are committed and pushed; `.git` is 455 MB.** Never run `git commit` or `git push` without the
+user's go-ahead for that specific commit.
+
+**Published artifacts** (private; share from the Share menu):
+
+| artifact | URL | version | local source |
+|---|---|---|---|
+| Catalytic Latent Atlas for Plastizymes | `claude.ai/artifact/KcdU4xp1QUSvuWzrL4pGwS` | v20 | **`artifacts/petase_structures.html`** (not `atlas_page.html`, now deleted) |
+| Plastizyme Detection Methods | `claude.ai/artifact/US29Zu7ScaoAKSoepRQeMg` | v6 | `artifacts/methods_detection.html` |
+| Polyester Degrader Dataset | `claude.ai/artifact/299aZWX8LjJM5E7bTQ4k7r` | v3 | `artifacts/eda_dataset.html` |
+| Polyester Classifier Curves | `claude.ai/artifact/S1rzDp1cJYxA39xSTPZteE` | v1 | `artifacts/pr_curves.html` |
+| Metagenomic Plastizyme Screen | `claude.ai/artifact/9UVa672uQUXExrESd2xvtv` | v1 | `screen30k.html` or `screen30k_page.html` — diff against the live page before republishing |
+
+The "BioPET-SAE Dataset v1" artifact no longer exists on the account; its source
+`artifacts/dataset_card.html` is unpublished. Live-update watches on all artifacts have ended.
+**Before publishing to an artifact from an earlier context, read it and diff against the candidate
+source; never publish without `url` to update something.**
+
+**Data and written artifacts.**
 
 | file | contents |
 |---|---|
-| `artifacts/dataset_splits_0.4.md` | dataset provenance, class rationale, split verification |
-| `artifacts/ESM2_8M_Dense_Run.md` | *(PET-only, superseded)* 8M: C×eta sweep, 5-seed SEs, threshold curve, test |
-| `artifacts/ESM2_650M_Dense_Run.md` | *(PET-only, superseded)* 650M layer 33: same four tables |
-| `artifacts/BLAST_vs_ESM2_8M.md` | *(PET-only, superseded)* BLAST baseline, e-value sweep, error analysis, rebalancing |
-| `artifacts/BLAST_vs_ESM2_650M.md` | *(PET-only, superseded)* BLAST vs 650M, paired bootstrap method, error analysis |
-| `artifacts/SAE_Feature_Interpretation.md` | *(analyses the PET-only task)* SAE latents, catalytic-triad mapping, leak correction |
-| `artifacts/EDA_polyester_task.md` | **polyester labels, confound floors** |
-| `artifacts/ESM2_650M_Polyester_Run.md` | **the headline classifier** |
-| `artifacts/BLAST_vs_ESM2_650M_Polyester.md` | **the significant win over BLAST** |
-| `https://claude.ai/artifact/KcdU4xp1QUSvuWzrL4pGwS` | 3D structure viewer, 32 PETases |
-| `https://claude.ai/artifact/S1rzDp1cJYxA39xSTPZteE` | **PR curves, val vs test, vs BLASTp** |
-| `artifacts/pr_curves.html` | source for the curve figure |
-| `artifacts/petase_structures.html` | source for the 3D viewer |
-| `artifacts/SAE_650M_L33_differential.json` | differential-score output (leak-free) |
-
-**Data artifacts:**
-
-| file | contents |
-|---|---|
-| `data/processed/dataset_splits_id40.tsv` | 847 rows: class, split, component |
-| `data/processed/pair_identities.tsv` | 70,230 cached global alignments |
-| `data/embeddings_8M/embeddings.npz` | layers 1–6, mean + max pooled |
-| `data/embeddings_650M/embeddings.npz` | layers 1/9/18/24/30/33, mean + max pooled |
-| `results/eda_report.md`, `results/split_frontier.json` | EDA, threshold sweep |
-
-**Stale and pending deletion:** `results/probe_embeddings_8M/` (0.30 split) and
-`results/binary_embeddings_8M_dataset_splits_id40/` (C=1.0, pre-regularization-fix). Both
-superseded by the artifacts above.
+| `data/processed/dataset_splits_id40.tsv` | 847 rows: class, split, homology component |
+| `data/processed/plastizymes_merged.tsv` | the 542 merged positives with substrates and sources |
+| `data/release/biopet_sae_dataset_v1.{tsv,fasta}` | annotated release, with `negative_group` |
+| `data/processed/uniprot_negative_annotation.json` | cached InterPro / Pfam / ACT_SITE for the 423 negatives |
+| `data/embeddings_650M/embeddings.npz` | layers 1/9/18/24/30/33, mean and max pooled |
+| `data/sae_650M_L33/` | SAE features, selection, localisation, nulls, atlas views |
+| `data/mgnify/` | metagenome screen inputs and scored output |
+| `handoff/` | the replication package |
+| `DATASET_CARD.md`, `artifacts/EDA_polyester_task.md` | the dataset description |
+| `artifacts/ESM2_650M_Polyester_Run.md`, `BLAST_vs_ESM2_650M_Polyester.md` | the polyester classifier and the BLAST comparison |
+| `artifacts/{ESM2_8M_Dense_Run, ESM2_650M_Dense_Run, BLAST_vs_ESM2_8M, BLAST_vs_ESM2_650M}.md` | PET-only runs, superseded |
+| `artifacts/SAE_Feature_Interpretation.md` | the PET-only SAE run, superseded; see its banner |
 
 ## Still open
 
-Ordered by what the thesis needs, not by effort. Thesis = (1) detection, (2) mechanistic
-explanation of the detector. **Half 1 is done and wins. Half 2 now explains the right
-classifier, but only its easy half.**
+Ordered by what the thesis needs. Numbering restarted 2026-11-14; older sections cite the
+2026-09-28 list, which is no longer authoritative.
 
-1. **The explanation covers the easy half of the decision, not the hard half.**
-   *(Updated 2026-09-29 — the previous item here, "the SAE analysis is still on the PET-only
-   task," is done.)* Selection was redone on polyester labels: Cliff's delta on train+val
-   with a 200-draw bootstrap, test untouched, frozen before localisation. Six latents —
-   three on the catalytic triad (verified at n=1,326, section 15), three on the substrate
-   pocket 8–10 Å from the Ser. **But the six correlate at 0.88 and 90% of their variance is
-   one axis**, "how canonical is this active site." Against genuine esterases they reach
-   only **0.79 AU-ROC on test**, and **no latent survives the bootstrap** on that contrast
-   (63 negatives in train+val). So the probe's advantage over BLASTp on hard esterase
-   negatives — the actual contribution — remains unexplained. Places left to look:
-   layers 18/24, where structure rather than local motif dominates; and rebuilding tier 3
-   on fold so the contrast has more than 23 clean test negatives (Still open #8).
-   `SAE_Feature_Interpretation.md` still documents the superseded PET-only run and needs
-   rewriting against the polyester results.
-2. **No causal test of any latent.** All SAE evidence is correlational — latents were
-   *selected* for separating classes, then shown to fire on the catalytic triad. Importance
-   is only established by ablating a latent against a **reconstruction baseline** (not a raw
-   baseline) and seeing the prediction move. The kinase project's precedent is greedy
-   sequential ablation.
-3. **Test is spent on the polyester task.** Final metrics (AU-ROC 0.9681 / AU-PRC 0.9526)
-   were read off test. Any further tuning must return to val or use a fresh set.
-4. **Val and test are not equally hard, and the headline depends on it.** Test drew markedly
-   harder negatives (8/62 clear BLAST's cutoff vs 2/76 in val); on val the probe and BLASTp
-   are tied. The paired bootstrap resamples *within* test and cannot account for split
-   composition. A pooled val+test comparison, or k-fold over homology components, would
-   measure the gap without this dependence. **Until then the defensible claim is "the probe
-   degrades more gracefully as negatives get harder," not "the probe is uniformly better."**
-5. **Only layer 33 has been examined.** It was chosen because the dense probe peaked there.
-   Substrate specificity, if linearly available at all, may sit at a middle layer where
-   structural rather than sequence-level features dominate; SAEs exist for 650M layers
-   1/9/18/24/30 and the embeddings are already cached.
-6. **HMMER is still unimplemented.** A profile HMM over the training positives is a stronger
-   homology baseline than pairwise BLASTp and would harden the central comparison. Needs
-   `mafft` + `hmmbuild`/`hmmsearch`; neither is installed.
-7. **PEZy-miner's 36 assayed non-degraders** remain unextracted from
-   `~/Downloads/1-s2.0-S2214030124000178-mmc1.docx` — the only known source of
-   *experimentally verified* negatives. Every current negative is assumed non-degrading
-   because nobody assayed it, which is the dataset's weakest premise.
-8. **The `3_fold_matched_esterase` tier is only ~46% fold-matched** (§14d). 99 of 185 are
-   tRNA-processing hydrolases that share EC 3.1.1 but not the alpha/beta-hydrolase fold.
-   The tier is the project's central design argument — that negatives are *homologous* hard
-   negatives — so this weakens the argument directly. Fix: re-query on InterPro/Pfam
-   alpha/beta-hydrolase clan membership instead of EC alone, and re-run the comparison.
-   Until then tier-3 numbers are a mixed, not a fold-matched, contrast.
-9. **Label asymmetry** (§14d). Positives are measured; all 423 negatives are assumed
-   non-degrading. 48 of 388 positives (29 of 68 in `2_other_polyester`) are extrapolated
-   rather than assayed.
-10. **Latent 5271 is unassigned** — C-terminal peaks, no consistent motif.
-11. **454 unannotated UniProt EC 3.1.1.101 entries** were never triaged, and the triad-finder
-    was never validated at cutinase scale (4,991 annotated entries available).
+1. **Verify the fold of the positives (§28a).** Run InterProScan over all 388 sequences — it
+   needs no accession, and only 152 have one. Then decide `BPS0016`, `BPS0013`, `BPS0394` and the
+   suspect `BPS0060`, and decide explicitly whether the eight proteases and chitinases excluded as
+   "not an esterase fold" belong in the positives under the substrate-only definition.
+2. **More hard negatives.** Fetch 300–400 UniProt reviewed proteins carrying `IPR029058` plus three
+   curated `ACT_SITE` residues, never assayed on a plastic, excluding cutinase and PETase
+   families, then re-split so validation has real hard negatives and re-run detection and latent
+   selection. The single highest-value fix, and it fixes one side only.
+3. **Positive-side power.** 66% of positives are one component, so the comparison stays
+   underpowered however many negatives are added. Needs one-vote-per-family weighting; diversity
+   cannot be bought (fewer than 50 verified plastics-active enzymes existed at PAZy's publication).
+4. **Decompose the BLASTp comparison by negative group.** Only blended metrics exist. Until the
+   hard cell is compared, "the probe beats BLASTp" is a statement about the easy negatives.
+5. **Explain the probe's hard-task margin.** Single-latent δ ranking cannot (ceiling 0.847).
+   Needs a multi-latent or attribution method, at other layers (18/24 where structure dominates).
+6. **Causal test.** No latent has been ablated. Ablate against a reconstruction baseline, not a
+   raw baseline; the kinase project's precedent is greedy sequential ablation.
+7. **`BPS0383` decision.** Currently kept and documented (§28c); the user has not ruled.
+8. **HMMER baseline.** Prior art is the PAZy paper's profile HMM over ~3,000 PET-active homologs
+   (R4). Needs `mafft` and `hmmbuild`, neither installed.
+9. **PEZy-miner's 36 assayed non-degraders** remain unextracted from
+   `~/Downloads/1-s2.0-S2214030124000178-mmc1.docx` — the only source of *measured* negatives.
+10. **Screen follow-ups (§20).** BLAST Tier A against the 542 known; ESMFold the top 10; the 0.938
+    anomaly (probe 0.938, 2/3 triad, Asp lands on a glycine, elbow `GYTEG`).
+11. **Housekeeping.** Add `data/mgnify/raw/` and `sample_cds.faa` to `.gitignore` and untrack them
+    (commands in §28e); decide about purging history. Add a license to `handoff/`. Verify the
+    local source of the metagenomic-screen artifact. 454 unannotated UniProt EC 3.1.1.101 entries
+    were never triaged.
+
+*Closed since 2026-09-28:* the SAE analysis on polyester labels; fold-based rebuild of the negative
+description (§21, as a `negative_group` annotation rather than a rebuilt tier); the stale
+`results/probe_embeddings_8M/` and `results/binary_embeddings_8M_dataset_splits_id40/`
+directories; the `atlas_page.html` draft; latent 5271 (second shell, §16).
 
 ## Next steps
 
-Steps 1–3 are one piece of work: port the explainability half onto the classifier that
-actually won.
-
-1. **Re-run the SAE pipeline against the polyester labels.** Reuse the cached
-   `sae_features.npz` (847 x 10,240 — no re-embedding needed); change only the contrast to
-   `{1_pet, 2_other_polyester}` vs `{3_fold_matched_esterase, 4_naive_control}`. Keep
-   `--select-on train`. Gate on reconstruction fidelity before trusting any number.
-2. **Ask the question that now has a real answer.** On the PET-only task the honest finding
-   was negative (no PET-specific latent; 0.5108, worse than random). The polyester probe
-   genuinely beats BLASTp, so there *is* a decision to explain. Target the six test negatives
-   BLASTp ranks above its own median positive — Q01470, P9WK86, P95125, P71668 (probe
-   correctly rejects) versus P86325, Q47M62 (probe fails). **Which latents separate those two
-   groups?** That is the mechanistic claim the project is built to make.
-3. **Map the resulting latents to residues and structures**, reusing `feature_windows.py` and
-   `build_structure_viewer_data.py`. The catalytic triad is the built-in control: latents that
-   only track the triad explain fold, not function, and must be reported as such.
-4. **Then** add the ablation test (Still open #2) — a correlational story is not a mechanism.
-5. **Harden the headline**: pooled val+test or component-level k-fold (Still open #4), and
-   the HMMER baseline (#6).
-6. **Rebuild tier 3 on fold, not EC** (Still open #8) — re-query UniProt for InterPro
-   alpha/beta-hydrolase clan members, rebuild the tier, and re-run the polyester comparison.
-   This is the cheapest change that makes the central design argument actually true.
-7. Optional, in priority order: middle-layer SAEs (#5), PEZy-miner verified negatives (#7,
-   which also addresses #9), the unannotated UniProt triage (#11).
+1. **InterProScan the 388 positives** and settle the fold question (Still open #1). Cheap, and it
+   fixes the definition's weakest claim before anything is built on it.
+2. **Fetch the 300–400 new hard negatives** (#2) and re-split. Do this before more modelling,
+   because every hard-task number currently rests on 10 test proteins.
+3. **Decompose BLASTp by negative group** (#4) on the existing split — no new data needed, and it
+   says whether the central comparison holds where it matters.
+4. **Give `handoff/` to the intern** once `.gitignore` is sorted and a license is added.
+5. Then the attribution / ablation work (#5, #6).
 
 ## References
 

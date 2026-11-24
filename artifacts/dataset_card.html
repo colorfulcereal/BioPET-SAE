@@ -92,7 +92,7 @@ footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);font-si
     <h1>BioPET-SAE Dataset v1</h1>
     <p class="sub">A homology-bounded benchmark for detecting polyester-degrading enzymes
       (plastizymes) from protein sequence, with the negative set classified by <b>fold</b>
-      rather than by EC class. <b>847 proteins</b> — 811 modelled, 36 held out. Every number
+      rather than by EC class. <b>847 proteins</b> — 811 modelled, 36 PHA depolymerases carried but unused. Every number
       on this page was re-derived from the released file.</p>
   </div>
 </header>
@@ -125,7 +125,7 @@ footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);font-si
       Cliff's δ of 0.72 for the strongest SAE latent fell to 0.12 and its interval spanned zero
       once resampling respected homology.</div>
     <p>Together these are why the headline test AU-ROC of 0.9681 becomes <b>0.8167</b> against
-    fold-matched negatives alone, with a 95% CI reaching 0.676.</p>
+    fold-matched negatives alone, with a component-bootstrap 95% CI of [0.606, 0.963].</p>
   </div>
 </div>
 
@@ -193,9 +193,11 @@ footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);font-si
     copolyester 21. <code>2_other_polyester</code> is <b>43% unverified</b> — the weakest part
     of the positive set. Filter on <code>activity_verified</code> for a stricter set at the cost
     of n.</p>
-    <div class="good"><b><code>heldout_pha</code> is clean.</b> 36 polyhydroxyalkanoate
-      depolymerases, never used in training, tuning or feature selection. Available as an
-      unseen-substrate generalisation test — keep it unused until you want that number.</div>
+    <div class="flag"><b><code>heldout_pha</code> is unused and carries no claim.</b> 36
+      polyhydroxyalkanoate depolymerases, never used in training, tuning or feature selection,
+      but <b>not</b> a generalisation test: 14 of the 36 share a homology component with a
+      trained positive and 25 trained positives already act on a PHA. The generalisation claim
+      was withdrawn.</div>
   </div>
 </div>
 
@@ -233,8 +235,9 @@ footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);font-si
     <h3>Why wrong-fold EC 3.1.1 is separated out</h3>
     <p>36 negatives are ester hydrolases with a serine nucleophile in a <i>different</i> fold —
     GDSL/SGNH (<code>PF13472</code>, <code>PF00657</code>), patatin (<code>PF01734</code>),
-    β-lactamase-fold (<code>PF00144</code>). Intermediate difficulty, and a useful control for
-    whether a method detects a serine or a fold.</p>
+    β-lactamase-fold (<code>PF00144</code>). The probe separates them almost as easily as naive
+    controls (test AU-ROC 0.989, n=13), but the SAE serine latent fires on only 13.9% of them,
+    so they remain a useful control for whether a method detects a serine or a fold.</p>
   </div>
 </div>
 
@@ -306,8 +309,8 @@ footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);font-si
           <td class="mono">1.0000</td></tr>
       <tr><td class="mono">tRNA_processing</td><td class="mono">3</td><td class="mono">1.0000</td>
           <td class="mono">1.0000</td></tr>
-      <tr><td class="mono">ec311_wrong_fold</td><td class="mono">23</td><td class="mono">0.9141</td>
-          <td class="mono">0.9526</td></tr>
+      <tr><td class="mono">ec311_wrong_fold</td><td class="mono">13</td><td class="mono">0.9890</td>
+          <td class="mono">0.9967</td></tr>
       <tr class="key"><td class="mono">ab_hydrolase_hard_negative</td><td class="mono">10</td>
           <td class="mono">0.8167</td><td class="mono">0.9550</td></tr>
     </table></div>
@@ -338,7 +341,8 @@ footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);font-si
       negative.</li>
       <li><b>State n for the fold-matched cell.</b> It is 10 in test. Any claim there is
       low-powered, and should carry an interval.</li>
-      <li><b>Leave <code>heldout_pha</code> alone</b> until you want a generalisation number.</li>
+      <li><b>Leave <code>heldout_pha</code> out</b>, or justify including it. It is not a
+      generalisation set.</li>
     </ol>
   </div>
 </div>

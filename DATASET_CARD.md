@@ -2,7 +2,8 @@
 
 A homology-bounded benchmark for **detecting polyester-degrading enzymes (plastizymes)
 from protein sequence**, with the negative set annotated by **fold** rather than by EC
-class. 847 proteins, 811 modelled plus 36 held out.
+class. 847 proteins: 811 modelled, plus 36 PHA depolymerases carried in the file but
+**unused** (see below). A self-contained package for a second team is in `handoff/`.
 
 Files in `data/release/`:
 
@@ -34,7 +35,7 @@ effectively counts that one cutinase family 256 times. **Use a cluster bootstrap
 is wrong, not merely optimistic.
 
 Both are why the headline AU-ROC of 0.9681 falls to 0.82 against fold-matched negatives
-alone, with a 95% CI reaching 0.68.
+alone, with a component-bootstrap 95% CI of [0.61, 0.96].
 
 ---
 
@@ -43,7 +44,7 @@ alone, with a 95% CI reaching 0.68.
 | column | meaning |
 |---|---|
 | `seq_id` | `BPS*` for positives (internal), UniProt accession for negatives |
-| `split` | `train` / `val` / `test` / `heldout` |
+| `split` | `train` / `val` / `test` / `heldout` — `heldout` rows are the 36 unused PHA depolymerases |
 | `y` | 1 = degrader (includes `heldout_pha`), 0 = negative |
 | `class_label` | `1_pet`, `2_other_polyester`, `3_fold_matched_esterase`, `4_naive_control`, `heldout_pha` |
 | `negative_group` | **the corrected, fold-based negative classification — prefer this over `class_label`** |
@@ -78,8 +79,12 @@ Provenance: PAZy only 161, PAZy+PlasticDB 179, PlasticDB only 48.
 Substrate: PET/aromatic polyester 284, aliphatic polyester 83, aromatic copolyester 21.
 `2_other_polyester` is 43% unverified — the weakest part of the positive set.
 
-`heldout_pha` (polyhydroxyalkanoate depolymerases) was never used in training, tuning or
-feature selection. It is available as an unseen-substrate generalisation test.
+`heldout_pha` (36 polyhydroxyalkanoate depolymerases) is **unused and carries no claim.** It was
+never used in training, tuning or feature selection, but it is *not* a generalisation test
+either: 14 of the 36 share a homology component with a trained positive, and 25 trained
+positives already act on a PHA, so "unseen lineage" was never true (PROGRESS.md §25). The
+generalisation claim was withdrawn (§26). The rows stay in the file, labelled `heldout`, so
+nothing is silently dropped.
 
 ### Negatives — 423, from UniProt, **none ever assayed**
 
@@ -104,8 +109,9 @@ you can exclude them deliberately.
 
 **Why `ec311_wrong_fold` is separated out.** 36 negatives are ester hydrolases with a serine
 nucleophile in a *different* fold — GDSL/SGNH (PF13472, PF00657), patatin (PF01734),
-β-lactamase-fold (PF00144). Intermediate difficulty, and a useful control for whether a
-method is detecting a serine or a fold.
+β-lactamase-fold (PF00144). The probe separates them almost as easily as naive controls (test AU-ROC 0.989, n=13), but the
+SAE serine latent fires on only 13.9% of them, so they remain a useful control for whether a
+method detects a serine or a fold.
 
 ### Catalytic machinery by group — measured, not assumed
 
@@ -153,11 +159,14 @@ Test AU-ROC decomposed by negative group, positives fixed at 42:
 | all — headline | 62 | 0.9681 | 0.9526 |
 | `naive_control` | 36 | 1.0000 | 1.0000 |
 | `tRNA_processing` | 3 | 1.0000 | 1.0000 |
-| `ec311_wrong_fold` | 23 | 0.9141 | 0.9526 |
+| `ec311_wrong_fold` | 13 | 0.9890 | 0.9967 |
 | `ab_hydrolase_hard_negative` | 10 | **0.8167** | 0.9550 |
 
 39 of 62 test negatives are separated perfectly, so the headline is a weighted blend in
-which most of the weight is free. A BLASTp baseline on the same split gives test AU-ROC
+which most of the weight is free. The hard-negative cell's 95% interval, bootstrapped over
+homology components (20 positive and 7 negative components), is **[0.606, 0.963]**. Earlier
+drafts reported 0.9141 for `ec311_wrong_fold`; that figure belongs to the 23 proteins in
+wrong-fold plus alpha/beta hard negatives combined (13 + 10). A BLASTp baseline on the same split gives test AU-ROC
 0.9040 / AU-PRC 0.7552. An amino-acid-composition baseline gives 0.7020 (and 0.8926 under
 random CV — a 0.19 inflation that shows what a non-homology-aware split buys you).
 
@@ -171,7 +180,8 @@ random CV — a 0.19 inflation that shows what a non-homology-aware split buys y
    component, per-protein intervals are invalid.
 3. **Say whether you tuned on val**, and remember val has 1 fold-matched negative.
 4. **State n for the fold-matched cell.** It is 10 in test. Any claim there is low-powered.
-5. `heldout_pha` is unused — keep it unused until you want a generalisation number.
+5. `heldout_pha` is unused and carries no claim. Leave it out, or justify in writing why you
+   included it; do not describe it as a generalisation set.
 
 ---
 
@@ -190,6 +200,14 @@ random CV — a 0.19 inflation that shows what a non-homology-aware split buys y
   and would be a genuine measured-negative set.
 - **48 of 388 positives are unverified**, 29 of those extrapolated-only. Filter on
   `activity_verified` for a stricter positive set at the cost of n.
+- **The fold of the positives was never verified.** The original filter was a 16-string
+  blocklist matched against PlasticDB enzyme names. It was only reached on the
+  `2_other_polyester` branch (all 320 `1_pet` bypassed it), and 161 of 388 positives carry no
+  enzyme label at all. Of the 152 positives with a UniProt accession, 111 carry `IPR029058`,
+  38 have no InterPro annotation, and 3 carry a different fold: `BPS0013` (beta-lactamase),
+  `BPS0394` (SGNH hydrolase) and `BPS0016` (Proteinase K-like subtilisin that degrades PLA).
+  The positive definition is therefore substrate-based by design, and fold is a property to
+  report. Running InterProScan over all 388 sequences would settle it.
 - **`3_fold_matched_esterase` is mislabelled** (see above). Retained only for continuity.
 - Tier assignment used EC codes; a rebuild on InterPro/Pfam fold is the right design and is
   what `negative_group` approximates post hoc.
@@ -223,4 +241,6 @@ Annotation in this release: UniProt REST, fields `ec`, `xref_pfam`, `xref_interp
 
 Full experimental history, including every correction to these numbers, is in
 `PROGRESS.md` — §21 (negative set), §22/22b (latent selection and its homology confound),
-§22c (catalytic machinery by group), §23 (this release).
+§22c (catalytic machinery by group), §23 (this release), §24 (positive substrates),
+§25–§26 (PHA claim retired, task definition), §27 (hand-off package), §28 (fold audit of the
+positives, BPS0016, BPS0383, the three nulls).

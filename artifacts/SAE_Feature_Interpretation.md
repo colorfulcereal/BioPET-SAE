@@ -5,7 +5,12 @@
 > (see `EDA_polyester_task.md`). Its central finding — that the latents encode the
 > alpha/beta-hydrolase fold rather than PET specificity — is what *motivated* that
 > redefinition, so it is reported as-is and has not been re-run on the new labels.
-> **Re-running it on the polyester task is open work.**
+> **Update 2026-10-12:** it *was* re-run on the polyester task. See `PROGRESS.md` §15–§18
+> (triad verification, neighbourhood protocol, random-latent null, evidence table) and §22–§22c,
+> which show the latents are a validated readout of serine-hydrolase catalytic machinery but
+> are **not** shown to separate polyesterases from fold-matched esterases (per-component δ
+> 0.12 to −0.18; cluster-bootstrap intervals include zero). This file documents only the
+> superseded PET-only run and should not be quoted for current results.
 
 Generated 2026-09-28. What the sparse autoencoder latents actually detect, and why that
 explains both the model's performance and its ceiling.

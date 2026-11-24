@@ -14,10 +14,10 @@ Report this shape, always:
 | all — headline | 62 | | |
 | `naive_control` | 36 | | |
 | `trna_processing` | 3 | | |
-| `ec311_wrong_fold` | 23 | | |
+| `ec311_wrong_fold` | 13 | | |
 | **`ab_hydrolase_hard_negative`** | **10** | | |
 
-The reference probe gives 0.9681 blended, and 1.0000 / 1.0000 / 0.9141 / **0.8167** down the
+The reference probe gives 0.9681 blended, and 1.0000 / 1.0000 / 0.9890 / **0.8167** down the
 rows. If your blended number improves while the last row does not, you have not improved at
 the task.
 
@@ -43,7 +43,9 @@ interpretability feature became 0.116 with a cluster bootstrap, and its interval
 ## 3. State n for the hard-negative cell
 
 It is **10** in test. Any claim there is low-powered and must carry an interval. The reference
-probe's 0.8167 has a 95% CI of [0.676, 0.926].
+probe's 0.8167 has a component-bootstrap 95% CI of [0.606, 0.963] (20 positive and 7 negative
+components). A per-protein bootstrap gives the narrower [0.676, 0.926], which is not valid here
+for the reason in rule 2.
 
 ## 4. Say whether you tuned on validation
 

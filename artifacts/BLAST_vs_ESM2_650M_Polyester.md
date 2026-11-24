@@ -198,6 +198,13 @@ Both intervals clear zero. For contrast, the same test on the PET-only task:
 
 ## Table 3 — Generalisation to an unseen lineage
 
+> **SUPERSEDED (2026-10-11, `PROGRESS.md` §25–§26).** The "unseen lineage" premise below was
+> asserted and not tested, and it is partly false: 14 of the 36 PHA depolymerases share a
+> homology component with a trained positive, and 25 trained positives already act on a PHA. On
+> the 22 genuinely clean proteins the probe detects 16/22 (73%), not 30/36. The BLASTp figure
+> cannot be corrected (only the aggregate was stored). The user has withdrawn the PHA
+> generalisation claim; this table is retained as history and must not be quoted.
+
 | method | PHA depolymerases flagged |
 |---|---|
 | ESM-2 650M | **30/36** (83%) |

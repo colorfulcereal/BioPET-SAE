@@ -91,6 +91,41 @@ grouping, not a better model.
 - **A large effect that fails a threshold has not "collapsed".** Report the effect size, then
   locate it in a null or reference distribution, then say whether it clears the cutoff.
 
+## Known data issues in the positives
+
+Found by auditing this dataset after it was built. None changes a published number; all of
+them bear on how far you can trust a claim about *fold* or *mechanism*.
+
+1. **The fold of the positives was never verified.** The original filter was a 16-string
+   blocklist matched against PlasticDB enzyme names, reached only on the `2_other_polyester`
+   branch, so all 320 `1_pet` rows bypassed it. 161 of 388 positives carry no enzyme label at
+   all. `ab_hydrolase_fold` is **blank for every positive** — the annotation pass was run on
+   negatives only. If your analysis depends on the positives being alpha/beta hydrolases,
+   run InterProScan over their sequences first; it needs no accession.
+2. **Three positives are known not to be alpha/beta hydrolases** (InterPro, via UniProt):
+   - `BPS0016` — a Proteinase K-like **subtilisin protease** (`IPR034193`, `IPR023827`)
+     degrading PLA. It passed because its label reads "PAM". Actual Proteinase K was excluded.
+   - `BPS0013` — beta-lactamase-related fold (`IPR001466`, `IPR012338`).
+   - `BPS0394` — SGNH hydrolase fold (`IPR013830`, `IPR036514`).
+   Only 152 of 388 positives have a UniProt accession, so these are the *detectable* cases,
+   not a bound. Decide deliberately whether to drop them; do not leave them in silently.
+3. **`BPS0060`** has the enzyme label "Oxidoreductase" (substrates PBAT, PU; activity
+   unverified). It passed the filter only because that string was not on the blocklist.
+   Treat as suspect.
+4. **`BPS0383` is *Fusarium solani* cutinase (UniProt P00590, PDB 1AGY)** — the canonical
+   cutinase — and its `substrates` field includes polyamide. That record traces to a
+   fibre-surface-modification study (doi `10.1002/pola.20684`), not to polyamide
+   depolymerisation. It is a legitimate positive via PET (doi `10.1021/ma9005318`); do not read
+   the PA tag as evidence it is a polyamidase.
+5. **`substrates` carries non-polyester tags on 23 positives** — PU/PUR on 19, PC on 5 (two
+   of which also carry PU), PA on 1; 23 distinct enzymes in all. They are positives because
+   they also degrade a polyester. The original `mechanism` column
+   was a lookup from the substrate string, never an assay, so it is not shipped here; do not
+   reconstruct it and treat it as evidence of which bond an enzyme cleaves. No assay in this
+   dataset says which bond was cleaved for any entry.
+6. **The 36 `unused` rows are not a held-out test.** 14 of them share a homology component
+   with a trained positive, and 25 trained positives already degrade a PHA.
+
 ## Extending the dataset
 
 The single highest-value improvement is **more hard negatives**: UniProt reviewed, carrying

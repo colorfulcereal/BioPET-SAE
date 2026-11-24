@@ -72,10 +72,11 @@ often degrades several.
 Every bond in that column is an ester. Whatever the polymer is called, the enzyme's job is the
 same reaction.
 
-**PHA is a substrate, not a class in the task.** The 36 enzymes whose *primary* substrate is a
-PHA are held out entirely as an unseen-substrate test. The PHA counts above are enzymes kept in
-training that degrade a PHA *in addition* to another polyester, so the holdout tests "unseen as
-a primary substrate", not "never seen".
+**On the PHA rows.** Polyhydroxyalkanoates are polyesters bacteria make as carbon-storage
+granules. They qualify like any other ester-bonded plastic, and the counts above are enzymes in
+the positive set that degrade one. The 36 enzymes whose *primary* substrate is a PHA are unused
+and carry no claim; they are not a generalisation test (14 of the 36 share a homology component
+with a trained positive — PROGRESS.md §25–§26).
 
 ## Negative
 
@@ -121,7 +122,7 @@ component** (`BPS0190`, 256 of 388, 74 components in all). Any per-protein inter
 family 256 times, so intervals here must be bootstrapped over `component`, never over proteins.
 
 Together they are why the headline test AU-ROC of 0.9681 against all negatives becomes
-**0.8167** against the 10 fold-matched negatives in test, with a 95% interval reaching 0.676.
+**0.8167** against the 10 fold-matched negatives in test, with a 95% interval of 0.606 to 0.963, bootstrapped over homology components.
 
 Artifact: https://claude.ai/artifact/299aZWX8LjJM5E7bTQ4k7r
 

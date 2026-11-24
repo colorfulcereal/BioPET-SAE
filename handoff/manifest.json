@@ -64,13 +64,18 @@
           "au_roc": 1.0
         },
         "ec311_wrong_fold": {
-          "n": 23,
-          "au_roc": 0.9141
+          "n": 13,
+          "au_roc": 0.989,
+          "au_prc": 0.9967
         },
         "ab_hydrolase_hard_negative": {
           "n": 10,
           "au_roc": 0.8167,
-          "ci95": [
+          "ci95_component_bootstrap": [
+            0.606,
+            0.963
+          ],
+          "ci95_protein_bootstrap_not_valid": [
             0.676,
             0.926
           ]
