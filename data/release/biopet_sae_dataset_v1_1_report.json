@@ -1,0 +1,191 @@
+{
+  "threshold": 0.4,
+  "added": {
+    "BPS0543": {
+      "pazy_id": 523,
+      "name": "bbPET0069",
+      "split": "train",
+      "component": "BPS0190",
+      "max_identity_v1": 0.9808,
+      "dois": [
+        "10.1002/cctc.202500364"
+      ]
+    },
+    "BPS0544": {
+      "pazy_id": 524,
+      "name": "HaloPETase1",
+      "split": "test",
+      "component": "BPS0038",
+      "max_identity_v1": 0.9896,
+      "dois": [
+        "10.1002/pro.70305"
+      ]
+    },
+    "BPS0545": {
+      "pazy_id": 525,
+      "name": "HaloPETase2",
+      "split": "test",
+      "component": "BPS0038",
+      "max_identity_v1": 0.8498,
+      "dois": [
+        "10.1002/pro.70305"
+      ]
+    },
+    "BPS0546": {
+      "pazy_id": 526,
+      "name": "HaloPETase3",
+      "split": "test",
+      "component": "BPS0038",
+      "max_identity_v1": 0.8345,
+      "dois": [
+        "10.1002/pro.70305"
+      ]
+    },
+    "BPS0547": {
+      "pazy_id": 527,
+      "name": "HaloPETase4",
+      "split": "test",
+      "component": "BPS0038",
+      "max_identity_v1": 0.8538,
+      "dois": [
+        "10.1002/pro.70305"
+      ]
+    },
+    "BPS0548": {
+      "pazy_id": 528,
+      "name": "HaloPETase5",
+      "split": "train",
+      "component": "BPS0190",
+      "max_identity_v1": 0.7697,
+      "dois": [
+        "10.1002/pro.70305"
+      ]
+    },
+    "BPS0549": {
+      "pazy_id": 529,
+      "name": "HaloPETase6",
+      "split": "train",
+      "component": "BPS0190",
+      "max_identity_v1": 0.7874,
+      "dois": [
+        "10.1002/pro.70305"
+      ]
+    },
+    "BPS0550": {
+      "pazy_id": 530,
+      "name": "BhEstB",
+      "split": "test",
+      "component": "BPS0079",
+      "max_identity_v1": 0.8313,
+      "dois": [
+        "10.1007/s00253-026-14056-w"
+      ]
+    },
+    "BPS0551": {
+      "pazy_id": 531,
+      "name": "LactoPETase",
+      "split": "train",
+      "component": "BPS0551",
+      "max_identity_v1": 0.3775,
+      "dois": [
+        "10.1016/j.mcat.2026.116074"
+      ]
+    },
+    "BPS0552": {
+      "pazy_id": 532,
+      "name": "LipBv",
+      "split": "train",
+      "component": "BPS0056",
+      "max_identity_v1": 0.7594,
+      "dois": [
+        "10.1111/1751-7915.70432"
+      ]
+    },
+    "BPS0553": {
+      "pazy_id": 533,
+      "name": "LipSh1",
+      "split": "test",
+      "component": "BPS0012",
+      "max_identity_v1": 0.3957,
+      "dois": [
+        "10.1111/1751-7915.70432"
+      ]
+    },
+    "BPS0554": {
+      "pazy_id": 534,
+      "name": "LipSh2",
+      "split": "test",
+      "component": "BPS0012",
+      "max_identity_v1": 0.4077,
+      "dois": [
+        "10.1111/1751-7915.70432"
+      ]
+    },
+    "BPS0555": {
+      "pazy_id": 535,
+      "name": "LipSh3",
+      "split": "test",
+      "component": "BPS0012",
+      "max_identity_v1": 0.4077,
+      "dois": [
+        "10.1111/1751-7915.70432"
+      ]
+    },
+    "BPS0556": {
+      "pazy_id": 536,
+      "name": "SM0281",
+      "split": "train",
+      "component": "BPS0556",
+      "max_identity_v1": 0.271,
+      "dois": [
+        "10.1111/febs.70734"
+      ]
+    },
+    "BPS0557": {
+      "pazy_id": 537,
+      "name": "NmCut",
+      "split": "train",
+      "component": "BPS0557",
+      "max_identity_v1": 0.2656,
+      "dois": [
+        "10.1128/aem.01136-25"
+      ]
+    },
+    "BPS0558": {
+      "pazy_id": 538,
+      "name": "R75estA",
+      "split": "test",
+      "component": "BPS0038",
+      "max_identity_v1": 0.8101,
+      "dois": [
+        "10.3389/fmicb.2026.1870101"
+      ]
+    }
+  },
+  "dropped_negatives": {
+    "P37957": {
+      "identical_to_new": "BPS0552",
+      "identity": 0.9387,
+      "negative_group": "ab_hydrolase_hard_negative",
+      "split": "train"
+    }
+  },
+  "relabelled_components": {
+    "BPS0190": "BPS0190",
+    "BPS0038": "BPS0038",
+    "BPS0079": "BPS0079",
+    "BPS0056": "BPS0056",
+    "BPS0012": "BPS0012"
+  },
+  "max_cross_split_identity_new_vs_v1": {
+    "train|test": 0.3775,
+    "train|val": 0.3538,
+    "test|train": 0.3683,
+    "test|val": 0.3967
+  },
+  "bound_satisfied": true,
+  "rows": {
+    "v1": 811,
+    "v1_1": 826
+  }
+}

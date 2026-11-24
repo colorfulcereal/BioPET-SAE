@@ -92,7 +92,7 @@ footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);font-si
     <h1>BioPET-SAE Dataset v1</h1>
     <p class="sub">A homology-bounded benchmark for detecting polyester-degrading enzymes
       (plastizymes) from protein sequence, with the negative set classified by <b>fold</b>
-      rather than by EC class. <b>847 proteins</b> — 811 modelled, 36 PHA depolymerases carried but unused. Every number
+      rather than by EC class. <b>811 proteins</b> (388 positive, 423 negative). Every number
       on this page was re-derived from the released file.</p>
   </div>
 </header>
@@ -135,7 +135,7 @@ footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);font-si
     <div class="tw"><table>
       <tr><th>file</th><th>contents</th></tr>
       <tr><td class="mono">data/release/biopet_sae_dataset_v1.tsv</td>
-          <td>847 rows × 20 columns, sequences included</td></tr>
+          <td>811 rows × 20 columns, sequences included</td></tr>
       <tr><td class="mono">data/release/biopet_sae_dataset_v1.fasta</td>
           <td>same sequences; header carries split, class and group</td></tr>
     </table></div>
@@ -149,8 +149,8 @@ footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);font-si
           <code>class_label</code></b></td></tr>
       <tr class="key"><td class="mono">component</td>
           <td><b>homology component — group by this for any CV or bootstrap</b></td></tr>
-      <tr><td class="mono">y</td><td>1 = degrader (includes <code>heldout_pha</code>), 0 = negative</td></tr>
-      <tr><td class="mono">split</td><td><code>train</code> / <code>val</code> / <code>test</code> / <code>heldout</code></td></tr>
+      <tr><td class="mono">y</td><td>1 = degrader, 0 = negative</td></tr>
+      <tr><td class="mono">split</td><td><code>train</code> / <code>val</code> / <code>test</code></td></tr>
       <tr><td class="mono">ab_hydrolase_fold</td><td>1 if InterPro <code>IPR029058</code></td></tr>
       <tr><td class="mono">gxsxg_elbow</td><td>1 if the sequence contains a <code>G.[ST].G</code> nucleophile elbow</td></tr>
       <tr><td class="mono">n_curated_active_sites</td><td>curated UniProt <code>ACT_SITE</code> count (negatives)</td></tr>
@@ -182,9 +182,6 @@ footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);font-si
       <tr class="tot"><td>modelled total</td><td class="mono">388</td><td class="mono">340</td>
           <td class="mono">48</td><td class="mono">29</td>
           <td class="mono">303</td><td class="mono">43</td><td class="mono">42</td></tr>
-      <tr><td class="mono">heldout_pha</td><td class="mono">36</td><td class="mono">10</td>
-          <td class="mono">26</td><td class="mono">10</td>
-          <td class="mono">—</td><td class="mono">—</td><td class="mono">—</td></tr>
     </table></div>
     <p><b>Provenance.</b> PAZy only 161, PAZy and PlasticDB 179, PlasticDB only 48 — every row
     carries a traceable <code>source_ids</code> in
@@ -193,9 +190,8 @@ footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);font-si
     copolyester 21. <code>2_other_polyester</code> is <b>43% unverified</b> — the weakest part
     of the positive set. Filter on <code>activity_verified</code> for a stricter set at the cost
     of n.</p>
-    <div class="flag"><b><code>heldout_pha</code> is unused and carries no claim.</b> 36
-      polyhydroxyalkanoate depolymerases, never used in training, tuning or feature selection,
-      but <b>not</b> a generalisation test: 14 of the 36 share a homology component with a
+    <div class="flag"><b>36 PHA depolymerases were removed; they carried no claim.</b> They were never used in training, tuning or feature selection,
+      but were <b>not</b> a generalisation test: 14 of the 36 share a homology component with a
       trained positive and 25 trained positives already act on a PHA. The generalisation claim
       was withdrawn.</div>
   </div>
@@ -259,8 +255,6 @@ footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);font-si
           <td><b>His only — zero serines</b></td><td class="mono">0.0%</td></tr>
       <tr><td class="mono">naive_control</td><td class="mono">237</td>
           <td>scattered D/H/E/C</td><td class="mono">0.0%</td></tr>
-      <tr><td class="mono">heldout_pha</td><td class="mono">36</td>
-          <td>Ser–His–Asp triad</td><td class="mono">97.2%</td></tr>
     </table></div>
     <div class="good"><b>The hard negatives are not distinguishable from the positives by
       catalytic machinery.</b> 100% of them carry the triad and fire the latent, against 96.1%
@@ -341,8 +335,7 @@ footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);font-si
       negative.</li>
       <li><b>State n for the fold-matched cell.</b> It is 10 in test. Any claim there is
       low-powered, and should carry an interval.</li>
-      <li><b>Leave <code>heldout_pha</code> out</b>, or justify including it. It is not a
-      generalisation set.</li>
+      <li><b>PHA is not a generalisation set.</b> Those rows were removed.</li>
     </ol>
   </div>
 </div>

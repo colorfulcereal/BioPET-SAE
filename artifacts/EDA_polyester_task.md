@@ -74,8 +74,8 @@ same reaction.
 
 **On the PHA rows.** Polyhydroxyalkanoates are polyesters bacteria make as carbon-storage
 granules. They qualify like any other ester-bonded plastic, and the counts above are enzymes in
-the positive set that degrade one. The 36 enzymes whose *primary* substrate is a PHA are unused
-and carry no claim; they are not a generalisation test (14 of the 36 share a homology component
+the positive set that degrade one. The 36 enzymes whose *primary* substrate is a PHA were removed
+from the released dataset and carry no claim; they were not a generalisation test (14 of the 36 share a homology component
 with a trained positive — PROGRESS.md §25–§26).
 
 ## Negative
@@ -111,7 +111,6 @@ tuned against the easy task.
 | train | 303 | 285 | 588 | 0.515 | 40 |
 | val | 43 | 76 | 119 | 0.361 | **1** |
 | test | 42 | 62 | 104 | 0.404 | **10** |
-| held out — PHA | 36 | — | 36 | — | — |
 
 No cross-split pair exceeds 40% identity: train/val 0.3967, train/test 0.3800, val/test 0.3983.
 
@@ -236,7 +235,6 @@ asymmetry is the dataset's weakest premise. It is stated here rather than buried
 |---|---|---|---|
 | `1_pet` | 320 | PAZy / PlasticDB | **301 experimentally verified**, 19 extrapolated |
 | `2_other_polyester` | 68 | PAZy / PlasticDB | **39 verified**, 29 extrapolated |
-| `heldout_pha` | 36 | PAZy / PlasticDB | 10 verified, 26 extrapolated |
 | `3_fold_matched_esterase` | 185 | UniProt `ec:3.1.1.-` | **assumed** non-degrading — never assayed |
 | `4_naive_control` | 238 | UniProt, outside EC 3.1 | **assumed** non-degrading — never assayed |
 
@@ -419,7 +417,7 @@ true esterase contrast.
 | file | contents |
 |---|---|
 | `artifacts/dataset_splits_0.4.md` | sources, dedup, class rationale, split verification |
-| `data/processed/dataset_splits_id40.tsv` | 847 rows: class, split, component |
+| `data/processed/dataset_splits_id40.tsv` | 847 rows (incl. 36 PHA, not released): class, split, component |
 | `data/sae_650M_L33/polyester_eda.json` | every number in this document |
 | `data/processed/plastizymes_merged.tsv` | 542 positives, `sources` + `source_ids` per row |
 | `data/processed/uniprot_negatives.tsv` | 423 negatives, EC and phylum per row |

@@ -4,7 +4,7 @@ A homology-bounded benchmark for detecting **polyester-degrading enzymes** from 
 sequence, with the negative set graded by **fold and catalytic machinery** rather than by
 enzyme class.
 
-**847 proteins** — 811 modelled (388 positive, 423 negative), 36 unused.
+**826 proteins** (404 positive, 422 negative); every row is modelled. This is **v1.1**: the original 810 rows (`batch == v1`) plus 16 PET enzymes added from PAZy on 2026-11-23 (`batch == v1.1`), minus one negative (`P37957`, 94% identical to a new positive). Every published baseline below was measured on the original `batch == v1` test split (104 rows).
 
 If you are an AI agent working in this repository, read **`AGENTS.md`** first; it carries the
 rules. `EVALUATION.md` defines how results must be reported.
@@ -18,25 +18,25 @@ rules. `EVALUATION.md` defines how results must be reported.
 
 A polyester is a polymer whose chain is held together by the ester linkage `-C(=O)-O-`.
 Degrading it means hydrolysing that bond so the chain breaks. Every record comes from **PAZy**
-or **PlasticDB**, which document measured activity on a named material. 340 of the 388 have
+or **PlasticDB**, which document measured activity on a named material. 356 of the 404 have
 verified activity; 48 are reported but not independently confirmed.
 
 ### The 21 polyester substrates
 
-Counts are enzymes recorded as acting on that substrate. They sum past 388 because one enzyme
+Counts are enzymes recorded as acting on that substrate. They sum past 404 because one enzyme
 often degrades several.
 
 | substrate | full name | backbone bond | enzymes |
 |---|---|---|---|
 | **Aromatic polyesters** | | | |
-| PET | polyethylene terephthalate | ester, aromatic diacid | **320** |
+| PET | polyethylene terephthalate | ester, aromatic diacid | **336** |
 | PEF | polyethylene furanoate | ester, furan diacid | 7 |
 | **Aromatic-aliphatic copolyesters** | | | |
 | PBAT | poly(butylene adipate-*co*-terephthalate) | ester, mixed | 31 |
 | PBSeT | poly(butylene sebacate-*co*-terephthalate) | ester, mixed | 2 |
 | Ecovio-FT | commercial PBAT / PLA blend | ester, mixed | 2 |
 | **Aliphatic polyesters** | | | |
-| PLA | polylactic acid | ester, alpha-hydroxy acid | 52 |
+| PLA | polylactic acid | ester, alpha-hydroxy acid | 53 |
 | PCL | polycaprolactone | ester, lactone-derived | 43 |
 | PBS | polybutylene succinate | ester, aliphatic diacid | 22 |
 | PES | polyethylene succinate (**not** polyethersulfone) | ester, aliphatic diacid | 16 |
@@ -55,7 +55,7 @@ often degrades several.
 | PHPV | poly(hydroxypropionate-*co*-valerate) | ester, beta-hydroxy acid | 1 |
 
 Every bond in that column is an ester. Whatever the polymer is called, the enzyme's job is the
-same reaction — which is what makes these 388 enzymes a coherent class.
+same reaction — which is what makes these 404 enzymes a coherent class.
 
 ### What is not here, and why
 
@@ -93,19 +93,19 @@ close enough that they partly work on it. Nothing in nature ever resembled polye
 > **A protein never reported to degrade any plastic**, drawn from UniProt and graded by how
 > closely it resembles a polyester hydrolase.
 
-Every negative label is an assumption of inactivity, not a measurement — none of the 423 was
+Every negative label is an assumption of inactivity, not a measurement — none of the 422 was
 assayed on a plastic. The value is in the grading, which was measured by **fold** (InterPro
 `IPR029058`) and by **curated catalytic residues**, not by enzyme class.
 
 | `negative_group` | catalytic machinery | n | train | val | test |
 |---|---|---|---|---|---|
-| **`ab_hydrolase_hard_negative`** | Ser-His-Asp triad, **identical to the positives** | **51** | 40 | **1** | 10 |
+| **`ab_hydrolase_hard_negative`** | Ser-His-Asp triad, **identical to the positives** | **50** | 39 | **1** | 10 |
 | `ec311_wrong_fold` | serine nucleophile, other geometry (GDSL-SGNH, patatin, beta-lactamase) | 36 | 23 | 0 | 13 |
 | `trna_processing` | histidine only — **no serine nucleophile** | 99 | 56 | 40 | 3 |
 | `naive_control` | unrelated — kinases, gyrases, oxygenases | 237 | 166 | 35 | 36 |
-| total | | 423 | 285 | 76 | 62 |
+| total | | 422 | 284 | 76 | 62 |
 
-**Only the first row is a hard negative.** Those 51 carry the same fold and the same catalytic
+**Only the first row is a hard negative.** Those 50 carry the same fold and the same catalytic
 triad as the positives and have simply never been reported to touch a plastic. Separating them
 is the actual task.
 
@@ -121,22 +121,23 @@ and labelled so you can exclude them deliberately.
 
 | split | positives | negatives | total | prevalence | hard negatives |
 |---|---|---|---|---|---|
-| train | 303 | 285 | 588 | 0.515 | 40 |
+| train | 310 | 284 | 594 | 0.522 | 39 |
 | val | 43 | 76 | 119 | 0.361 | **1** |
-| test | 42 | 62 | 104 | 0.404 | **10** |
+| test | 51 | 62 | 113 | 0.451 | **10** |
 
 No cross-split pair exceeds 40% sequence identity: train/val 0.3967, train/test 0.3800,
-val/test 0.3983.
+val/test 0.3983 (v1); the 16 added sequences were checked separately, maximum 0.3967.
 
-`split == "unused"` holds 36 PHA depolymerases. They carry no claim and were never used for
-training, tuning or evaluation.
+**Test grew by 9 positives.** The 16 new enzymes were placed by homology, not at random: nine fall in components that already sit in test (HaloPETase1–4, R75estA, BhEstB, LipSh1–3), so putting them in train would leak. To compare with published numbers use `batch == v1` (test n=104). The nine have never been scored.
+
+36 PHA depolymerases that carried no claim were removed from this file.
 
 ---
 
 ## The two numbers that bound every claim
 
-**51 hard negatives**, one of them in validation. And **66% of the positives are a single
-homology component** — `BPS0190`, 256 of 388, with 74 components in all.
+**50 hard negatives**, one of them in validation. And **64% of the positives are a single
+homology component** — `BPS0190`, 259 of 404, with 77 components in all.
 
 Together they are why the headline test AU-ROC of 0.9681 against all negatives becomes
 **0.8167** against the 10 fold-matched negatives in test, with a 95% interval of 0.606 to 0.963, bootstrapped over homology components.

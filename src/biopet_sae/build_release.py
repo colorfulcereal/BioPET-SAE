@@ -88,6 +88,8 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
 
     rows = list(csv.DictReader(args.splits.open(newline=""), delimiter="\t"))
+    # PHA depolymerases (split=heldout) carry no claim and are not released
+    rows = [r for r in rows if r["split"] != "heldout" and r["class_label"] != "heldout_pha"]
     mg = {r["seq_id"]: r for r in csv.DictReader(args.merged.open(newline=""), delimiter="\t")}
     negs = [r["seq_id"] for r in rows if r["class_label"] in NEG]
     print(f"{len(rows)} rows; annotating {len(negs)} negatives from UniProt")
@@ -109,7 +111,7 @@ def main(argv: list[str] | None = None) -> int:
             a = ann.get(i)
             m = mg.get(i, {})
             w.writerow([
-                i, r["split"], 1 if lab in POS or lab == "heldout_pha" else 0, lab,
+                i, r["split"], 1 if lab in POS else 0, lab,
                 negative_group(a) if a else "",
                 int(AB_FOLD in a["ipr"]) if a else "",
                 int(bool(ELBOW.search(r["sequence"]))),

@@ -2251,6 +2251,16 @@ tRNA) is unaffected.
 
 ---
 
+### 28h. Handoff drops the 36 PHA rows (2026-11-23)
+
+User decision: unlabelled/unused rows should not ship. `build_handoff.py` now skips `split=heldout`, so `handoff/dataset.tsv` and `.fasta` have **811 rows** (388 pos / 423 neg; train 588, val 119, test 104), every row modelled; `manifest.json` records `removed_pha_not_shipped: 36`. README/AGENTS/schema updated; sha256 in the manifest refreshed. *Superseded the same day:* the release file was trimmed too (user: "trim everywhere"), see below; the handoff is now built from v1.1 (§28i, 826 rows). Not committed.
+
+**Trimmed everywhere (same day).** `build_release.py` now filters out `heldout` rows; `data/release/biopet_sae_dataset_v1.{tsv,fasta}` have **811 rows** (verified = old file minus the 36 PHA rows, otherwise identical); handoff regenerated with the same sha256. `DATASET_CARD.md`, `artifacts/dataset_card.html`, `artifacts/EDA_polyester_task.md`, `artifacts/methods_detection.html` updated. Left alone on purpose: `data/processed/*` and `results/` (pipeline intermediates, 847 rows with class `heldout_pha`) and older PROGRESS sections (history). **Published artifacts not republished** (methods v6 still shows the old wording; dataset_card.html was already unpublished).
+
+### 28i. PAZy update: 16 PET enzymes added as release v1.1 (2026-11-23)
+
+Live PAZy lists 505 proteins; our 2026-09-27 export had 462 (diffed by PAZy id across all 11 pages; none missing from the export, 43 new = 16 PET, 19 PUR, 8 PA). Added the 16 PET enzymes (all `verified`, PAZy ids 523-538, DOIs recorded) as `biopet_sae_dataset_v1_1.{tsv,fasta}` via `src/biopet_sae/add_pazy_update.py`; **v1 left frozen** because all results hang on its 104-row test. Existing assignments untouched (checked: 0 changed v1 rows). Placement: component membership at >= 0.40 global identity (make_splits routine) to v1 sequences; unlinked go to train. Result: 7 train + 9 test (HaloPETase1-4, R75estA, BhEstB, LipSh1-3 share components with test), 0 val; 3 new singleton components; largest component 259/404 = 64%; max cross-split identity of additions 0.3967. Dropped negative `P37957` (hard negative, 94% identical to LipBv, D2 rule): 51 -> 50 hard negatives (39/1/10). v1.1: 826 rows, 404 pos / 422 neg. Test is now 51 pos / 62 neg; **nine new test positives unscored** (needs ESM-2 embedding). Handoff regenerated from v1.1 with `batch` column and baseline notes ("reproduce on batch == v1"); README/AGENTS/EVALUATION updated; DATASET_CARD has a v1.1 section, its tables stay v1. Not updated: published artifacts, EDA md (v1 numbers). Not committed. Open: UniProt/InterPro check of the 16; embed and score the nine; note baseline train set is 587 v1 rows (P37957 dropped), not 588.
+
 ### 20. Full metagenomic screen — 30,000 families, 165 ranked candidates (2026-10-03)
 
 Scaled the 500-sequence pilot (section 19) to **30,000 protein families**. 13.5 h of ESM-2
@@ -2887,21 +2897,27 @@ Atlas updated to the corrected offset: `https://claude.ai/artifact/KcdU4xp1QUSvu
 
 ---
 
-## Current status (checkpoint, 2026-11-14; last work session 2026-10-12)
+## Current status (checkpoint, 2026-11-23)
 
-*Rewritten 2026-11-14. The previous version of this section was a 2026-09-28 checkpoint that
+*Rewritten 2026-11-14, updated 2026-11-23 (PHA rows removed, release v1.1, PAZy update; see §28h-§28i). The previous version of this section was a 2026-09-28 checkpoint that
 still described the explainability half as unported, PHA as generalising at 83%, and tier 3 as
 ~46% fold-matched. All three are superseded — see §21, §25–§26 and §22.*
 
 **The task is locked (§26).** Positive: an enzyme experimentally reported to degrade a plastic
-whose backbone is joined by carboxylic ester bonds — 388 enzymes, 21 polyester substrates, PET
-the largest at 320. Hard negative: an alpha/beta-hydrolase-fold protein with the same Ser-His-Asp
-triad, never reported to degrade a plastic — 51. Easy negatives: 372. There is **no fold clause**
+whose backbone is joined by carboxylic ester bonds — 388 enzymes in v1 (404 in v1.1), 21 polyester
+substrates, PET the largest at 320 (336). Hard negative: an alpha/beta-hydrolase-fold protein with
+the same Ser-His-Asp triad, never reported to degrade a plastic — 51 in v1 (50 in v1.1). Easy
+negatives: 372. There is **no fold clause**
 in the positive definition; fold is reported, not enforced (§28a). The PHA generalisation claim
 is withdrawn (§25–§26).
 
-**Dataset.** 847 rows: 811 modelled (388 positive, 423 negative) plus 36 PHA depolymerases that
-are unused and carry no claim.
+**Dataset.** Two releases (§28i). **v1** (`biopet_sae_dataset_v1`) is frozen: 811 rows (388 positive,
+423 negative); the 36 PHA depolymerases were **removed** from the release and the handoff on
+2026-11-23 (§28h) and survive only in `data/processed/*`. **v1.1** (`biopet_sae_dataset_v1_1`,
+`batch` column) adds 16 PAZy PET enzymes and drops negative `P37957`: 826 rows (404 / 422), 50 hard
+negatives (39 / 1 / 10), 77 positive components, largest `BPS0190` 259 of 404 (64%), test 51 pos /
+62 neg. `handoff/` is built from v1.1. **Every result below is on v1 (test n=104);** the nine
+positives added to test have not been scored. The tables below are v1.
 
 | split | positives | negatives | total | prevalence | hard negatives |
 |---|---|---|---|---|---|
@@ -2970,8 +2986,10 @@ the 0.938 anomaly).
 2026-11-14: `DATASET_CARD.md`, `PROGRESS.md`, `README.md`, `artifacts/{BLAST_vs_ESM2_650M_Polyester.md,
 EDA_polyester_task.md, SAE_Feature_Interpretation.md, dataset_card.html, eda_dataset.html,
 methods_detection.html}`,
-`handoff/{AGENTS.md, EVALUATION.md, README.md, manifest.json, schema.json}`,
-`src/biopet_sae/build_handoff.py`. **`data/mgnify/raw/` (277 MB) and `sample_cds.faa` (99.9 MB)
+`handoff/{AGENTS.md, EVALUATION.md, README.md, dataset.tsv, dataset.fasta, manifest.json, schema.json}`,
+`data/release/biopet_sae_dataset_v1.{tsv,fasta}` (PHA removed), new `biopet_sae_dataset_v1_1.{tsv,fasta}` and
+`_report.json`, `data/raw/pazy_update/`, `src/biopet_sae/{add_pazy_update,build_handoff,build_release}.py`
+(updated 2026-11-23). **`data/mgnify/raw/` (277 MB) and `sample_cds.faa` (99.9 MB)
 are committed and pushed; `.git` is 455 MB.** Never run `git commit` or `git push` without the
 user's go-ahead for that specific commit.
 
@@ -2994,9 +3012,11 @@ source; never publish without `url` to update something.**
 
 | file | contents |
 |---|---|
-| `data/processed/dataset_splits_id40.tsv` | 847 rows: class, split, homology component |
+| `data/processed/dataset_splits_id40.tsv` | 847 rows incl. 36 PHA (not released): class, split, homology component |
 | `data/processed/plastizymes_merged.tsv` | the 542 merged positives with substrates and sources |
-| `data/release/biopet_sae_dataset_v1.{tsv,fasta}` | annotated release, with `negative_group` |
+| `data/release/biopet_sae_dataset_v1.{tsv,fasta}` | annotated release v1, 811 rows, frozen, with `negative_group` |
+| `data/release/biopet_sae_dataset_v1_1.{tsv,fasta}` | v1 + 16 PAZy PET enzymes, 826 rows, `batch` column; report JSON alongside |
+| `data/raw/pazy_update/` | raw PAZy records of the 16 added enzymes |
 | `data/processed/uniprot_negative_annotation.json` | cached InterPro / Pfam / ACT_SITE for the 423 negatives |
 | `data/embeddings_650M/embeddings.npz` | layers 1/9/18/24/30/33, mean and max pooled |
 | `data/sae_650M_L33/` | SAE features, selection, localisation, nulls, atlas views |
@@ -3012,7 +3032,7 @@ source; never publish without `url` to update something.**
 Ordered by what the thesis needs. Numbering restarted 2026-11-14; older sections cite the
 2026-09-28 list, which is no longer authoritative.
 
-1. **Verify the fold of the positives (§28a).** Run InterProScan over all 388 sequences — it
+1. **Verify the fold of the positives (§28a).** Run InterProScan over all 404 sequences — it
    needs no accession, and only 152 have one. Then decide `BPS0016`, `BPS0013`, `BPS0394` and the
    suspect `BPS0060`, and decide explicitly whether the eight proteases and chitinases excluded as
    "not an esterase fold" belong in the positives under the substrate-only definition.
@@ -3036,7 +3056,12 @@ Ordered by what the thesis needs. Numbering restarted 2026-11-14; older sections
    `~/Downloads/1-s2.0-S2214030124000178-mmc1.docx` — the only source of *measured* negatives.
 10. **Screen follow-ups (§20).** BLAST Tier A against the 542 known; ESMFold the top 10; the 0.938
     anomaly (probe 0.938, 2/3 triad, Asp lands on a glycine, elbow `GYTEG`).
-11. **Housekeeping.** Add `data/mgnify/raw/` and `sample_cds.faa` to `.gitignore` and untrack them
+11. **Score the nine new test positives (§28i)** (HaloPETase1-4, R75estA, BhEstB, LipSh1-3): needs
+    ESM-2 650M embeddings and the saved probe. Also UniProt/InterPro-check all 16 additions and
+    decide whether to republish artifacts (they show v1 numbers; methods v6 has old PHA wording).
+12. **More PAZy.** 505 live entries vs 462 exported; 19 PUR and 8 PA excluded as non-ester. Re-diff
+    before any release, and consider re-checking PlasticDB for newer entries too.
+13. **Housekeeping.** Add `data/mgnify/raw/` and `sample_cds.faa` to `.gitignore` and untrack them
     (commands in §28e); decide about purging history. Add a license to `handoff/`. Verify the
     local source of the metagenomic-screen artifact. 454 unannotated UniProt EC 3.1.1.101 entries
     were never triaged.
@@ -3048,7 +3073,7 @@ directories; the `atlas_page.html` draft; latent 5271 (second shell, §16).
 
 ## Next steps
 
-1. **InterProScan the 388 positives** and settle the fold question (Still open #1). Cheap, and it
+1. **InterProScan the 404 positives** and settle the fold question (Still open #1). Cheap, and it
    fixes the definition's weakest claim before anything is built on it.
 2. **Fetch the 300–400 new hard negatives** (#2) and re-split. Do this before more modelling,
    because every hard-task number currently rests on 10 test proteins.

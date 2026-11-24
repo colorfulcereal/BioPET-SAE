@@ -2,14 +2,45 @@
 
 A homology-bounded benchmark for **detecting polyester-degrading enzymes (plastizymes)
 from protein sequence**, with the negative set annotated by **fold** rather than by EC
-class. 847 proteins: 811 modelled, plus 36 PHA depolymerases carried in the file but
-**unused** (see below). A self-contained package for a second team is in `handoff/`.
+class. 811 proteins (388 positive, 423 negative). The 36 PHA depolymerases that carried no claim
+were removed (see below). A self-contained package for a second team is in `handoff/`.
+
+## v1.1 (2026-11-23): 16 PET enzymes added
+
+`biopet_sae_dataset_v1_1.{tsv,fasta}` = v1 + 16 PET enzymes that PAZy published after our
+2026-09-27 export, − 1 negative. **v1 is frozen** and every number in this card (and every
+probe/SAE result) refers to it. v1.1 is built by `src/biopet_sae/add_pazy_update.py`
+(report: `data/release/biopet_sae_dataset_v1_1_report.json`; raw PAZy records:
+`data/raw/pazy_update/`). A `batch` column marks `v1` vs `v1.1` rows.
+
+| | v1 | v1.1 |
+|---|---|---|
+| rows | 811 | 826 |
+| positives / negatives | 388 / 423 | 404 / 422 |
+| hard negatives (train / val / test) | 51 (40 / 1 / 10) | 50 (39 / 1 / 10) |
+| positives train / val / test | 303 / 43 / 42 | 310 / 43 / 51 |
+| positive components; largest | 74; `BPS0190` 256 (66%) | 77; `BPS0190` 259 (64%) |
+
+- **Placement by homology, not at random.** Each new sequence was aligned (same global
+  identity as the original splits) to all v1 sequences; one at ≥ 0.40 joins that component
+  and split. Nine land in test components (HaloPETase1–4, R75estA, BhEstB, LipSh1–3);
+  putting them in train would leak. Seven join train; three (LactoPETase, SM0281, NmCut)
+  have no relative at ≥ 0.40 and go to train. Maximum cross-split identity of the additions:
+  0.3967. **The nine new test positives have never been scored**; compare to published
+  numbers on `batch == v1` only.
+- **One negative dropped:** `P37957` (*B. subtilis* LipA, an α/β hard negative) is 94%
+  identical to `LipBv`, which PAZy reports as PET-degrading. By the original rule (a negative
+  ≥ 90% identical to a positive is a label conflict) it was removed. It is also a reminder
+  that "never assayed on a plastic" is an assumption.
+- All 16 are PAZy-verified, PET (SM0281 also PLA), with sequences and a DOI. 19 polyurethane
+  and 8 polyamide entries from the same update are excluded as non-ester.
+- Not done for the 16: UniProt cross-checks, InterPro fold annotation.
 
 Files in `data/release/`:
 
 | file | contents |
 |---|---|
-| `biopet_sae_dataset_v1.tsv` | 847 rows × 20 columns, sequences included |
+| `biopet_sae_dataset_v1.tsv` | 811 rows × 20 columns, sequences included |
 | `biopet_sae_dataset_v1.fasta` | same sequences, header carries split/class/group |
 
 Rebuild with `uv run python -m biopet_sae.build_release [--refresh]`. The `--refresh` flag
@@ -44,9 +75,9 @@ alone, with a component-bootstrap 95% CI of [0.61, 0.96].
 | column | meaning |
 |---|---|
 | `seq_id` | `BPS*` for positives (internal), UniProt accession for negatives |
-| `split` | `train` / `val` / `test` / `heldout` — `heldout` rows are the 36 unused PHA depolymerases |
-| `y` | 1 = degrader (includes `heldout_pha`), 0 = negative |
-| `class_label` | `1_pet`, `2_other_polyester`, `3_fold_matched_esterase`, `4_naive_control`, `heldout_pha` |
+| `split` | `train` / `val` / `test` |
+| `y` | 1 = degrader, 0 = negative |
+| `class_label` | `1_pet`, `2_other_polyester`, `3_fold_matched_esterase`, `4_naive_control` |
 | `negative_group` | **the corrected, fold-based negative classification — prefer this over `class_label`** |
 | `ab_hydrolase_fold` | 1 if UniProt/InterPro `IPR029058` |
 | `gxsxg_elbow` | 1 if the sequence contains the `G.[ST].G` nucleophile elbow |
@@ -73,18 +104,14 @@ a misnomer** — only 50 of its 185 members carry the α/β hydrolase fold. Use
 | `1_pet` | 320 | 301 | 19 | 15 | 257 | 32 | 31 |
 | `2_other_polyester` | 68 | 39 | 29 | 14 | 46 | 11 | 11 |
 | **total** | **388** | **340** | **48** | **29** | 303 | 43 | 42 |
-| `heldout_pha` | 36 | 10 | 26 | 10 | — | — | — |
 
 Provenance: PAZy only 161, PAZy+PlasticDB 179, PlasticDB only 48.
 Substrate: PET/aromatic polyester 284, aliphatic polyester 83, aromatic copolyester 21.
 `2_other_polyester` is 43% unverified — the weakest part of the positive set.
 
-`heldout_pha` (36 polyhydroxyalkanoate depolymerases) is **unused and carries no claim.** It was
-never used in training, tuning or feature selection, but it is *not* a generalisation test
-either: 14 of the 36 share a homology component with a trained positive, and 25 trained
+**Removed: 36 PHA depolymerases.** They carried no claim. They were never used in training, tuning or feature selection, but they were *not* a generalisation test either: 14 of the 36 share a homology component with a trained positive, and 25 trained
 positives already act on a PHA, so "unseen lineage" was never true (PROGRESS.md §25). The
-generalisation claim was withdrawn (§26). The rows stay in the file, labelled `heldout`, so
-nothing is silently dropped.
+generalisation claim was withdrawn (§26). They are no longer shipped in the release file or the handoff; intermediate files under `data/processed/` still hold them (class `heldout_pha`).
 
 ### Negatives — 423, from UniProt, **none ever assayed**
 
@@ -122,7 +149,6 @@ method detects a serine or a fold.
 | `ec311_wrong_fold` | 36 | Ser nucleophile, other geometry | 13.9% |
 | `tRNA_processing` | 99 | **His only, zero Ser** | **0.0%** |
 | `naive_control` | 237 | scattered D/H/E/C | 0.0% |
-| `heldout_pha` | 36 | Ser–His–Asp triad | 97.2% |
 
 The hard negatives are **not** distinguishable from the positives by catalytic machinery.
 That is the point of the benchmark.
@@ -180,8 +206,7 @@ random CV — a 0.19 inflation that shows what a non-homology-aware split buys y
    component, per-protein intervals are invalid.
 3. **Say whether you tuned on val**, and remember val has 1 fold-matched negative.
 4. **State n for the fold-matched cell.** It is 10 in test. Any claim there is low-powered.
-5. `heldout_pha` is unused and carries no claim. Leave it out, or justify in writing why you
-   included it; do not describe it as a generalisation set.
+5. The PHA depolymerases were removed and carry no claim; do not describe PHA as a generalisation set.
 
 ---
 

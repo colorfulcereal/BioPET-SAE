@@ -19,25 +19,27 @@ from pathlib import Path
 POS = {"1_pet", "2_other_polyester"}
 
 # split values are rewritten so nothing implies a claim the data does not support
-SPLIT_OUT = {"train": "train", "val": "val", "test": "test", "heldout": "unused"}
+SPLIT_OUT = {"train": "train", "val": "val", "test": "test"}
+# the 36 PHA depolymerases (split=heldout) are dropped: they carry no claim and are not shipped
 
 SCHEMA = {
     "seq_id": "Stable identifier. BPS* for positives (internal), UniProt accession for negatives.",
-    "split": "train | val | test | unused. 'unused' rows are PHA depolymerases that carry no claim; they are not a held-out test and were never used for training, tuning or evaluation.",
+    "split": "train | val | test. Every row is modelled. (36 PHA depolymerases that carry no claim were removed from this file.)",
     "label": "1 = polyester degrader, 0 = negative.",
     "negative_group": "For negatives only. ab_hydrolase_hard_negative | ec311_wrong_fold | trna_processing | naive_control. USE THIS, not class_label.",
-    "class_label": "Legacy label kept only for cross-referencing published results. '3_fold_matched_esterase' is a misnomer: only 50 of its 185 members carry the fold.",
+    "class_label": "Legacy label kept only for cross-referencing published results. '3_fold_matched_esterase' is a misnomer: only 49 of its 184 members carry the fold.",
     "component": "Homology component id. Sequences in one component share >=40% identity. BOOTSTRAP OVER THIS COLUMN, never over individual proteins.",
     "cluster": "Finer identity cluster inside a component.",
     "substrates": "Pipe-separated plastics the enzyme is reported to degrade (positives only).",
     "activity_verified": "1 = degradation measured in the literature; 0 = reported but not independently confirmed.",
-    "ab_hydrolase_fold": "1 if UniProt/InterPro IPR029058 (alpha/beta hydrolase fold). Populated for NEGATIVES ONLY (all 423 are 0/1); blank for every positive and unused row, because the annotation pass was never run on them. See AGENTS.md, known data issues.",
+    "ab_hydrolase_fold": "1 if UniProt/InterPro IPR029058 (alpha/beta hydrolase fold). Populated for NEGATIVES ONLY (all 422 are 0/1); blank for every positive, because the annotation pass was never run on them. See AGENTS.md, known data issues.",
     "gxsxg_elbow": "1 if the sequence contains the G-x-[ST]-x-G nucleophile elbow motif.",
     "n_curated_active_sites": "Count of curated UniProt ACT_SITE residues (negatives only).",
     "ec": "UniProt EC numbers (negatives only).",
     "pfam": "Pfam accessions (negatives only).",
     "organism": "Source organism.",
     "phylum": "Source phylum. Positives are 72.6% Actinomycetota; negatives were drawn to match.",
+    "batch": "v1 = original release (the 104-row test split behind every published number); v1.1 = 16 PET enzymes added from PAZy on 2026-11-23. Reproduce baselines on batch == v1 rows only.",
     "seq_len": "Sequence length in residues.",
     "sequence": "Amino-acid sequence, standard 20 letters.",
 }
@@ -54,7 +56,7 @@ def sha256(p: Path) -> str:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--release", type=Path,
-                    default=Path("data/release/biopet_sae_dataset_v1.tsv"))
+                    default=Path("data/release/biopet_sae_dataset_v1_1.tsv"))
     ap.add_argument("--out", type=Path, default=Path("handoff"))
     args = ap.parse_args(argv)
 
@@ -68,6 +70,8 @@ def main(argv: list[str] | None = None) -> int:
 
     out_rows = []
     for r in rows:
+        if r["split"] not in SPLIT_OUT:
+            continue
         out_rows.append({
             "seq_id": r["seq_id"],
             "split": SPLIT_OUT[r["split"]],
@@ -76,6 +80,7 @@ def main(argv: list[str] | None = None) -> int:
             "class_label": r["class_label"],
             "component": r["component"],
             "cluster": r["cluster"],
+            "batch": r["batch"],
             "substrates": r["substrates"],
             "activity_verified": r["activity_verified"],
             "ab_hydrolase_fold": r["ab_hydrolase_fold"],
@@ -111,11 +116,11 @@ def main(argv: list[str] | None = None) -> int:
         "task": "binary classification: does this protein degrade a polyester?",
         "counts": {
             "rows_total": len(out_rows),
-            "modelled": sum(1 for r in out_rows if r["split"] != "unused"),
-            "unused": count(split="unused"),
-            "positives": sum(1 for r in out_rows if r["label"] == "1" and r["split"] != "unused"),
+            "modelled": len(out_rows),
+            "removed_pha_not_shipped": 36,
+            "positives": sum(1 for r in out_rows if r["label"] == "1" ),
             "negatives": sum(1 for r in out_rows if r["label"] == "0"),
-            "by_split": {s: count(split=s) for s in ("train", "val", "test", "unused")},
+            "by_split": {s: count(split=s) for s in ("train", "val", "test")},
             "negatives_by_group": {
                 g: sum(1 for r in out_rows if r["negative_group"] == g)
                 for g in ("ab_hydrolase_hard_negative", "ec311_wrong_fold",
@@ -127,11 +132,11 @@ def main(argv: list[str] | None = None) -> int:
         },
         "constraints": {
             "max_cross_split_identity": {"train_val": 0.3967, "train_test": 0.3800,
-                                         "val_test": 0.3983},
-            "hard_negatives_total": 51,
+                                         "val_test": 0.3983, "note": "v1 values; the 16 v1.1 additions were checked separately, max 0.3967 (biopet_sae_dataset_v1_1_report.json)"},
+            "hard_negatives_total": 50,
             "hard_negatives_in_val": 1,
-            "largest_positive_component": {"id": "BPS0190", "n": 256, "fraction": 0.66},
-            "positive_components": 74,
+            "largest_positive_component": {"id": "BPS0190", "n": 259, "fraction": 0.64},
+            "positive_components": 77,
         },
         "baselines_to_reproduce": {
             "probe": {
@@ -143,6 +148,7 @@ def main(argv: list[str] | None = None) -> int:
                 "scaler": "StandardScaler fit on train only",
                 "threshold": 0.1455,
                 "threshold_selected_on": "val log-loss",
+                "reproduce_on": "rows with batch == v1 only (test n=104). v1.1 adds 9 positives to test; no result exists for them yet.",
                 "test_au_roc": 0.9681, "test_au_prc": 0.9526,
                 "val_au_roc": 0.9976, "val_au_prc": 0.9954,
                 "test_by_negative_group": {

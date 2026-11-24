@@ -1,0 +1,972 @@
+[
+ {
+  "id": 523,
+  "name": "bbPET0069",
+  "amino_acid_sequence": "MADNPFERGPNPSESLIEQRRGNYDIAQRSISRFSSDGFRDGTIYHPTDTSDGKFGVIAISPGYTAGESSIAWLGSRIASFGFVVVTINTTTRYDQPRQRSTQLLAALDHAMNDSVVGPLIDPERQAVMGHSMGGGGALQAAESRPEIDAVVALTPWNLKKNWDGVDAATLIIGAERDTVASVRTHSIPFYESLTQAEQRGYLELRGASHFAPNVSNTTIAKYSIAWMKRYLDNDDRYDQFLNPGPAVGYASGVSDYRLQ",
+  "sequence_length": 260,
+  "sequence_md5": "54f70c30d1e7af1551ffbfc8c089400e",
+  "verified": true,
+  "organism": {
+   "id": 399,
+   "scientific_name": "Unidentified soil bacterium (bbPET0069 source)",
+   "domain": "Bacteria",
+   "kingdom": "",
+   "phylum": "",
+   "ncbi_taxonomy_id": null,
+   "origin_type": null,
+   "origin_label": null
+  },
+  "strain_identifier": null,
+  "substrates": [
+   {
+    "id": 1,
+    "name": "Polyethylene terephthalate",
+    "base": "fossil fuel",
+    "abbreviation": "PET",
+    "oligomer_only": false
+   }
+  ],
+  "uniprot_accession": null,
+  "alphafold_url": null,
+  "accessions": [],
+  "literature": [
+   {
+    "id": 254,
+    "doi": "10.1002/cctc.202500364",
+    "author": "Mabashi\u2010Asazuma, Hideaki; Hirai, Makoto; Sakurai, Shigeru; Ide, Keigo; Kogawa, Masato; Matsushita, Ai; Hosokawa, Masahito; Tsuda, Soichiro",
+    "title": "A Combination of Two\u2010Enzyme System and Enzyme Engineering Improved the Activity of a New PET Hydrolase Identified from Soil Bacterial Genome",
+    "year": 2025
+   }
+  ],
+  "bacdive_url": null
+ },
+ {
+  "id": 524,
+  "name": "HaloPETase1",
+  "amino_acid_sequence": "MKAPLFKLAALSLGVSLSSVALATNPGGGGGGSNPDTGTGFPGVSSFSADGSFATTSGSAGLSCTVFRPSTLGANGLKHPIIVWGNGTTASPSTYSGILEHWASHGFVVIAANTSNAGTGQDMLNCVDYLTTQNNRSTGTYANKLDLNRIGAAGHSQGGGGTIMAGQDYRIKVTAPFQPYTIGLGHNSSSQSNQNGPMFLMTGSADTIASPTLNALPVYNRANVPVFWGELSGASHFEPVGSAGDFRGPSTAWFRYHLMDDASAEDTFYGSNCDLCTDNDWEVRRKGIN",
+  "sequence_length": 289,
+  "sequence_md5": "950974558f64e648bcd2da65dff82862",
+  "verified": true,
+  "organism": {
+   "id": 264,
+   "scientific_name": "Pseudomonadales bacterium",
+   "domain": "Bacteria",
+   "kingdom": "Pseudomonadati",
+   "phylum": "Pseudomonadota",
+   "ncbi_taxonomy_id": 1891229,
+   "origin_type": null,
+   "origin_label": null
+  },
+  "strain_identifier": {
+   "id": 85,
+   "source": "STRAIN_LABEL",
+   "value": "CPC36",
+   "source_identifier_raw": "CPC36",
+   "ncbi_taxonomy_id": null
+  },
+  "substrates": [
+   {
+    "id": 1,
+    "name": "Polyethylene terephthalate",
+    "base": "fossil fuel",
+    "abbreviation": "PET",
+    "oligomer_only": false
+   }
+  ],
+  "uniprot_accession": null,
+  "alphafold_url": null,
+  "accessions": [
+   {
+    "id": 11780,
+    "database": "EMBL-GenBank-DDBJ_CDS",
+    "accession": "MAB42154",
+    "external_url": "https://www.ncbi.nlm.nih.gov/protein/MAB42154"
+   }
+  ],
+  "literature": [
+   {
+    "id": 255,
+    "doi": "10.1002/pro.70305",
+    "author": "Turak, Onur; Gagsteiger, Andreas; Upadhyay, Ashank; Kriegel, Mark; Salein, Peter; B\u00f6hnke\u2010Brandt, Stefanie; Agarwal, Seema; Borchert, Erik; H\u00f6cker, Birte",
+    "title": "A third type of PETase from the marine Halopseudomonas lineage",
+    "year": 2025
+   }
+  ],
+  "bacdive_url": null
+ },
+ {
+  "id": 525,
+  "name": "HaloPETase2",
+  "amino_acid_sequence": "MNASALKLTALALGMALSSAALATNPGGGGGGSSDPTGTGFPGVSDFAATGSFATTDGSAGLSCTVFRPSTLGANGIKHPIIVWGNGTTASPSTYADLLEHWASQGFVVIAANTSNAGTGEEMLDCLDYLTTQNNRSSGTYANKLDLNRVGTAGHSQGGGGTIMAGQDPRIKATAPFQPYTIGLGHNTSSQSNQSGPMFLMSGSSDTIATPSLNSRPVYNRANVPVFWGELDGASHFEPVGNAGDFRGPSTAWFRYHLMDDAAAGELFYGSNCDLCTDNDWEVRRKGIN",
+  "sequence_length": 289,
+  "sequence_md5": "8f4b44a9468d23ce178e452e91ee0689",
+  "verified": true,
+  "organism": {
+   "id": 400,
+   "scientific_name": "Halopseudomonas sabulinigri",
+   "domain": "Bacteria",
+   "kingdom": "Pseudomonadati",
+   "phylum": "Pseudomonadota",
+   "ncbi_taxonomy_id": 472181,
+   "origin_type": null,
+   "origin_label": null
+  },
+  "strain_identifier": {
+   "id": 86,
+   "source": "STRAIN_LABEL",
+   "value": "HyVt-376",
+   "source_identifier_raw": "HyVt-376",
+   "ncbi_taxonomy_id": null
+  },
+  "substrates": [
+   {
+    "id": 1,
+    "name": "Polyethylene terephthalate",
+    "base": "fossil fuel",
+    "abbreviation": "PET",
+    "oligomer_only": false
+   }
+  ],
+  "uniprot_accession": null,
+  "alphafold_url": null,
+  "accessions": [],
+  "literature": [
+   {
+    "id": 255,
+    "doi": "10.1002/pro.70305",
+    "author": "Turak, Onur; Gagsteiger, Andreas; Upadhyay, Ashank; Kriegel, Mark; Salein, Peter; B\u00f6hnke\u2010Brandt, Stefanie; Agarwal, Seema; Borchert, Erik; H\u00f6cker, Birte",
+    "title": "A third type of PETase from the marine Halopseudomonas lineage",
+    "year": 2025
+   }
+  ],
+  "bacdive_url": null
+ },
+ {
+  "id": 526,
+  "name": "HaloPETase3",
+  "amino_acid_sequence": "MKAPALKLAAVALGLAISSAALATNPGGGGSGGGSNPTGTGFPSVSSFSSSGSFSTTSGSAGFSCTVYRPSTLGANGLKHPIITWGNGTGASPSTYSALLNHWASQGFVVIAANTSNAGTGQDMLNCVDYLVDQNNRSSGTYAGKLDLNRIGAAGHSQGGGGTIMAGQNYRIKATVPFQPYTIGLGHNSSSQSNQNGPMFLISGGSDTIATPTLNSLPVYNRANVPVFWGERRGASHFEPVGNAGDFRGPSTAWFRYQLMDDQAAESTFYGSNCGLCSDRNWTVRRKGIN",
+  "sequence_length": 290,
+  "sequence_md5": "a90a7d35f48c3c1193e796371add00fc",
+  "verified": true,
+  "organism": {
+   "id": 400,
+   "scientific_name": "Halopseudomonas sabulinigri",
+   "domain": "Bacteria",
+   "kingdom": "Pseudomonadati",
+   "phylum": "Pseudomonadota",
+   "ncbi_taxonomy_id": 472181,
+   "origin_type": null,
+   "origin_label": null
+  },
+  "strain_identifier": {
+   "id": 86,
+   "source": "STRAIN_LABEL",
+   "value": "HyVt-376",
+   "source_identifier_raw": "HyVt-376",
+   "ncbi_taxonomy_id": null
+  },
+  "substrates": [
+   {
+    "id": 1,
+    "name": "Polyethylene terephthalate",
+    "base": "fossil fuel",
+    "abbreviation": "PET",
+    "oligomer_only": false
+   }
+  ],
+  "uniprot_accession": null,
+  "alphafold_url": null,
+  "accessions": [
+   {
+    "id": 11781,
+    "database": "EMBL-GenBank-DDBJ_CDS",
+    "accession": "HEC50558",
+    "external_url": "https://www.ncbi.nlm.nih.gov/protein/HEC50558"
+   }
+  ],
+  "literature": [
+   {
+    "id": 255,
+    "doi": "10.1002/pro.70305",
+    "author": "Turak, Onur; Gagsteiger, Andreas; Upadhyay, Ashank; Kriegel, Mark; Salein, Peter; B\u00f6hnke\u2010Brandt, Stefanie; Agarwal, Seema; Borchert, Erik; H\u00f6cker, Birte",
+    "title": "A third type of PETase from the marine Halopseudomonas lineage",
+    "year": 2025
+   }
+  ],
+  "bacdive_url": null
+ },
+ {
+  "id": 527,
+  "name": "HaloPETase4",
+  "amino_acid_sequence": "MNAPAIKIAAVALGLAISSAALATNPGGGGGSSNPTGTGFPGVSNFSSGGSFSTTSGSAGFSCTVFRPSTLGASGRKHPIIVWGNGTGASPTTYRSLLNHWASHGFVVIAANTSNAGSGQDMLNCVDYLVDQNNRSSGTYAGKLDVNRIGAAGHSQGGGGTIMAGQNNRIKATAPFQPYTIGLGHRSSSQSNQNGPMFLMSGSFDTIAAPTLNALPVYNRANVPVFWGELRGASHFEPIGNAGDFRGPSTAWFRYQLMDDQGAENTFYGNNCDLCSDRSWTVRRKGIN",
+  "sequence_length": 288,
+  "sequence_md5": "22e49eee91160da30ca972baf02e200d",
+  "verified": true,
+  "organism": {
+   "id": 400,
+   "scientific_name": "Halopseudomonas sabulinigri",
+   "domain": "Bacteria",
+   "kingdom": "Pseudomonadati",
+   "phylum": "Pseudomonadota",
+   "ncbi_taxonomy_id": 472181,
+   "origin_type": null,
+   "origin_label": null
+  },
+  "strain_identifier": {
+   "id": 86,
+   "source": "STRAIN_LABEL",
+   "value": "HyVt-376",
+   "source_identifier_raw": "HyVt-376",
+   "ncbi_taxonomy_id": null
+  },
+  "substrates": [
+   {
+    "id": 1,
+    "name": "Polyethylene terephthalate",
+    "base": "fossil fuel",
+    "abbreviation": "PET",
+    "oligomer_only": false
+   }
+  ],
+  "uniprot_accession": null,
+  "alphafold_url": null,
+  "accessions": [
+   {
+    "id": 11782,
+    "database": "EMBL-GenBank-DDBJ_CDS",
+    "accession": "HEC50559",
+    "external_url": "https://www.ncbi.nlm.nih.gov/protein/HEC50559"
+   }
+  ],
+  "literature": [
+   {
+    "id": 255,
+    "doi": "10.1002/pro.70305",
+    "author": "Turak, Onur; Gagsteiger, Andreas; Upadhyay, Ashank; Kriegel, Mark; Salein, Peter; B\u00f6hnke\u2010Brandt, Stefanie; Agarwal, Seema; Borchert, Erik; H\u00f6cker, Birte",
+    "title": "A third type of PETase from the marine Halopseudomonas lineage",
+    "year": 2025
+   }
+  ],
+  "bacdive_url": null
+ },
+ {
+  "id": 528,
+  "name": "HaloPETase5",
+  "amino_acid_sequence": "MKQIKSNTLLSLFAASALLFSLSAAANNPAPTPTPTPTPGTPSAYQRGPAPSVSFLQASRGDLSVRTSRVSSFTSGFGGGTIHYPTGTTGTMAAIVVIPGYVSAESSIEWWGPKLASYGFVVMTIDTNSGFDQPPSRARQINSALDYLVSQNSSSRSPVRGMIDTNRLGVVGWSMGGGGTLRVAEEGRIKAAIPLAPWDTTNFRDNYTPTLIFACQSDVIAPVNQHASPFYNQIPSSTDKAFVELSGGSHYCGNGGGVYNNVLGRLGVSWMKRHLDQDTRYDQFLCGPNHESDSRISEYRGNCSN",
+  "sequence_length": 305,
+  "sequence_md5": "e3ab2d43e5cb3337c6b35883cde8d892",
+  "verified": true,
+  "organism": {
+   "id": 400,
+   "scientific_name": "Halopseudomonas sabulinigri",
+   "domain": "Bacteria",
+   "kingdom": "Pseudomonadati",
+   "phylum": "Pseudomonadota",
+   "ncbi_taxonomy_id": 472181,
+   "origin_type": null,
+   "origin_label": null
+  },
+  "strain_identifier": {
+   "id": 86,
+   "source": "STRAIN_LABEL",
+   "value": "HyVt-376",
+   "source_identifier_raw": "HyVt-376",
+   "ncbi_taxonomy_id": null
+  },
+  "substrates": [
+   {
+    "id": 1,
+    "name": "Polyethylene terephthalate",
+    "base": "fossil fuel",
+    "abbreviation": "PET",
+    "oligomer_only": false
+   }
+  ],
+  "uniprot_accession": null,
+  "alphafold_url": null,
+  "accessions": [
+   {
+    "id": 11783,
+    "database": "EMBL-GenBank-DDBJ_CDS",
+    "accession": "HEC53621",
+    "external_url": "https://www.ncbi.nlm.nih.gov/protein/HEC53621"
+   }
+  ],
+  "literature": [
+   {
+    "id": 255,
+    "doi": "10.1002/pro.70305",
+    "author": "Turak, Onur; Gagsteiger, Andreas; Upadhyay, Ashank; Kriegel, Mark; Salein, Peter; B\u00f6hnke\u2010Brandt, Stefanie; Agarwal, Seema; Borchert, Erik; H\u00f6cker, Birte",
+    "title": "A third type of PETase from the marine Halopseudomonas lineage",
+    "year": 2025
+   }
+  ],
+  "bacdive_url": null
+ },
+ {
+  "id": 529,
+  "name": "HaloPETase6",
+  "amino_acid_sequence": "MIHTKKKVLQSLFAASALIISMSALANNPAPPTDPNPPTTGFQRGPDPSVSYLEAARGTYSVRTSRVSSFVSGFGGGTIHYPTGTTGTMAAIVVIPGFVSAESSIEWWGPKLASYGFVVLTIDTNSGFDQPPSRARQINNALDYLVSQNTSRRSAVQGMIDTDRLGVVGWSMGGGGTLRVAEEGRIKAAIPLAPWDTTNFRDNYTPTLIFACQSDIIAPVYQHASPFYNQIPNSTDKAFVELRGGSHYCGNGGGIYNDVLGRLGVSWMKRHLDQDTRYQQFLCGPNHESDSQVSDYRGNCQ",
+  "sequence_length": 301,
+  "sequence_md5": "9b97ba4d1a01b5a376ba5f54dd5b5b25",
+  "verified": true,
+  "organism": {
+   "id": 400,
+   "scientific_name": "Halopseudomonas sabulinigri",
+   "domain": "Bacteria",
+   "kingdom": "Pseudomonadati",
+   "phylum": "Pseudomonadota",
+   "ncbi_taxonomy_id": 472181,
+   "origin_type": null,
+   "origin_label": null
+  },
+  "strain_identifier": {
+   "id": 86,
+   "source": "STRAIN_LABEL",
+   "value": "HyVt-376",
+   "source_identifier_raw": "HyVt-376",
+   "ncbi_taxonomy_id": null
+  },
+  "substrates": [
+   {
+    "id": 1,
+    "name": "Polyethylene terephthalate",
+    "base": "fossil fuel",
+    "abbreviation": "PET",
+    "oligomer_only": false
+   }
+  ],
+  "uniprot_accession": null,
+  "alphafold_url": null,
+  "accessions": [
+   {
+    "id": 11784,
+    "database": "EMBL-GenBank-DDBJ_CDS",
+    "accession": "HEC53622",
+    "external_url": "https://www.ncbi.nlm.nih.gov/protein/HEC53622"
+   }
+  ],
+  "literature": [
+   {
+    "id": 255,
+    "doi": "10.1002/pro.70305",
+    "author": "Turak, Onur; Gagsteiger, Andreas; Upadhyay, Ashank; Kriegel, Mark; Salein, Peter; B\u00f6hnke\u2010Brandt, Stefanie; Agarwal, Seema; Borchert, Erik; H\u00f6cker, Birte",
+    "title": "A third type of PETase from the marine Halopseudomonas lineage",
+    "year": 2025
+   }
+  ],
+  "bacdive_url": null
+ },
+ {
+  "id": 530,
+  "name": "BhEstB",
+  "amino_acid_sequence": "MSESMVKTQYGTVKGISKNGVHIWKGIPYAKPPVGQLRFKAPEPPAAWEGVLDATAYGPVCPQPPDLLSYSYPELPRQSEDCLYVNVFAPDTPGKNRPVMVWIHGGAFYLGAGSEPLYDGSNLAALGDVIVVTLNYRLGPFGFLHLSSIDEAYSDNLGLLDQTAALKWVRDNISAFGGDPGNVTVFGESAGGMSIAALLAMPAAKGLFQKAILESGSSRTMTEEKAASTADAFLRVLGIERHQLDRLHTVSEEDLLKAADQLRKTENENIFQLFFQPALDPKTLPAEPEKAIAQGAADGIPLLVGTNRDEGYLFFTPDSEVHSQETIDEALEYLLGQPLAKKAADLYPRSLESQIHMMTDLLFWRPAVACASAQSRYAPVWMYRFDWHPDKPPYNKAFHALELPFVFGNLNGLKRMVQADITDEVKQLSHTIQSAWLAFAKTGNPSCEDVQWPVYTEDKRETLILNCELSIEHDPDGEKRKKLLNS",
+  "sequence_length": 486,
+  "sequence_md5": "077080cc940ecac32949ef86d14bfe81",
+  "verified": true,
+  "organism": {
+   "id": 401,
+   "scientific_name": "Bacillus halotolerans",
+   "domain": "Bacteria",
+   "kingdom": "Bacillati",
+   "phylum": "Bacillota",
+   "ncbi_taxonomy_id": 260554,
+   "origin_type": null,
+   "origin_label": null
+  },
+  "strain_identifier": {
+   "id": 87,
+   "source": "STRAIN_LABEL",
+   "value": "HGR5",
+   "source_identifier_raw": "HGR5",
+   "ncbi_taxonomy_id": null
+  },
+  "substrates": [
+   {
+    "id": 1,
+    "name": "Polyethylene terephthalate",
+    "base": "fossil fuel",
+    "abbreviation": "PET",
+    "oligomer_only": false
+   }
+  ],
+  "uniprot_accession": null,
+  "alphafold_url": null,
+  "accessions": [
+   {
+    "id": 11785,
+    "database": "EMBL-GenBank-DDBJ_CDS",
+    "accession": "YGN98038",
+    "external_url": "https://www.ncbi.nlm.nih.gov/protein/YGN98038"
+   }
+  ],
+  "literature": [
+   {
+    "id": 256,
+    "doi": "10.1007/s00253-026-14056-w",
+    "author": "Bounabi, Hadjira; Yahiaoui, Bilal; Gasmi, Meriem; Mechouche, Meroua Safa; B\u00e4se, Nico; Gurschke, Marno; Molitor, Rebecka; P\u00e9rez-Garc\u00eda, Pablo; Streit, Wolfgang R.",
+    "title": "A versatile Bacillus esterase reveals a carboxylesterase blueprint for PET intermediate degradation",
+    "year": 2026
+   }
+  ],
+  "bacdive_url": null
+ },
+ {
+  "id": 531,
+  "name": "LactoPETase",
+  "amino_acid_sequence": "MATITLERDGLQLVGTREEPFGEIYDMAIIFHGFTANRNTSLLREIANSLRDENIASVRFDFNGHGDSDGKFENMTVLNEIEDANAILNYVKTDPHVRNIYLVGHSQGGVVASMLAGLYPDLIKKVVLLAPAATLKGDALEGNTQGVTYNPDHIPDRLPFKDLTLGGFYLRIAQQLPIYEVSAQFTKPVCLIHGTDDTVVSPNASKKYDQIYQNSTLHLIEGADHCFSDSYQKNAVNLTTDFLQNNNAF",
+  "sequence_length": 249,
+  "sequence_md5": "8722edc1d8ee6527fa67deaf57e3cd92",
+  "verified": true,
+  "organism": {
+   "id": 402,
+   "scientific_name": "Lactobacillus johnsonii",
+   "domain": "Bacteria",
+   "kingdom": "Bacillati",
+   "phylum": "Bacillota",
+   "ncbi_taxonomy_id": 33959,
+   "origin_type": null,
+   "origin_label": null
+  },
+  "strain_identifier": null,
+  "substrates": [
+   {
+    "id": 1,
+    "name": "Polyethylene terephthalate",
+    "base": "fossil fuel",
+    "abbreviation": "PET",
+    "oligomer_only": false
+   }
+  ],
+  "uniprot_accession": "A0A7D9N824",
+  "alphafold_url": "https://alphafold.ebi.ac.uk/entry/A0A7D9N824",
+  "accessions": [
+   {
+    "id": 11786,
+    "database": "UniProtKB",
+    "accession": "A0A7D9N824",
+    "external_url": null
+   },
+   {
+    "id": 11787,
+    "database": "UniProtKB",
+    "accession": "D3YEX6",
+    "external_url": null
+   },
+   {
+    "id": 11788,
+    "database": "RefSeq_Protein",
+    "accession": "WP_023600008.1",
+    "external_url": null
+   },
+   {
+    "id": 11789,
+    "database": "EMBL-GenBank-DDBJ_CDS",
+    "accession": "ADD11991",
+    "external_url": "https://www.ncbi.nlm.nih.gov/protein/ADD11991"
+   },
+   {
+    "id": 11790,
+    "database": "EMBL-GenBank-DDBJ_CDS",
+    "accession": "AHA97996",
+    "external_url": "https://www.ncbi.nlm.nih.gov/protein/AHA97996"
+   },
+   {
+    "id": 11791,
+    "database": "EMBL-GenBank-DDBJ_CDS",
+    "accession": "QIA88228",
+    "external_url": "https://www.ncbi.nlm.nih.gov/protein/QIA88228"
+   },
+   {
+    "id": 11792,
+    "database": "PDB",
+    "accession": "3PF8",
+    "external_url": null
+   },
+   {
+    "id": 11793,
+    "database": "PDB",
+    "accession": "3PF9",
+    "external_url": null
+   },
+   {
+    "id": 11794,
+    "database": "PDB",
+    "accession": "3PFB",
+    "external_url": null
+   },
+   {
+    "id": 11795,
+    "database": "PDB",
+    "accession": "3PFC",
+    "external_url": null
+   },
+   {
+    "id": 11796,
+    "database": "PDB",
+    "accession": "3QM1",
+    "external_url": null
+   },
+   {
+    "id": 11797,
+    "database": "PDB",
+    "accession": "3S2Z",
+    "external_url": null
+   },
+   {
+    "id": 11798,
+    "database": "UniParc",
+    "accession": "UPI0001CDE674",
+    "external_url": null
+   },
+   {
+    "id": 11799,
+    "database": "UniRef50",
+    "accession": "UniRef50_A0A0R2M3C8",
+    "external_url": null
+   },
+   {
+    "id": 11800,
+    "database": "UniRef90",
+    "accession": "UniRef90_D3YEX6",
+    "external_url": null
+   },
+   {
+    "id": 11801,
+    "database": "UniRef100",
+    "accession": "UniRef100_D3YEX6",
+    "external_url": null
+   }
+  ],
+  "literature": [
+   {
+    "id": 257,
+    "doi": "10.1016/j.mcat.2026.116074",
+    "author": "M\u00e9ndez-Zamora, Andr\u00e9s; Casta\u00f1o de la Serna, Enrique; Diaz-Vidal, Tania; Robles-Machuca, Marcela; Pereira-Santana, Alejandro; Casas-Godoy, Leticia",
+    "title": "Identification and catalytic characterization of a thermostable PET-hydrolyzing enzyme from Lactobacillus johnsonii",
+    "year": 2026
+   }
+  ],
+  "bacdive_url": null
+ },
+ {
+  "id": 532,
+  "name": "LipBv",
+  "amino_acid_sequence": "MKFVKSKFIALVTILALSVTSLFAVQPSAKAAEHNPVVMVHGIGGASYNFSGIKSYLVSQGWSRSKLYAVDFWDKTGTNYNNGPVLSRFVKKVLDETGAKKVDIVAHSMGGANTLYYIKNLDGGNKIENVVTLGGANRLTTGKALPGTDPNQKILYTSIYSSADMIVMNYLSKLDGAKNVQIHGVGHIGLLYSSQVNSLIKEGLNGGGQNTN",
+  "sequence_length": 212,
+  "sequence_md5": "be48d479992f7c3610c157f44d4f823f",
+  "verified": true,
+  "organism": {
+   "id": 403,
+   "scientific_name": "Bacillus sp. MSP13",
+   "domain": "Bacteria",
+   "kingdom": "Bacillati",
+   "phylum": "Bacillota",
+   "ncbi_taxonomy_id": 1071061,
+   "origin_type": null,
+   "origin_label": null
+  },
+  "strain_identifier": {
+   "id": 88,
+   "source": "STRAIN_LABEL",
+   "value": "MSP13",
+   "source_identifier_raw": "MSP13",
+   "ncbi_taxonomy_id": null
+  },
+  "substrates": [
+   {
+    "id": 1,
+    "name": "Polyethylene terephthalate",
+    "base": "fossil fuel",
+    "abbreviation": "PET",
+    "oligomer_only": false
+   }
+  ],
+  "uniprot_accession": null,
+  "alphafold_url": null,
+  "accessions": [
+   {
+    "id": 11802,
+    "database": "RefSeq_Protein",
+    "accession": "WP_010331400.1",
+    "external_url": null
+   }
+  ],
+  "literature": [
+   {
+    "id": 258,
+    "doi": "10.1111/1751-7915.70432",
+    "author": "Mu\u00f1oz\u2010Tafalla, Rub\u00e9n; Gonz\u00e1lez\u2010Romero, Jos\u00e9 M.; Vidal, Paula; Fernandez\u2010Lopez, Laura; Robles\u2010Mart\u00edn, Ana; Almendral, David; Gonzalez\u2010Alfonso, Jos\u00e9 L.; Plou, Francisco J.; Ferrer, Manuel; Guallar, V\u00edctor; Bargiela, Rafael",
+    "title": "Structure\u2010Guided Extremophile Genome Mining Expands the PETase Landscape and Reveals PET \u2010Hydrolysing True Lipase Lineages",
+    "year": 2026
+   }
+  ],
+  "bacdive_url": null
+ },
+ {
+  "id": 533,
+  "name": "LipSh1",
+  "amino_acid_sequence": "MKTRQNRYSIRKFSVGASSILVATLLFMGGGAAQAAEAHQEAENPDSAVAQSIGDHKKQSDNQETQQDNVQPDEQATATSQSVANKNEKQQGLHNENTTSTQTKNANHKTNTKEEATDNNVTHQTTKYSTAETEEAAAETKETSSTKTSFDDSESVSTKEEHPSLETQESTKNTIQKDTPTSNKKENTTEDTPASELSVNEQHSQSSERATNENPTTEKATIHEHSTNEAKTPSTKENTLKTTGNRSAETNQSELNKKTTPSTSSESEEESNVNDKHEAKTPSTEQNNDTVETTETKQTVTAKQSTDSTTPIENTLNTKDEAISIDGTTNETVGNKDAKDQKNSQAGLETLANNAVATTNNTSQQQGTAETKDQTNKVAKQSQYKNQDPIILVHGFNGFTDDINPNVLSHYWGGDKLNIRQELEQNGYNAYEASISAFGSNYDRAVELYYYIKGGTVDYGAAHAERYGHERYGKTYEGVYKDWQPGQKVHLVGHSMGGQTVRQLEELLRNGSQEEIEYQKTHGGDISPLLQGGHDNMVSSITTLGTPHNGTHASDKLGNEAIVRQIAFDIGKQLGNKNSRVDFGLSQWGLKQQPGESYLSYLSRAKTSKLWQTKDNGLYDLTRDGATDLNRKTSLNPNIVYKTYTGEATHSTLFGKHKADYNLFLPFTVTANLIGKSTEKEWRENDGLVSVISSQHPFNQAYTEATDTNQKGIWQVTPTKHDWDHVDFVGQDSTDTKRTREELQQFWYDLADDLVQTEALTSTNKA",
+  "sequence_length": 766,
+  "sequence_md5": "fd84cb60250e838938109e25d5887be2",
+  "verified": true,
+  "organism": {
+   "id": 404,
+   "scientific_name": "Staphylococcus hominis",
+   "domain": "Bacteria",
+   "kingdom": "Bacillati",
+   "phylum": "Bacillota",
+   "ncbi_taxonomy_id": 1290,
+   "origin_type": null,
+   "origin_label": null
+  },
+  "strain_identifier": {
+   "id": 89,
+   "source": "STRAIN_LABEL",
+   "value": "SDD3",
+   "source_identifier_raw": "SDD3",
+   "ncbi_taxonomy_id": null
+  },
+  "substrates": [
+   {
+    "id": 1,
+    "name": "Polyethylene terephthalate",
+    "base": "fossil fuel",
+    "abbreviation": "PET",
+    "oligomer_only": false
+   }
+  ],
+  "uniprot_accession": null,
+  "alphafold_url": null,
+  "accessions": [
+   {
+    "id": 11803,
+    "database": "EMBL-GenBank-DDBJ_CDS",
+    "accession": "TRM03865",
+    "external_url": "https://www.ncbi.nlm.nih.gov/protein/TRM03865"
+   }
+  ],
+  "literature": [
+   {
+    "id": 258,
+    "doi": "10.1111/1751-7915.70432",
+    "author": "Mu\u00f1oz\u2010Tafalla, Rub\u00e9n; Gonz\u00e1lez\u2010Romero, Jos\u00e9 M.; Vidal, Paula; Fernandez\u2010Lopez, Laura; Robles\u2010Mart\u00edn, Ana; Almendral, David; Gonzalez\u2010Alfonso, Jos\u00e9 L.; Plou, Francisco J.; Ferrer, Manuel; Guallar, V\u00edctor; Bargiela, Rafael",
+    "title": "Structure\u2010Guided Extremophile Genome Mining Expands the PETase Landscape and Reveals PET \u2010Hydrolysing True Lipase Lineages",
+    "year": 2026
+   }
+  ],
+  "bacdive_url": null
+ },
+ {
+  "id": 534,
+  "name": "LipSh2",
+  "amino_acid_sequence": "MKKSENRYSIRKFSVGASSILVATLLFMGGGAAQAAETHQEVGNPESAVAQSIGDHKKQSDNQETQQDNVQSDEQATSTSQSVTNENEAQRLHNENKASTQVKDSTDQLNTNEGTTDNIVTHQSTKHSVAETEEASTTKTSSDDPESVSTKEEQPSLETQESTKNTIQKDTLASDKKDNTTETSTTKNQAHSSENVTNESPTEEKTTTQTTTAETNTSSTKDNTSKTTDSHSTKTSQSTPLTESKELTPSKTQQDSNVNQDAIKNNDVEAPSTGKTNDTVDTTETKQTVTAKQPTDPAAPTVNTLNTKDEAISIDGTTNETVGHKDAKDQKNSQAGLETLANNAVATTNNTSQQQGTTETKDQTNKVAKQGQYKNQDPIILVHGFNGFTDDINPNVLSHYWGGDKLNIRQDLEQNGYNAYEASISAFGSNYDRAVELYYYIKGGTVDYGAAHAERYGHERYGKTYEGVYKDWQPGQKVHLVGHSMGGQTVRQLEELLRNGSQEEIEYQKTHGGDISPLLQGGHDNMVSSITTLGTPHNGTHAADELGNEALVRQVVFDLGKRLGNKNSRVDFGLSQWGLKQQPGESYISYLLRVKNSKLWQSKDNGFYDLTRDGATDLNRKTSLNPNIVYKTYTAEATHPTLIGKQKADYNMFLPFTVTGNVIGKATEKEWRENDGLVSVISSQHPFNQAYTEATDTNQKGIWQVTPTKHDWDHVDFVGQDSTDTKRSREELQQFWYDLADDLVQTEALTSTNEA",
+  "sequence_length": 755,
+  "sequence_md5": "6e33d32fc69926b3de08293ef320d247",
+  "verified": true,
+  "organism": {
+   "id": 404,
+   "scientific_name": "Staphylococcus hominis",
+   "domain": "Bacteria",
+   "kingdom": "Bacillati",
+   "phylum": "Bacillota",
+   "ncbi_taxonomy_id": 1290,
+   "origin_type": null,
+   "origin_label": null
+  },
+  "strain_identifier": {
+   "id": 90,
+   "source": "STRAIN_LABEL",
+   "value": "SDA3",
+   "source_identifier_raw": "SDA3",
+   "ncbi_taxonomy_id": null
+  },
+  "substrates": [
+   {
+    "id": 1,
+    "name": "Polyethylene terephthalate",
+    "base": "fossil fuel",
+    "abbreviation": "PET",
+    "oligomer_only": false
+   }
+  ],
+  "uniprot_accession": null,
+  "alphafold_url": null,
+  "accessions": [
+   {
+    "id": 11804,
+    "database": "EMBL-GenBank-DDBJ_CDS",
+    "accession": "TRL33698",
+    "external_url": "https://www.ncbi.nlm.nih.gov/protein/TRL33698"
+   }
+  ],
+  "literature": [
+   {
+    "id": 258,
+    "doi": "10.1111/1751-7915.70432",
+    "author": "Mu\u00f1oz\u2010Tafalla, Rub\u00e9n; Gonz\u00e1lez\u2010Romero, Jos\u00e9 M.; Vidal, Paula; Fernandez\u2010Lopez, Laura; Robles\u2010Mart\u00edn, Ana; Almendral, David; Gonzalez\u2010Alfonso, Jos\u00e9 L.; Plou, Francisco J.; Ferrer, Manuel; Guallar, V\u00edctor; Bargiela, Rafael",
+    "title": "Structure\u2010Guided Extremophile Genome Mining Expands the PETase Landscape and Reveals PET \u2010Hydrolysing True Lipase Lineages",
+    "year": 2026
+   }
+  ],
+  "bacdive_url": null
+ },
+ {
+  "id": 535,
+  "name": "LipSh3",
+  "amino_acid_sequence": "MKKSENRYSIRKFSVGASSILVATLLFMGGGAAQAAETHQEVGNPESAVAQSIGDHKKQSDNQETQQDNVQSDEQATSTSQSVTNENEAQRLHNENKASTQVKDSTDQLNTNEGTTDNIVTHQSTKHSVAETEEASTTKTSSDDPESVSTKEEQPSLETQESTKNTIQKDTLASDKKDNTTETSTTKNQAHSSENVTNESPTEEKTTTQTTTAETNTSSTKDNTSKTTDSHSTKTSQSTPLTESKELTPSKTQQDSNVNQDAIKNNDVEAPSTGKTNDTVDTTETKQTVTAKQPTDPAAPTVNTLNTKDEAISIDGTTNETVGHKDAKDQKNSQAGLETLANNAVATTNNTSQQQGTTETKDQTNKVAKQGQYKNQDPIILVHGFNGFTDDINPNVLSHYWGGDKLNIRQDLEQNGYNAYEASISAFGSNYDRAVELYYYIKGGTVDYGAAHAERYGHERYGKTYEGVYKDWQPGQKVHLVGHSMGGQTVRQLEELLRNGSQEEIEYQKTHGGDISPLLQGGHDNMVSSITTLGTPHNGTHAADELGNEALVRQVVFDLGKRLGNKNSRVDFGLSQWGLKQQPGESYISYLLRVKNSKLWQSKDNGFYDLTRDGATDLNRKTSLNPNIVYKTYTAEATHPTLIGKQKADYNMFLPFTVTGNVIGKATEKEWRENDGLVSVISSQHPFNQAYTEATDTNQKGIWQVTPTKHDWDHVDFVGQDSTDTKRSREELQQFWYDLADDLVQTEALTSTNKA",
+  "sequence_length": 755,
+  "sequence_md5": "e5f5283d8277dd77ad875d10be544f19",
+  "verified": true,
+  "organism": {
+   "id": 404,
+   "scientific_name": "Staphylococcus hominis",
+   "domain": "Bacteria",
+   "kingdom": "Bacillati",
+   "phylum": "Bacillota",
+   "ncbi_taxonomy_id": 1290,
+   "origin_type": null,
+   "origin_label": null
+  },
+  "strain_identifier": {
+   "id": 91,
+   "source": "STRAIN_LABEL",
+   "value": "SDB3",
+   "source_identifier_raw": "SDB3",
+   "ncbi_taxonomy_id": null
+  },
+  "substrates": [
+   {
+    "id": 1,
+    "name": "Polyethylene terephthalate",
+    "base": "fossil fuel",
+    "abbreviation": "PET",
+    "oligomer_only": false
+   }
+  ],
+  "uniprot_accession": null,
+  "alphafold_url": null,
+  "accessions": [
+   {
+    "id": 11805,
+    "database": "EMBL-GenBank-DDBJ_CDS",
+    "accession": "TRL79618",
+    "external_url": "https://www.ncbi.nlm.nih.gov/protein/TRL79618"
+   }
+  ],
+  "literature": [
+   {
+    "id": 258,
+    "doi": "10.1111/1751-7915.70432",
+    "author": "Mu\u00f1oz\u2010Tafalla, Rub\u00e9n; Gonz\u00e1lez\u2010Romero, Jos\u00e9 M.; Vidal, Paula; Fernandez\u2010Lopez, Laura; Robles\u2010Mart\u00edn, Ana; Almendral, David; Gonzalez\u2010Alfonso, Jos\u00e9 L.; Plou, Francisco J.; Ferrer, Manuel; Guallar, V\u00edctor; Bargiela, Rafael",
+    "title": "Structure\u2010Guided Extremophile Genome Mining Expands the PETase Landscape and Reveals PET \u2010Hydrolysing True Lipase Lineages",
+    "year": 2026
+   }
+  ],
+  "bacdive_url": null
+ },
+ {
+  "id": 536,
+  "name": "SM0281",
+  "amino_acid_sequence": "MSTTPAETEITRIEVGTGAAARSIAMRIFRTGNPPDMKDGDPRRPALVWLGGYRSDMTGTKAVEVERHAREAGTDCIRFDYSGHGASDGDYRDGTISRWVEESLAVIDHAATGRMILIGSSMGAWVALRLAEKLKGGAHHGEGGVGRLCGLVLIAPAPDFTAELIEPNLTEAERTSLAERGYFEEPSEYSPEPNVFTRALIEDGRNNLVMKGPIETGCPVHILQGMRDPDVPYTHALKLMEHMPADDVVMTLIRDGDHRLSREEDIAKLKQAIDAMLTKA",
+  "sequence_length": 280,
+  "sequence_md5": "969493e4178be25a6303e140d4d79805",
+  "verified": true,
+  "organism": {
+   "id": 405,
+   "scientific_name": "Sinorhizobium meliloti",
+   "domain": "Bacteria",
+   "kingdom": "Pseudomonadati",
+   "phylum": "Pseudomonadota",
+   "ncbi_taxonomy_id": 382,
+   "origin_type": null,
+   "origin_label": null
+  },
+  "strain_identifier": {
+   "id": 92,
+   "source": "STRAIN_LABEL",
+   "value": "1021",
+   "source_identifier_raw": "1021",
+   "ncbi_taxonomy_id": 266834
+  },
+  "substrates": [
+   {
+    "id": 1,
+    "name": "Polyethylene terephthalate",
+    "base": "fossil fuel",
+    "abbreviation": "PET",
+    "oligomer_only": false
+   },
+   {
+    "id": 5,
+    "name": "Polylactic acid",
+    "base": "renewable resources",
+    "abbreviation": "PLA",
+    "oligomer_only": false
+   }
+  ],
+  "uniprot_accession": "Q92KS5",
+  "alphafold_url": "https://alphafold.ebi.ac.uk/entry/Q92KS5",
+  "accessions": [
+   {
+    "id": 11806,
+    "database": "UniProtKB",
+    "accession": "Q92KS5",
+    "external_url": null
+   },
+   {
+    "id": 11807,
+    "database": "RefSeq_Protein",
+    "accession": "WP_010968473.1",
+    "external_url": null
+   },
+   {
+    "id": 11808,
+    "database": "EMBL-GenBank-DDBJ_CDS",
+    "accession": "CAC41718",
+    "external_url": "https://www.ncbi.nlm.nih.gov/protein/CAC41718"
+   },
+   {
+    "id": 11809,
+    "database": "PDB",
+    "accession": "8TRF",
+    "external_url": null
+   },
+   {
+    "id": 11810,
+    "database": "UniParc",
+    "accession": "UPI00000CBB75",
+    "external_url": null
+   },
+   {
+    "id": 11811,
+    "database": "UniRef50",
+    "accession": "UniRef50_A0AA36IP91",
+    "external_url": null
+   },
+   {
+    "id": 11812,
+    "database": "UniRef90",
+    "accession": "UniRef90_Q92KS5",
+    "external_url": null
+   },
+   {
+    "id": 11813,
+    "database": "UniRef100",
+    "accession": "UniRef100_Q92KS5",
+    "external_url": null
+   }
+  ],
+  "literature": [
+   {
+    "id": 259,
+    "doi": "10.1111/febs.70734",
+    "author": "Lemak, Sofia; Khusnutdinova, Anna N.; Stogios, Peter J.; Evdokimova, Elena; Savchenko, Alexei; Golyshin, Peter N.; Edwards, Elizabeth A.; Yakunin, Alexander F.",
+    "title": "Crystal structure and biochemical analysis of the polyester\u2010degrading carboxylesterase SM0281 from the symbiotic legume\u2010associated rhizobacterium Sinorhizobium (Ensifer) meliloti",
+    "year": 2026
+   }
+  ],
+  "bacdive_url": null
+ },
+ {
+  "id": 537,
+  "name": "NmCut",
+  "amino_acid_sequence": "MAKHSQFPQWQVAQQELVINILSATISKRWTIRRVIRIGFILWALIAMLWLANSVRTQGVDKSTLQSNSLISVQNNATSLAFLPSSPNSHAGLIFICGSGVAAEAYAPLLRPIAEDGTPVFIVKLPYRFAPRDTDKNAAIGRVDKVMVSHPEVKYWVVAGHSLGGALTAKLAMETPELLSAIILIATTHPKDYDLSRLDIPVIKIYASNDGIAPLERVLANKDRLPSHTRWLELKGGNHSQFGRYGHQLLDGTATISREEQEAFTRSAIRRVLADIKKG",
+  "sequence_length": 279,
+  "sequence_md5": "f8f48f4bbe9c4db0e69098bd0c02f69d",
+  "verified": true,
+  "organism": {
+   "id": 406,
+   "scientific_name": "Neptunicella plasticusilytica",
+   "domain": "Bacteria",
+   "kingdom": "Pseudomonadati",
+   "phylum": "Pseudomonadota",
+   "ncbi_taxonomy_id": 3117012,
+   "origin_type": null,
+   "origin_label": null
+  },
+  "strain_identifier": {
+   "id": 93,
+   "source": "MCCC",
+   "value": "1K08369",
+   "source_identifier_raw": "MCCC 1K08369",
+   "ncbi_taxonomy_id": null
+  },
+  "substrates": [
+   {
+    "id": 1,
+    "name": "Polyethylene terephthalate",
+    "base": "fossil fuel",
+    "abbreviation": "PET",
+    "oligomer_only": false
+   }
+  ],
+  "uniprot_accession": null,
+  "alphafold_url": null,
+  "accessions": [],
+  "literature": [
+   {
+    "id": 260,
+    "doi": "10.1128/aem.01136-25",
+    "author": "Zeng, Qi; Jian, Lili; Shi, Songbiao; Guo, Qiaoqiao; Quadri, Syed Raziuddin; Long, Lijuan; Tian, Xinpeng",
+    "title": "Identified Neptunicella plasticusilytica sp. nov. and its novel PET-degrading enzyme derived from mangrove plastic debris",
+    "year": 2025
+   }
+  ],
+  "bacdive_url": null
+ },
+ {
+  "id": 538,
+  "name": "R75estA",
+  "amino_acid_sequence": "MLDIKLSGIAAALGLAICGSALAAPLPDTPGAPFPAVSNFERSGPYATTSRSEGPNCRVYRPSSLGQNGVRHPVILWGNGTGTGPTAYSGLLSHWASHGFVVAAAETSNAGTGRDMLACLDYLVQESNRTYGTYVGVLNTGRVGTSGHSQGGGGSIMAGQDDRVSVTAPIQPYTIGLGHDPSSQRNQKGPMFLMSGGGDTIAFPYLNAQPVYTRTNVPVFWGERRYVSHFEPVGDGGAYRGPSTAWFRYHLMEDETARSTFYGRFCGLCTSVLWTEQRKGIE",
+  "sequence_length": 282,
+  "sequence_md5": "5bdb86ecd2b97c10fc137f99cb9d302d",
+  "verified": true,
+  "organism": {
+   "id": 407,
+   "scientific_name": "Stutzerimonas sp. R75",
+   "domain": "Bacteria",
+   "kingdom": "Pseudomonadati",
+   "phylum": "Pseudomonadota",
+   "ncbi_taxonomy_id": 3439498,
+   "origin_type": null,
+   "origin_label": null
+  },
+  "strain_identifier": {
+   "id": 94,
+   "source": "STRAIN_LABEL",
+   "value": "R75",
+   "source_identifier_raw": "R75",
+   "ncbi_taxonomy_id": null
+  },
+  "substrates": [
+   {
+    "id": 1,
+    "name": "Polyethylene terephthalate",
+    "base": "fossil fuel",
+    "abbreviation": "PET",
+    "oligomer_only": false
+   }
+  ],
+  "uniprot_accession": null,
+  "alphafold_url": null,
+  "accessions": [
+   {
+    "id": 11814,
+    "database": "EMBL-GenBank-DDBJ_CDS",
+    "accession": "MGR6587169",
+    "external_url": "https://www.ncbi.nlm.nih.gov/protein/MGR6587169"
+   }
+  ],
+  "literature": [
+   {
+    "id": 261,
+    "doi": "10.3389/fmicb.2026.1870101",
+    "author": "Ruginescu, Robert; Necula-Petrareanu, Georgiana; Tudorache, Madalina; Matei, Madalina; Muresan, Mihaela; Purcarea, Cristina",
+    "title": "Identification and characterization of R75estA, a halophilic polyester-degrading enzyme from a marine bacterium",
+    "year": 2026
+   }
+  ],
+  "bacdive_url": null
+ }
+]

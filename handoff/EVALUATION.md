@@ -23,8 +23,8 @@ the task.
 
 ## 2. Bootstrap over `component`, never over proteins
 
-256 of the 388 positives (66%) are the single component `BPS0190`. Resampling proteins counts
-that one enzyme family 256 times, producing intervals that are wrong rather than narrow.
+259 of the 404 positives (64%) are the single component `BPS0190`. Resampling proteins counts
+that one enzyme family 259 times, producing intervals that are wrong rather than narrow.
 
 Resample **components** with replacement, keeping every member of each drawn component:
 
