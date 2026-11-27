@@ -1,0 +1,6 @@
+group,Bacteria,Eukaryota,other,unknown,all
+positive,310,16,4,74,404
+ab_hydrolase_hard_negative,108,342,0,0,450
+ec311_wrong_fold,33,3,0,0,36
+tRNA_processing_no_ser_nucleophile,99,0,0,0,99
+naive_control,230,7,0,0,237

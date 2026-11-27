@@ -1,0 +1,12 @@
+phylum,train,val,test,all
+Actinomycetota,198,6,4,208
+(unknown),46,14,14,74
+Pseudomonadota,41,16,7,64
+Bacillota,15,6,9,30
+Ascomycota,10,0,0,10
+Basidiomycota,4,0,2,6
+Bacteroidota,0,2,2,4
+Candidatus Bathyarchaeota,0,0,3,3
+Chloroflexota,2,0,1,3
+Deinococcota,1,0,0,1
+Thermoproteota,0,0,1,1

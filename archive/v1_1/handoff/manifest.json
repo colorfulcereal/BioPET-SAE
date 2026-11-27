@@ -1,0 +1,106 @@
+{
+  "name": "polyester-degrader-benchmark",
+  "version": "1.0",
+  "built": "2026-10-11",
+  "task": "binary classification: does this protein degrade a polyester?",
+  "counts": {
+    "rows_total": 826,
+    "modelled": 826,
+    "removed_pha_not_shipped": 36,
+    "positives": 404,
+    "negatives": 422,
+    "by_split": {
+      "train": 594,
+      "val": 119,
+      "test": 113
+    },
+    "negatives_by_group": {
+      "ab_hydrolase_hard_negative": 50,
+      "ec311_wrong_fold": 36,
+      "trna_processing": 99,
+      "naive_control": 237
+    },
+    "hard_negatives_by_split": {
+      "train": 39,
+      "val": 1,
+      "test": 10
+    }
+  },
+  "constraints": {
+    "max_cross_split_identity": {
+      "train_val": 0.3967,
+      "train_test": 0.38,
+      "val_test": 0.3983,
+      "note": "v1 values; the 16 v1.1 additions were checked separately, max 0.3967 (biopet_sae_dataset_v1_1_report.json)"
+    },
+    "hard_negatives_total": 50,
+    "hard_negatives_in_val": 1,
+    "largest_positive_component": {
+      "id": "BPS0190",
+      "n": 259,
+      "fraction": 0.64
+    },
+    "positive_components": 77
+  },
+  "baselines_to_reproduce": {
+    "probe": {
+      "model": "facebook/esm2_t33_650M_UR50D",
+      "representation": "max-pool over residues, hidden_states[33]",
+      "classifier": "sklearn SGDClassifier(loss='log_loss', penalty='l2', alpha=1/(1e-2*n_train), learning_rate='constant', eta0=1e-4, max_iter=5000, tol=None, random_state=0)",
+      "scaler": "StandardScaler fit on train only",
+      "threshold": 0.1455,
+      "threshold_selected_on": "val log-loss",
+      "reproduce_on": "rows with batch == v1 only (test n=104). v1.1 adds 9 positives to test; no result exists for them yet.",
+      "test_au_roc": 0.9681,
+      "test_au_prc": 0.9526,
+      "val_au_roc": 0.9976,
+      "val_au_prc": 0.9954,
+      "test_by_negative_group": {
+        "naive_control": {
+          "n": 36,
+          "au_roc": 1.0
+        },
+        "trna_processing": {
+          "n": 3,
+          "au_roc": 1.0
+        },
+        "ec311_wrong_fold": {
+          "n": 13,
+          "au_roc": 0.989,
+          "au_prc": 0.9967
+        },
+        "ab_hydrolase_hard_negative": {
+          "n": 10,
+          "au_roc": 0.8167,
+          "ci95_component_bootstrap": [
+            0.606,
+            0.963
+          ],
+          "ci95_protein_bootstrap_not_valid": [
+            0.676,
+            0.926
+          ]
+        }
+      }
+    },
+    "blastp": {
+      "test_au_roc": 0.904,
+      "test_au_prc": 0.7552
+    },
+    "aa_composition": {
+      "test_au_roc": 0.702,
+      "random_cv_au_roc": 0.8926,
+      "note": "the 0.19 gap is what a non-homology-aware split buys"
+    }
+  },
+  "files": {
+    "dataset.tsv": {
+      "sha256": "1b70f8216421e60691d294ba3f18e879f6ffbcbef3061cd2db47360e672e4492",
+      "bytes": 387313
+    },
+    "dataset.fasta": {
+      "sha256": "f59107784bc5c2c6ac0c4d1b007cb1dffb493e37f0f2d26c57a6bb165064ed7c",
+      "bytes": 329464
+    }
+  }
+}

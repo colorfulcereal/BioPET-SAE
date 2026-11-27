@@ -1,0 +1,51 @@
+v1.2 probe, phase one. C=1e-02,eta=1e-04; 5 runs (seeds [42, 43, 44, 45, 46]); chosen threshold (best mean val F1) = 0.15; BLASTp e* = 3.16e-06
+
+Threshold table, mean ± SE over 5 runs (thresholds 0.1 to 0.9; full 0.001-0.999 grid in the CSVs)
+
+VAL
+  thr |       precision    recall (TPR)              F1             FPR
+  0.1 |   0.687 ± 0.002   0.909 ± 0.000   0.783 ± 0.002   0.094 ± 0.001
+  0.2 |   0.833 ± 0.000   0.682 ± 0.000   0.750 ± 0.000   0.031 ± 0.000
+  0.3 |   0.844 ± 0.000   0.614 ± 0.000   0.711 ± 0.000   0.026 ± 0.000
+  0.4 |   0.929 ± 0.000   0.591 ± 0.000   0.722 ± 0.000   0.010 ± 0.000
+  0.5 |   1.000 ± 0.000   0.545 ± 0.000   0.706 ± 0.000   0.000 ± 0.000
+  0.6 |   1.000 ± 0.000   0.436 ± 0.005   0.608 ± 0.004   0.000 ± 0.000
+  0.7 |   1.000 ± 0.000   0.386 ± 0.000   0.557 ± 0.000   0.000 ± 0.000
+  0.8 |   1.000 ± 0.000   0.341 ± 0.000   0.508 ± 0.000   0.000 ± 0.000
+  0.9 |   1.000 ± 0.000   0.250 ± 0.000   0.400 ± 0.000   0.000 ± 0.000
+
+TEST
+  thr |       precision    recall (TPR)              F1             FPR
+  0.1 |   0.583 ± 0.000   0.814 ± 0.000   0.680 ± 0.000   0.159 ± 0.000
+  0.2 |   0.867 ± 0.000   0.605 ± 0.000   0.712 ± 0.000   0.025 ± 0.000
+  0.3 |   0.957 ± 0.000   0.512 ± 0.000   0.667 ± 0.000   0.006 ± 0.000
+  0.4 |   0.947 ± 0.000   0.419 ± 0.000   0.581 ± 0.000   0.006 ± 0.000
+  0.5 |   1.000 ± 0.000   0.326 ± 0.000   0.491 ± 0.000   0.000 ± 0.000
+  0.6 |   1.000 ± 0.000   0.302 ± 0.000   0.464 ± 0.000   0.000 ± 0.000
+  0.7 |   1.000 ± 0.000   0.279 ± 0.000   0.436 ± 0.000   0.000 ± 0.000
+  0.8 |   1.000 ± 0.000   0.233 ± 0.000   0.377 ± 0.000   0.000 ± 0.000
+  0.9 |   1.000 ± 0.000   0.023 ± 0.000   0.045 ± 0.000   0.000 ± 0.000
+
+CHOSEN threshold 0.15: 
+  val   precision 0.816 ± 0.001  recall 0.809 ± 0.006  F1 0.813 ± 0.003  FPR 0.041 ± 0.000  TP 35.6 FP 8.0 FN 8.4 TN 185.0
+  test  precision 0.727 ± 0.000  recall 0.744 ± 0.000  F1 0.736 ± 0.000  FPR 0.076 ± 0.000  TP 32.0 FP 12.0 FN 11.0 TN 145.0
+
+Precision targets (threshold = lowest grid value reaching the target on mean val precision):
+  >= 95%: thr 0.440 | val precision 0.963 ± 0.000 recall 0.591 ± 0.000 | TEST precision 1.000 ± 0.000 recall 0.349 ± 0.000
+  >= 90%: thr 0.400 | val precision 0.929 ± 0.000 recall 0.591 ± 0.000 | TEST precision 0.947 ± 0.000 recall 0.419 ± 0.000
+  >= 85%: thr 0.320 | val precision 0.871 ± 0.000 recall 0.614 ± 0.000 | TEST precision 0.955 ± 0.000 recall 0.488 ± 0.000
+  >= 80%: thr 0.150 | val precision 0.816 ± 0.001 recall 0.809 ± 0.006 | TEST precision 0.727 ± 0.000 recall 0.744 ± 0.000
+
+AU-ROC / AU-PRC, VAL (probe: mean ± SE over 5 runs; floor = prevalence)
+cell                                              n+   n- floor |          AU-ROC          AU-PRC | BLAST ROC    PRC | at threshold: P / R / F1
+ALL negatives (whole split)                       44  193  0.19 | 0.9719 ± 0.0001 0.8993 ± 0.0003 |    0.8632  0.571 | 0.816 / 0.809 / 0.813
+hard negatives only                               44  112  0.28 | 0.9608 ± 0.0001 0.9127 ± 0.0002 |    0.7992  0.578 | 0.836 / 0.809 / 0.822
+bacterial hard negatives                          44   20  0.69 | 0.8509 ± 0.0006 0.9339 ± 0.0002 |    0.7648  0.858 | 0.856 / 0.809 / 0.832
+matched: bacterial pos. vs bacterial hard neg.    30   20  0.60 | 0.8690 ± 0.0004 0.9261 ± 0.0002 |    0.8300  0.845 | 0.806 / 0.833 / 0.820
+
+AU-ROC / AU-PRC, TEST (probe: mean ± SE over 5 runs; floor = prevalence)
+cell                                              n+   n- floor |          AU-ROC          AU-PRC | BLAST ROC    PRC | at threshold: P / R / F1
+ALL negatives (whole split)                       43  157  0.21 | 0.9319 ± 0.0000 0.8439 ± 0.0001 |    0.7912  0.545 | 0.727 / 0.744 / 0.736
+hard negatives only                               43  113  0.28 | 0.9214 ± 0.0000 0.8593 ± 0.0001 |    0.7266  0.552 | 0.762 / 0.744 / 0.753
+bacterial hard negatives                          43   22  0.66 | 0.7949 ± 0.0000 0.9031 ± 0.0000 |    0.6570  0.801 | 0.821 / 0.744 / 0.780
+matched: bacterial pos. vs bacterial hard neg.    23   22  0.51 | 0.7569 ± 0.0000 0.8264 ± 0.0000 |    0.6838  0.727 | 0.696 / 0.696 / 0.696

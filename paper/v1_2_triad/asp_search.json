@@ -1,0 +1,46 @@
+{
+  "combination": [
+    {
+      "latent": 4583,
+      "offset": 6
+    },
+    {
+      "latent": 2085,
+      "offset": -4
+    },
+    {
+      "latent": 6451,
+      "offset": -3
+    },
+    {
+      "latent": 8146,
+      "offset": 0
+    }
+  ],
+  "singles": [
+    {
+      "latent": 4583,
+      "offset": 6
+    },
+    {
+      "latent": 157,
+      "offset": 0
+    },
+    {
+      "latent": 6644,
+      "offset": 0
+    },
+    {
+      "latent": 411,
+      "offset": 8
+    },
+    {
+      "latent": 848,
+      "offset": 10
+    },
+    {
+      "latent": 2661,
+      "offset": 2
+    }
+  ]
+}

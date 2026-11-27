@@ -1,0 +1,824 @@
+{
+ "P22088": {
+  "reason": ">=90% identical to a positive",
+  "identity": 0.938,
+  "to": "BPS0046"
+ },
+ "P37957": {
+  "reason": ">=90% identical to a positive",
+  "identity": 0.939,
+  "to": "BPS0552"
+ },
+ "P25275": {
+  "reason": ">=90% identical to a positive",
+  "identity": 0.929,
+  "to": "BPS0046"
+ },
+ "P82597": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.512,
+  "to": "BPS0368"
+ },
+ "Q6GDD3": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.632,
+  "to": "BPS0555"
+ },
+ "Q8NYC2": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.425,
+  "to": "BPS0555"
+ },
+ "Q5U780": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.483,
+  "to": "BPS0065"
+ },
+ "P15493": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.471,
+  "to": "BPS0020"
+ },
+ "Q6G604": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.638,
+  "to": "BPS0555"
+ },
+ "P04635": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.449,
+  "to": "BPS0555"
+ },
+ "B5BLW5": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.418,
+  "to": "BPS0028"
+ },
+ "P65288": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.643,
+  "to": "BPS0555"
+ },
+ "P0DUB8": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.817,
+  "to": "BPS0046"
+ },
+ "Q5HKP6": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.674,
+  "to": "BPS0555"
+ },
+ "Q7A7P2": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.425,
+  "to": "BPS0555"
+ },
+ "P0C0R3": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.66,
+  "to": "BPS0555"
+ },
+ "P08658": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.485,
+  "to": "BPS0033"
+ },
+ "P10335": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.426,
+  "to": "BPS0555"
+ },
+ "Q6GJZ6": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.421,
+  "to": "BPS0555"
+ },
+ "P65289": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.643,
+  "to": "BPS0555"
+ },
+ "Q06174": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.646,
+  "to": "BPS0373"
+ },
+ "Q6GCF1": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.425,
+  "to": "BPS0555"
+ },
+ "A0A0H2XJL0": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.553,
+  "to": "BPS0373"
+ },
+ "P26877": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.439,
+  "to": "BPS0033"
+ },
+ "Q5HCM7": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.638,
+  "to": "BPS0555"
+ },
+ "Q53547": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.817,
+  "to": "BPS0388"
+ },
+ "P0C0R4": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.661,
+  "to": "BPS0555"
+ },
+ "Q8NUI5": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.638,
+  "to": "BPS0555"
+ },
+ "Q9L2J6": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.863,
+  "to": "BPS0240"
+ },
+ "Q5HJ48": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.426,
+  "to": "BPS0555"
+ },
+ "Q99WQ6": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.425,
+  "to": "BPS0555"
+ },
+ "Q51758": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.817,
+  "to": "BPS0388"
+ },
+ "P9WK87": {
+  "reason": "40-90% identical to a positive",
+  "identity": 0.439,
+  "to": "BPS0031"
+ },
+ "P9WHR5": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 1.0,
+  "to": "P9WHR4"
+ },
+ "B5YTW3": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.973,
+  "to": "P13001"
+ },
+ "Q0TC55": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.977,
+  "to": "P13001"
+ },
+ "B1LHL2": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.984,
+  "to": "P13001"
+ },
+ "A1AGT6": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.984,
+  "to": "P13001"
+ },
+ "A2QSY5": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.932,
+  "to": "Q9P979"
+ },
+ "B7LSB5": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.977,
+  "to": "P13001"
+ },
+ "Q1R5M2": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.984,
+  "to": "P13001"
+ },
+ "P9WHX5": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 1.0,
+  "to": "P9WHX4"
+ },
+ "Q83PW0": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.996,
+  "to": "P13001"
+ },
+ "O42815": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.957,
+  "to": "Q9P979"
+ },
+ "B7UKB7": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.973,
+  "to": "P13001"
+ },
+ "A7ZSU1": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.992,
+  "to": "P13001"
+ },
+ "B7L4T9": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.992,
+  "to": "P13001"
+ },
+ "Q8FCT4": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.98,
+  "to": "P13001"
+ },
+ "B1X758": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 1.0,
+  "to": "P13001"
+ },
+ "P9WK85": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 1.0,
+  "to": "P9WK84"
+ },
+ "B7N145": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.977,
+  "to": "P13001"
+ },
+ "Q3YWL3": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.977,
+  "to": "P13001"
+ },
+ "A8A5M0": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.996,
+  "to": "P13001"
+ },
+ "O42807": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.925,
+  "to": "Q9P979"
+ },
+ "Q8X716": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.973,
+  "to": "P13001"
+ },
+ "P9WIQ9": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 1.0,
+  "to": "P0A5F6"
+ },
+ "P9WM38": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 1.0,
+  "to": "P9WM39"
+ },
+ "B6I2X6": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.996,
+  "to": "P13001"
+ },
+ "B7NE17": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.988,
+  "to": "P13001"
+ },
+ "B1IP53": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.996,
+  "to": "P13001"
+ },
+ "P9WIQ8": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 1.0,
+  "to": "P0A5F6"
+ },
+ "Q32AM6": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.977,
+  "to": "P13001"
+ },
+ "B7NMH7": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.98,
+  "to": "P13001"
+ },
+ "B7MDN8": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.984,
+  "to": "P13001"
+ },
+ "A0A0H3KFB7": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 1.0,
+  "to": "Q2FUY3"
+ },
+ "B7M1W8": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.996,
+  "to": "P13001"
+ },
+ "Q31VM0": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.973,
+  "to": "P13001"
+ },
+ "B2U3M2": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 0.977,
+  "to": "P13001"
+ },
+ "C4ZUR7": {
+  "reason": ">=90% identical to an existing dataset sequence",
+  "identity": 1.0,
+  "to": "P13001"
+ },
+ "B1JHZ5": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "A9R4D0": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q74Y45": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q664J8": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B2K5V7": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8WU67": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q91ZH7": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P61870": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8DDU4": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "A0A8R9YZM7": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B7L7A1": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B7MQJ1": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q0TKG5": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q325C0": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q83M39": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B7N929": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B1LJN4": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8XD38": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P23872": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "A7ZXD4": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B7UKF6": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B5Z3Y7": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B1XFR3": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "C4ZUT0": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q3Z4S3": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B7MDZ8": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B6I0B9": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8FK82": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q1RF59": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B7NIF4": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q0T7A9": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "A7ZIN6": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B2U4S9": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B1IZB8": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B7M3W8": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8N2K0": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q4R766": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q6AYT7": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q99LR1": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q1JPD2": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q4R8P0": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q9Z1Q2": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q5R6S0": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q6MG55": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8PDF3": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q4UZP1": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q5NAI4": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q5F641": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "E6MWF8": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q9JSN0": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q9K197": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P49060": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P06858": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q06000": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P49923": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P11152": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q29524": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P11151": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P55031": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8RZ40": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q4W8Z9": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B0YDW9": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B5BD42": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B4SWY4": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q5PFJ2": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B5QU79": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B5EXN3": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8Z8T1": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q57S73": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B5FLK0": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B4TMG8": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8ZRA1": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P61872": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q6CZL9": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B5BHG7": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B5FJT1": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B5R369": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "C0Q0I5": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8ZLI9": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8Z221": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B4SVL3": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q5PLY8": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q57IW5": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B5R7K5": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B5F8M6": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B4TKT6": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P54318": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q9QXM0": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q5EA42": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q4R2Y9": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q5XI64": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q9BV23": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8R2Y0": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8R431": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8VI78": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "I3PLR2": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8S1D9": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q9NUJ1": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q6Q251": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q6Q250": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q6Q252": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q9MV14": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B2I9H6": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q87DT3": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q9PDM3": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P18424": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B5XTS4": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q5E8N3": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8VDG7": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q5ZVG6": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q5WW99": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q5X590": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q2UNW5": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q0JKT4": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P51528": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q3ZU95": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q2UMX6": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P9WEM7": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8BLF1": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q5RBQ5": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8NCC3": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q6F357": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q64285": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q6P8U6": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q4WMR0": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B0Y7U1": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8PQE0": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q5H6D1": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8WZI8": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q9Y570": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8BVQ5": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "F1DBB4": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "B4SM83": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "A8QDF0": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q9QZC8": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P0DO89": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "A0A8R9YVA6": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P0CH47": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8E8N6": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P0DMB4": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P0DPT0": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P0DMB5": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q7SY73": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q9H6V9": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q9WVG5": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8CIV3": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q8VEB4": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q641F6": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q6PA23": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q6PIU2": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q5R8Y5": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "Q80YU0": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P0CO63": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "A0A8R9Z3C6": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "P53761": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "A2ZW16": {
+  "reason": "near-duplicate of another candidate (>= 90%)"
+ },
+ "W7MTJ1": {
+  "reason": "not drawn in the spread sample (cap)"
+ },
+ "Q9P451": {
+  "reason": "not drawn in the spread sample (cap)"
+ },
+ "W6QL41": {
+  "reason": "not drawn in the spread sample (cap)"
+ }
+}

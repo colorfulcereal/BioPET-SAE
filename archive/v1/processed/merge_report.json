@@ -1,0 +1,38 @@
+{
+  "pazy": {
+    "rows": 462,
+    "no_sequence": 20,
+    "usable_entries": 442
+  },
+  "plasticdb": {
+    "rows": 2535,
+    "no_sequence": 2008,
+    "usable_unique_sequences": 313
+  },
+  "dedup": {
+    "exact_dupes": 106,
+    "containment_dupes": 107
+  },
+  "merged_total": 542,
+  "by_primary_group": {
+    "ALIPHATIC_POLYESTER": 57,
+    "AROMATIC_COPOLYESTER": 20,
+    "PET_AROMATIC_POLYESTER": 320,
+    "PHA_FAMILY": 36,
+    "POLYAMIDE": 65,
+    "POLYCARBONATE": 4,
+    "POLYETHER": 2,
+    "POLYOLEFIN_VINYL": 13,
+    "POLYURETHANE": 15,
+    "RUBBER": 8,
+    "UNKNOWN": 2
+  },
+  "by_class_label": {
+    "1_pet": 320,
+    "2_other_polyester": 68,
+    "excluded": 118,
+    "heldout_pha": 36
+  },
+  "pet_positives": 320,
+  "qc_flagged": 1
+}

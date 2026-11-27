@@ -1,0 +1,1220 @@
+{
+  "by_latent": {
+    "3688": {
+      "positive": {
+        "n_firing": 345,
+        "n_group": 404,
+        "offset_from_ser_median": 91.0,
+        "offset_iqr": [
+          24.0,
+          93.0
+        ],
+        "offset_top": [
+          [
+            91,
+            64
+          ],
+          [
+            90,
+            51
+          ],
+          [
+            93,
+            45
+          ]
+        ],
+        "consensus": "...............",
+        "centre_residue": [
+          [
+            "T",
+            56
+          ],
+          [
+            "Y",
+            46
+          ],
+          [
+            "L",
+            39
+          ]
+        ],
+        "window_conservation": [
+          [
+            "S",
+            0.13
+          ],
+          [
+            "N",
+            0.39
+          ],
+          [
+            "P",
+            0.27
+          ],
+          [
+            "V",
+            0.16
+          ],
+          [
+            "L",
+            0.3
+          ],
+          [
+            "A",
+            0.22
+          ],
+          [
+            "R",
+            0.32
+          ],
+          [
+            "T",
+            0.16
+          ],
+          [
+            "G",
+            0.26
+          ],
+          [
+            "V",
+            0.21
+          ],
+          [
+            "P",
+            0.2
+          ],
+          [
+            "W",
+            0.45
+          ],
+          [
+            "L",
+            0.29
+          ],
+          [
+            "K",
+            0.5
+          ],
+          [
+            "I",
+            0.3
+          ]
+        ]
+      },
+      "hard negative": {
+        "n_firing": 69,
+        "n_group": 450,
+        "offset_from_ser_median": 10.0,
+        "offset_iqr": [
+          -5.0,
+          107.0
+        ],
+        "offset_top": [
+          [
+            -5,
+            7
+          ],
+          [
+            10,
+            6
+          ],
+          [
+            -111,
+            5
+          ]
+        ],
+        "consensus": "...............",
+        "centre_residue": [
+          [
+            "T",
+            18
+          ],
+          [
+            "L",
+            9
+          ],
+          [
+            "M",
+            8
+          ]
+        ],
+        "window_conservation": [
+          [
+            "G",
+            0.16
+          ],
+          [
+            "K",
+            0.12
+          ],
+          [
+            "T",
+            0.16
+          ],
+          [
+            "L",
+            0.13
+          ],
+          [
+            "A",
+            0.14
+          ],
+          [
+            "A",
+            0.14
+          ],
+          [
+            "V",
+            0.45
+          ],
+          [
+            "T",
+            0.26
+          ],
+          [
+            "T",
+            0.17
+          ],
+          [
+            "A",
+            0.16
+          ],
+          [
+            "L",
+            0.22
+          ],
+          [
+            "Y",
+            0.26
+          ],
+          [
+            "P",
+            0.17
+          ],
+          [
+            "G",
+            0.22
+          ],
+          [
+            "N",
+            0.23
+          ]
+        ]
+      }
+    },
+    "7820": {
+      "positive": {
+        "n_firing": 333,
+        "n_group": 404,
+        "offset_from_ser_median": 52.0,
+        "offset_iqr": [
+          52.0,
+          53.0
+        ],
+        "offset_top": [
+          [
+            52,
+            181
+          ],
+          [
+            -24,
+            18
+          ],
+          [
+            59,
+            18
+          ]
+        ],
+        "consensus": ".D.............",
+        "centre_residue": [
+          [
+            "S",
+            104
+          ],
+          [
+            "A",
+            72
+          ],
+          [
+            "N",
+            54
+          ]
+        ],
+        "window_conservation": [
+          [
+            "A",
+            0.26
+          ],
+          [
+            "D",
+            0.62
+          ],
+          [
+            "T",
+            0.41
+          ],
+          [
+            "V",
+            0.3
+          ],
+          [
+            "A",
+            0.38
+          ],
+          [
+            "P",
+            0.29
+          ],
+          [
+            "V",
+            0.37
+          ],
+          [
+            "S",
+            0.31
+          ],
+          [
+            "S",
+            0.26
+          ],
+          [
+            "H",
+            0.33
+          ],
+          [
+            "A",
+            0.22
+          ],
+          [
+            "G",
+            0.21
+          ],
+          [
+            "P",
+            0.34
+          ],
+          [
+            "F",
+            0.35
+          ],
+          [
+            "Y",
+            0.36
+          ]
+        ]
+      },
+      "hard negative": {
+        "n_firing": 67,
+        "n_group": 450,
+        "offset_from_ser_median": -9.0,
+        "offset_iqr": [
+          -93.0,
+          137.0
+        ],
+        "offset_top": [
+          [
+            -13,
+            5
+          ],
+          [
+            137,
+            5
+          ],
+          [
+            -155,
+            4
+          ]
+        ],
+        "consensus": "...............",
+        "centre_residue": [
+          [
+            "A",
+            15
+          ],
+          [
+            "N",
+            10
+          ],
+          [
+            "S",
+            8
+          ]
+        ],
+        "window_conservation": [
+          [
+            "A",
+            0.18
+          ],
+          [
+            "T",
+            0.13
+          ],
+          [
+            "V",
+            0.1
+          ],
+          [
+            "S",
+            0.12
+          ],
+          [
+            "G",
+            0.13
+          ],
+          [
+            "S",
+            0.16
+          ],
+          [
+            "P",
+            0.12
+          ],
+          [
+            "A",
+            0.22
+          ],
+          [
+            "K",
+            0.13
+          ],
+          [
+            "I",
+            0.18
+          ],
+          [
+            "K",
+            0.15
+          ],
+          [
+            "S",
+            0.13
+          ],
+          [
+            "A",
+            0.15
+          ],
+          [
+            "N",
+            0.16
+          ],
+          [
+            "K",
+            0.12
+          ]
+        ]
+      }
+    },
+    "2919": {
+      "positive": {
+        "n_firing": 323,
+        "n_group": 404,
+        "offset_from_ser_median": -38.0,
+        "offset_iqr": [
+          -67.0,
+          28.0
+        ],
+        "offset_top": [
+          [
+            28,
+            75
+          ],
+          [
+            -68,
+            55
+          ],
+          [
+            -38,
+            31
+          ]
+        ],
+        "consensus": "...............",
+        "centre_residue": [
+          [
+            "T",
+            109
+          ],
+          [
+            "S",
+            74
+          ],
+          [
+            "L",
+            35
+          ]
+        ],
+        "window_conservation": [
+          [
+            "I",
+            0.18
+          ],
+          [
+            "I",
+            0.29
+          ],
+          [
+            "A",
+            0.31
+          ],
+          [
+            "P",
+            0.32
+          ],
+          [
+            "P",
+            0.19
+          ],
+          [
+            "G",
+            0.32
+          ],
+          [
+            "T",
+            0.25
+          ],
+          [
+            "T",
+            0.34
+          ],
+          [
+            "A",
+            0.22
+          ],
+          [
+            "N",
+            0.18
+          ],
+          [
+            "P",
+            0.25
+          ],
+          [
+            "S",
+            0.28
+          ],
+          [
+            "S",
+            0.2
+          ],
+          [
+            "R",
+            0.21
+          ],
+          [
+            "A",
+            0.19
+          ]
+        ]
+      },
+      "hard negative": {
+        "n_firing": 26,
+        "n_group": 450,
+        "offset_from_ser_median": -42.5,
+        "offset_iqr": [
+          -69.0,
+          107.5
+        ],
+        "offset_top": [
+          [
+            108,
+            4
+          ],
+          [
+            -47,
+            4
+          ],
+          [
+            -124,
+            3
+          ]
+        ],
+        "consensus": ".....G.........",
+        "centre_residue": [
+          [
+            "G",
+            7
+          ],
+          [
+            "T",
+            6
+          ],
+          [
+            "Q",
+            4
+          ]
+        ],
+        "window_conservation": [
+          [
+            "N",
+            0.19
+          ],
+          [
+            "C",
+            0.15
+          ],
+          [
+            "N",
+            0.27
+          ],
+          [
+            "A",
+            0.19
+          ],
+          [
+            "Q",
+            0.19
+          ],
+          [
+            "G",
+            0.5
+          ],
+          [
+            "G",
+            0.23
+          ],
+          [
+            "G",
+            0.27
+          ],
+          [
+            "G",
+            0.42
+          ],
+          [
+            "V",
+            0.19
+          ],
+          [
+            "N",
+            0.19
+          ],
+          [
+            "F",
+            0.19
+          ],
+          [
+            "A",
+            0.27
+          ],
+          [
+            "H",
+            0.23
+          ],
+          [
+            "N",
+            0.19
+          ]
+        ]
+      }
+    },
+    "7018": {
+      "positive": {
+        "n_firing": 324,
+        "n_group": 404,
+        "offset_from_ser_median": -110.0,
+        "offset_iqr": [
+          -119.25,
+          -107.0
+        ],
+        "offset_top": [
+          [
+            -120,
+            49
+          ],
+          [
+            -108,
+            41
+          ],
+          [
+            -112,
+            30
+          ]
+        ],
+        "consensus": "...............",
+        "centre_residue": [
+          [
+            "P",
+            96
+          ],
+          [
+            "D",
+            72
+          ],
+          [
+            "T",
+            41
+          ]
+        ],
+        "window_conservation": [
+          [
+            "S",
+            0.27
+          ],
+          [
+            "P",
+            0.27
+          ],
+          [
+            "Y",
+            0.27
+          ],
+          [
+            "A",
+            0.32
+          ],
+          [
+            "R",
+            0.27
+          ],
+          [
+            "G",
+            0.28
+          ],
+          [
+            "G",
+            0.46
+          ],
+          [
+            "P",
+            0.3
+          ],
+          [
+            "F",
+            0.28
+          ],
+          [
+            "T",
+            0.29
+          ],
+          [
+            "T",
+            0.24
+          ],
+          [
+            "A",
+            0.36
+          ],
+          [
+            "S",
+            0.34
+          ],
+          [
+            "V",
+            0.29
+          ],
+          [
+            "T",
+            0.25
+          ]
+        ]
+      },
+      "hard negative": {
+        "n_firing": 33,
+        "n_group": 450,
+        "offset_from_ser_median": 53.0,
+        "offset_iqr": [
+          -133.0,
+          118.0
+        ],
+        "offset_top": [
+          [
+            -171,
+            5
+          ],
+          [
+            -48,
+            2
+          ],
+          [
+            98,
+            2
+          ]
+        ],
+        "consensus": "...............",
+        "centre_residue": [
+          [
+            "S",
+            10
+          ],
+          [
+            "E",
+            6
+          ],
+          [
+            "T",
+            5
+          ]
+        ],
+        "window_conservation": [
+          [
+            "A",
+            0.15
+          ],
+          [
+            "P",
+            0.18
+          ],
+          [
+            "S",
+            0.15
+          ],
+          [
+            "G",
+            0.21
+          ],
+          [
+            "G",
+            0.12
+          ],
+          [
+            "T",
+            0.15
+          ],
+          [
+            "P",
+            0.3
+          ],
+          [
+            "S",
+            0.3
+          ],
+          [
+            "G",
+            0.15
+          ],
+          [
+            "D",
+            0.24
+          ],
+          [
+            "D",
+            0.18
+          ],
+          [
+            "F",
+            0.21
+          ],
+          [
+            "Y",
+            0.24
+          ],
+          [
+            "T",
+            0.15
+          ],
+          [
+            "P",
+            0.18
+          ]
+        ]
+      }
+    },
+    "1817": {
+      "positive": {
+        "n_firing": 94,
+        "n_group": 404,
+        "offset_from_ser_median": 30.0,
+        "offset_iqr": [
+          30.0,
+          32.0
+        ],
+        "offset_top": [
+          [
+            30,
+            50
+          ],
+          [
+            35,
+            11
+          ],
+          [
+            29,
+            9
+          ]
+        ],
+        "consensus": "..............P",
+        "centre_residue": [
+          [
+            "N",
+            29
+          ],
+          [
+            "S",
+            22
+          ],
+          [
+            "T",
+            13
+          ]
+        ],
+        "window_conservation": [
+          [
+            "A",
+            0.37
+          ],
+          [
+            "P",
+            0.49
+          ],
+          [
+            "W",
+            0.45
+          ],
+          [
+            "H",
+            0.2
+          ],
+          [
+            "T",
+            0.23
+          ],
+          [
+            "N",
+            0.22
+          ],
+          [
+            "K",
+            0.24
+          ],
+          [
+            "N",
+            0.31
+          ],
+          [
+            "W",
+            0.3
+          ],
+          [
+            "S",
+            0.36
+          ],
+          [
+            "S",
+            0.22
+          ],
+          [
+            "I",
+            0.3
+          ],
+          [
+            "T",
+            0.26
+          ],
+          [
+            "V",
+            0.26
+          ],
+          [
+            "P",
+            0.51
+          ]
+        ]
+      },
+      "hard negative": {
+        "n_firing": 4,
+        "n_group": 450,
+        "offset_from_ser_median": -166.0,
+        "offset_iqr": [
+          -374.25,
+          34.0
+        ],
+        "offset_top": [
+          [
+            43,
+            1
+          ],
+          [
+            -408,
+            1
+          ],
+          [
+            31,
+            1
+          ]
+        ],
+        "consensus": "GG.......T..GG.",
+        "centre_residue": [
+          [
+            "N",
+            1
+          ],
+          [
+            "G",
+            1
+          ],
+          [
+            "V",
+            1
+          ]
+        ],
+        "window_conservation": [
+          [
+            "G",
+            0.75
+          ],
+          [
+            "G",
+            0.5
+          ],
+          [
+            "D",
+            0.25
+          ],
+          [
+            "P",
+            0.25
+          ],
+          [
+            "A",
+            0.25
+          ],
+          [
+            "M",
+            0.25
+          ],
+          [
+            "S",
+            0.25
+          ],
+          [
+            "N",
+            0.25
+          ],
+          [
+            "Q",
+            0.25
+          ],
+          [
+            "T",
+            0.5
+          ],
+          [
+            "C",
+            0.25
+          ],
+          [
+            "S",
+            0.25
+          ],
+          [
+            "G",
+            0.5
+          ],
+          [
+            "G",
+            0.5
+          ],
+          [
+            "Q",
+            0.25
+          ]
+        ]
+      }
+    },
+    "5325": {
+      "positive": {
+        "n_firing": 61,
+        "n_group": 404,
+        "offset_from_ser_median": -3.0,
+        "offset_iqr": [
+          -3.0,
+          -3.0
+        ],
+        "offset_top": [
+          [
+            -3,
+            60
+          ],
+          [
+            20,
+            1
+          ]
+        ],
+        "consensus": "D..RLAV.GHSMGGG",
+        "centre_residue": [
+          [
+            "A",
+            24
+          ],
+          [
+            "M",
+            17
+          ],
+          [
+            "I",
+            13
+          ]
+        ],
+        "window_conservation": [
+          [
+            "D",
+            0.98
+          ],
+          [
+            "P",
+            0.31
+          ],
+          [
+            "N",
+            0.39
+          ],
+          [
+            "R",
+            0.95
+          ],
+          [
+            "L",
+            0.8
+          ],
+          [
+            "A",
+            0.62
+          ],
+          [
+            "V",
+            0.67
+          ],
+          [
+            "A",
+            0.39
+          ],
+          [
+            "G",
+            1.0
+          ],
+          [
+            "H",
+            0.74
+          ],
+          [
+            "S",
+            0.98
+          ],
+          [
+            "M",
+            0.85
+          ],
+          [
+            "G",
+            0.98
+          ],
+          [
+            "G",
+            0.98
+          ],
+          [
+            "G",
+            0.97
+          ]
+        ]
+      },
+      "hard negative": {
+        "n_firing": 0,
+        "n_group": 450,
+        "offset_from_ser_median": null,
+        "offset_iqr": null,
+        "offset_top": [],
+        "consensus": "",
+        "centre_residue": [],
+        "window_conservation": []
+      }
+    }
+  },
+  "structures": {
+    "IsPETase": {
+      "pdb": "5XFY",
+      "serine_residue": "S160",
+      "latents": {
+        "3688": {
+          "residue": "K253",
+          "activation": 1.0,
+          "seq_offset_from_ser": 93,
+          "CA_distance_A": 18.0,
+          "frac_residues_closer": 0.46
+        },
+        "7820": {
+          "residue": "N212",
+          "activation": 0.73,
+          "seq_offset_from_ser": 52,
+          "CA_distance_A": 14.4,
+          "frac_residues_closer": 0.3
+        },
+        "2919": {
+          "residue": "S188",
+          "activation": 0.61,
+          "seq_offset_from_ser": 28,
+          "CA_distance_A": 13.2,
+          "frac_residues_closer": 0.23
+        },
+        "7018": {
+          "residue": "A47",
+          "activation": 0.6,
+          "seq_offset_from_ser": -113,
+          "CA_distance_A": 24.5,
+          "frac_residues_closer": 0.76
+        },
+        "1817": {
+          "residue": "N190",
+          "activation": 0.22,
+          "seq_offset_from_ser": 30,
+          "CA_distance_A": 15.8,
+          "frac_residues_closer": 0.37
+        },
+        "5325": {
+          "residue": "M157",
+          "activation": 0.25,
+          "seq_offset_from_ser": -3,
+          "CA_distance_A": 10.1,
+          "frac_residues_closer": 0.11
+        }
+      }
+    },
+    "LCC": {
+      "pdb": "4EB0",
+      "serine_residue": "S165",
+      "latents": {
+        "3688": {
+          "residue": "H112",
+          "activation": 0.7,
+          "seq_offset_from_ser": -53,
+          "CA_distance_A": 23.5,
+          "frac_residues_closer": 0.72
+        },
+        "7820": {
+          "residue": "S216",
+          "activation": 0.85,
+          "seq_offset_from_ser": 51,
+          "CA_distance_A": 14.2,
+          "frac_residues_closer": 0.29
+        },
+        "2919": {
+          "residue": "F125",
+          "activation": 0.57,
+          "seq_offset_from_ser": -40,
+          "CA_distance_A": 12.2,
+          "frac_residues_closer": 0.21
+        },
+        "7018": {
+          "residue": "P55",
+          "activation": 0.68,
+          "seq_offset_from_ser": -110,
+          "CA_distance_A": 28.9,
+          "frac_residues_closer": 0.91
+        },
+        "1817": {
+          "residue": "S130",
+          "activation": 0.29,
+          "seq_offset_from_ser": -35,
+          "CA_distance_A": 13.2,
+          "frac_residues_closer": 0.23
+        },
+        "5325": {
+          "residue": "A162",
+          "activation": 0.28,
+          "seq_offset_from_ser": -3,
+          "CA_distance_A": 10.1,
+          "frac_residues_closer": 0.12
+        }
+      }
+    }
+  }
+}

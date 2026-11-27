@@ -1,0 +1,77 @@
+{
+  "degraders": {
+    "n": 15,
+    "Ser": {
+      "called": 15,
+      "correct": 15
+    },
+    "Asp": {
+      "called": 10,
+      "correct": 4,
+      "2661_alone": 3,
+      "157_alone": 10,
+      "agree": 3,
+      "agree_correct": 3,
+      "disagree": 6,
+      "disagree_correct": 0
+    },
+    "His": {
+      "called": 15,
+      "correct": 15
+    },
+    "all_three": {
+      "called": 10,
+      "correct": 4
+    }
+  },
+  "hard negatives": {
+    "n": 325,
+    "Ser": {
+      "called": 325,
+      "correct": 325
+    },
+    "Asp": {
+      "called": 288,
+      "correct": 243,
+      "2661_alone": 172,
+      "157_alone": 207,
+      "agree": 114,
+      "agree_correct": 114,
+      "disagree": 66,
+      "disagree_correct": 31
+    },
+    "His": {
+      "called": 321,
+      "correct": 321
+    },
+    "all_three": {
+      "called": 285,
+      "correct": 240
+    }
+  },
+  "all": {
+    "n": 340,
+    "Ser": {
+      "called": 340,
+      "correct": 340
+    },
+    "Asp": {
+      "called": 298,
+      "correct": 247,
+      "2661_alone": 175,
+      "157_alone": 217,
+      "agree": 117,
+      "agree_correct": 117,
+      "disagree": 72,
+      "disagree_correct": 31
+    },
+    "His": {
+      "called": 336,
+      "correct": 336
+    },
+    "all_three": {
+      "called": 295,
+      "correct": 244
+    }
+  }
+}

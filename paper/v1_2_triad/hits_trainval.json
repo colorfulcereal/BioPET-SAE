@@ -1,0 +1,181 @@
+{
+  "n": 340,
+  "degraders": 15,
+  "hard_negatives": 325,
+  "thresholds": {
+    "0.15": {
+      "S": {
+        "latent": 2925,
+        "degraders": "15/15",
+        "hard_negatives": "325/325",
+        "all": "340/340",
+        "draws_on_top": 1000,
+        "typical_latent_rate": 0.0,
+        "runner_up": 6778,
+        "runner_up_hits": 340,
+        "other_draw_winners": [
+          [
+            2925,
+            1000
+          ]
+        ]
+      },
+      "D": {
+        "latent": 157,
+        "degraders": "12/15",
+        "hard_negatives": "254/325",
+        "all": "266/340",
+        "draws_on_top": 999,
+        "typical_latent_rate": 0.0,
+        "runner_up": 5816,
+        "runner_up_hits": 229,
+        "other_draw_winners": [
+          [
+            157,
+            999
+          ],
+          [
+            5816,
+            1
+          ]
+        ]
+      },
+      "H": {
+        "latent": 3927,
+        "degraders": "15/15",
+        "hard_negatives": "322/325",
+        "all": "337/340",
+        "draws_on_top": 1000,
+        "typical_latent_rate": 0.0,
+        "runner_up": 4305,
+        "runner_up_hits": 318,
+        "other_draw_winners": [
+          [
+            3927,
+            1000
+          ]
+        ]
+      },
+      "all_three": {
+        "degraders": "12/15",
+        "hard_negatives": "251/325"
+      }
+    },
+    "0.3": {
+      "S": {
+        "latent": 2925,
+        "degraders": "15/15",
+        "hard_negatives": "325/325",
+        "all": "340/340",
+        "draws_on_top": 1000,
+        "typical_latent_rate": 0.0,
+        "runner_up": 6778,
+        "runner_up_hits": 339,
+        "other_draw_winners": [
+          [
+            2925,
+            1000
+          ]
+        ]
+      },
+      "D": {
+        "latent": 2661,
+        "degraders": "9/15",
+        "hard_negatives": "209/325",
+        "all": "218/340",
+        "draws_on_top": 548,
+        "typical_latent_rate": 0.0,
+        "runner_up": 5816,
+        "runner_up_hits": 218,
+        "other_draw_winners": [
+          [
+            2661,
+            548
+          ],
+          [
+            157,
+            452
+          ]
+        ]
+      },
+      "H": {
+        "latent": 3927,
+        "degraders": "15/15",
+        "hard_negatives": "321/325",
+        "all": "336/340",
+        "draws_on_top": 1000,
+        "typical_latent_rate": 0.0,
+        "runner_up": 4305,
+        "runner_up_hits": 316,
+        "other_draw_winners": [
+          [
+            3927,
+            1000
+          ]
+        ]
+      },
+      "all_three": {
+        "degraders": "9/15",
+        "hard_negatives": "206/325"
+      }
+    },
+    "0.5": {
+      "S": {
+        "latent": 2925,
+        "degraders": "15/15",
+        "hard_negatives": "325/325",
+        "all": "340/340",
+        "draws_on_top": 1000,
+        "typical_latent_rate": 0.0,
+        "runner_up": 6778,
+        "runner_up_hits": 338,
+        "other_draw_winners": [
+          [
+            2925,
+            1000
+          ]
+        ]
+      },
+      "D": {
+        "latent": 2661,
+        "degraders": "9/15",
+        "hard_negatives": "208/325",
+        "all": "217/340",
+        "draws_on_top": 1000,
+        "typical_latent_rate": 0.0,
+        "runner_up": 5816,
+        "runner_up_hits": 180,
+        "other_draw_winners": [
+          [
+            2661,
+            1000
+          ]
+        ]
+      },
+      "H": {
+        "latent": 7734,
+        "degraders": "9/15",
+        "hard_negatives": "237/325",
+        "all": "246/340",
+        "draws_on_top": 979,
+        "typical_latent_rate": 0.0,
+        "runner_up": 3927,
+        "runner_up_hits": 222,
+        "other_draw_winners": [
+          [
+            7734,
+            979
+          ],
+          [
+            3927,
+            21
+          ]
+        ]
+      },
+      "all_three": {
+        "degraders": "9/15",
+        "hard_negatives": "202/325"
+      }
+    }
+  }
+}

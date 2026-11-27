@@ -1,0 +1,77 @@
+{
+  "target_mix": {
+    "Bacillota": 14,
+    "Actinomycetota": 207,
+    "Bacteroidota": 4,
+    "Pseudomonadota": 47,
+    "Basidiomycota": 2,
+    "Deinococcota": 1,
+    "Ascomycota": 6
+  },
+  "classes": {
+    "3_fold_matched_esterase": {
+      "target": 240,
+      "quota": {
+        "Bacillota": 12,
+        "Actinomycetota": 177,
+        "Bacteroidota": 3,
+        "Pseudomonadota": 40,
+        "Basidiomycota": 2,
+        "Deinococcota": 1,
+        "Ascomycota": 5
+      },
+      "obtained": {
+        "Actinomycetota": 150,
+        "Pseudomonadota": 40,
+        "Bacillota": 12,
+        "Ascomycota": 5,
+        "Bacteroidota": 3,
+        "Basidiomycota": 2,
+        "Deinococcota": 1
+      },
+      "total": 213,
+      "available_before_filters": {
+        "Actinomycetota": 174,
+        "Pseudomonadota": 160,
+        "Bacillota": 100,
+        "Ascomycota": 100,
+        "Bacteroidota": 27,
+        "Basidiomycota": 49,
+        "Deinococcota": 11
+      }
+    },
+    "4_naive_control": {
+      "target": 240,
+      "quota": {
+        "Bacillota": 12,
+        "Actinomycetota": 177,
+        "Bacteroidota": 3,
+        "Pseudomonadota": 40,
+        "Basidiomycota": 2,
+        "Deinococcota": 1,
+        "Ascomycota": 5
+      },
+      "obtained": {
+        "Actinomycetota": 177,
+        "Pseudomonadota": 40,
+        "Bacillota": 12,
+        "Ascomycota": 5,
+        "Bacteroidota": 3,
+        "Basidiomycota": 2,
+        "Deinococcota": 1
+      },
+      "total": 240,
+      "available_before_filters": {
+        "Actinomycetota": 708,
+        "Pseudomonadota": 160,
+        "Bacillota": 100,
+        "Ascomycota": 100,
+        "Bacteroidota": 100,
+        "Basidiomycota": 100,
+        "Deinococcota": 100
+      }
+    }
+  },
+  "dropped_duplicate_sequences": 30,
+  "total_written": 423
+}

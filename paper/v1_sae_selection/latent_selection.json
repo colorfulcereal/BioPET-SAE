@@ -1,0 +1,53 @@
+{
+  "pool": "feat_max",
+  "n_rows": 707,
+  "n_pos": 346,
+  "n_neg": 361,
+  "pairs": 124906,
+  "draws": 200,
+  "half_size": 353,
+  "seed": 0,
+  "criterion": {
+    "delta": 0.9,
+    "min_hits": 150
+  },
+  "n_delta_ge_threshold": 26,
+  "n_ever_in_top10": 30,
+  "selected": [
+    {
+      "latent": 9529,
+      "delta": 0.9589,
+      "hits": 200
+    },
+    {
+      "latent": 5201,
+      "delta": 0.9494,
+      "hits": 200
+    },
+    {
+      "latent": 7942,
+      "delta": 0.937,
+      "hits": 189
+    },
+    {
+      "latent": 5255,
+      "delta": 0.936,
+      "hits": 176
+    },
+    {
+      "latent": 2661,
+      "delta": 0.936,
+      "hits": 174
+    },
+    {
+      "latent": 5271,
+      "delta": 0.934,
+      "hits": 157
+    },
+    {
+      "latent": 7734,
+      "delta": 0.9338,
+      "hits": 159
+    }
+  ]
+}

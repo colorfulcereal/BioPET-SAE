@@ -1,0 +1,100 @@
+{
+  "rows_with_known_domain": 1148,
+  "euk": 368,
+  "bact": 780,
+  "split_euk": {
+    "train": 181,
+    "val": 93,
+    "test": 94
+  },
+  "all_test": {
+    "ESM-2 650M max L33": {
+      "n_train": 743,
+      "n_test": 182,
+      "test_pos(euk)": 94,
+      "au_roc": 0.9958,
+      "balanced_accuracy": 0.984
+    },
+    "ESM-2 650M mean L33": {
+      "n_train": 743,
+      "n_test": 182,
+      "test_pos(euk)": 94,
+      "au_roc": 0.9985,
+      "balanced_accuracy": 0.9894
+    },
+    "amino-acid composition (20-d)": {
+      "n_train": 743,
+      "n_test": 182,
+      "test_pos(euk)": 94,
+      "au_roc": 0.7959,
+      "balanced_accuracy": 0.7505
+    },
+    "length only": {
+      "n_train": 743,
+      "n_test": 182,
+      "test_pos(euk)": 94,
+      "au_roc": 0.6217,
+      "balanced_accuracy": 0.5876
+    }
+  },
+  "hard_negatives_only_test": {
+    "ESM-2 650M max L33": {
+      "n_train": 225,
+      "n_test": 113,
+      "test_pos(euk)": 91,
+      "au_roc": 0.993,
+      "balanced_accuracy": 0.9663
+    },
+    "ESM-2 650M mean L33": {
+      "n_train": 225,
+      "n_test": 113,
+      "test_pos(euk)": 91,
+      "au_roc": 0.998,
+      "balanced_accuracy": 0.989
+    },
+    "amino-acid composition (20-d)": {
+      "n_train": 225,
+      "n_test": 113,
+      "test_pos(euk)": 91,
+      "au_roc": 0.7273,
+      "balanced_accuracy": 0.7138
+    },
+    "length only": {
+      "n_train": 225,
+      "n_test": 113,
+      "test_pos(euk)": 91,
+      "au_roc": 0.5455,
+      "balanced_accuracy": 0.6079
+    }
+  },
+  "transfer_non_hard_to_hard": {
+    "ESM-2 650M max L33": {
+      "n_train": 629,
+      "n_test": 113,
+      "test_pos(euk)": 91,
+      "au_roc": 0.991,
+      "balanced_accuracy": 0.533
+    },
+    "ESM-2 650M mean L33": {
+      "n_train": 629,
+      "n_test": 113,
+      "test_pos(euk)": 91,
+      "au_roc": 0.995,
+      "balanced_accuracy": 0.8846
+    },
+    "amino-acid composition (20-d)": {
+      "n_train": 629,
+      "n_test": 113,
+      "test_pos(euk)": 91,
+      "au_roc": 0.7418,
+      "balanced_accuracy": 0.6029
+    },
+    "length only": {
+      "n_train": 629,
+      "n_test": 113,
+      "test_pos(euk)": 91,
+      "au_roc": 0.5455,
+      "balanced_accuracy": 0.6001
+    }
+  }
+}

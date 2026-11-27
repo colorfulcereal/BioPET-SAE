@@ -1,0 +1,5 @@
+split,components,components_with_positives,components_with_hard_negatives,largest_component_size,largest_positive_component,its_share_of_positives,largest_hard_negative_component,its_share_of_hard_negatives
+train,232,18,51,259,259,0.817,42,0.187
+val,113,28,43,40,13,0.295,12,0.107
+test,121,32,50,9,4,0.093,9,0.08
+all,466,78,144,259,259,0.641,42,0.093

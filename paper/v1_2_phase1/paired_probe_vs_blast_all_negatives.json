@@ -1,0 +1,10 @@
+{
+  "provenance": "inline analysis run 2026-11-25 on results/v1_2/phase1/scores_5_runs.npz and results/v1_2/cells/scores_seed_mean.npz; 2,000 draws, seed 0; positive and negative homology components resampled separately; probe score = mean of 5 runs; BLASTp score = -log10 best e-value. Numbers transcribed from the printed output; hard cells NOT tested.",
+  "cell": "all negatives",
+  "val": {"n_pos": 44, "n_neg": 193, "components_pos_neg": [28, 85],
+    "au_roc": {"probe": 0.9719, "probe_seed_se": 0.0001, "probe_family_se": 0.0166, "probe_ci95": [0.926, 0.990], "blast": 0.8632, "blast_family_se": 0.0502, "blast_ci95": [0.741, 0.937], "paired_diff": 0.109, "paired_diff_ci95": [0.039, 0.217], "p_probe_greater": 1.000},
+    "au_prc": {"probe": 0.8993, "probe_seed_se": 0.0003, "probe_family_se": 0.0708, "probe_ci95": [0.709, 0.971], "blast": 0.5708, "blast_family_se": 0.1094, "blast_ci95": [0.359, 0.789], "paired_diff": 0.328, "paired_diff_ci95": [0.103, 0.499], "p_probe_greater": 0.999}},
+  "test": {"n_pos": 43, "n_neg": 157, "components_pos_neg": [32, 92],
+    "au_roc": {"probe": 0.9319, "probe_seed_se": 0.0000, "probe_family_se": 0.0246, "probe_ci95": [0.875, 0.969], "blast": 0.7912, "blast_family_se": 0.0542, "blast_ci95": [0.678, 0.888], "paired_diff": 0.141, "paired_diff_ci95": [0.038, 0.256], "p_probe_greater": 0.997},
+    "au_prc": {"probe": 0.8439, "probe_seed_se": 0.0001, "probe_family_se": 0.0524, "probe_ci95": [0.730, 0.928], "blast": 0.5452, "blast_family_se": 0.1124, "blast_ci95": [0.323, 0.753], "paired_diff": 0.299, "paired_diff_ci95": [0.079, 0.514], "p_probe_greater": 0.997}}
+}

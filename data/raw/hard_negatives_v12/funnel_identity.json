@@ -1,0 +1,34 @@
+{
+  "funnel": [
+    [
+      "annotation-filtered candidates",
+      628
+    ],
+    [
+      ">= 90% identical to a positive removed",
+      625
+    ],
+    [
+      "40-90% identical to a positive removed",
+      595
+    ],
+    [
+      ">= 90% identical to an existing sequence removed",
+      559
+    ],
+    [
+      "one per 90%-identity group",
+      403
+    ],
+    [
+      "homology components among survivors (0.40): 111",
+      403
+    ],
+    [
+      "spread sample (cap 400)",
+      400
+    ]
+  ],
+  "seed": 42,
+  "max": 400
+}

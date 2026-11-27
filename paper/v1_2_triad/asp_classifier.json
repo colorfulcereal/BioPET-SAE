@@ -1,0 +1,110 @@
+{
+  "n": 340,
+  "residues": 7025,
+  "methods": {
+    "random": {
+      "acc": 0.056
+    },
+    "latent157": {
+      "correct": "217/340",
+      "acc": 0.638,
+      "degraders": "10/15"
+    },
+    "spacing": {
+      "correct": "184/340",
+      "acc": 0.541,
+      "degraders": "11/15",
+      "median_His_minus_Asp": 32.0,
+      "iqr": [
+        28.0,
+        55.0
+      ]
+    },
+    "esm_l2 C=0.001": {
+      "correct": "339/340",
+      "acc": 0.997,
+      "degraders": "15/15",
+      "acc_top50": 1.0,
+      "acc_top75": 1.0
+    },
+    "esm_l2 C=0.01": {
+      "correct": "339/340",
+      "acc": 0.997,
+      "degraders": "15/15",
+      "acc_top50": 1.0,
+      "acc_top75": 1.0
+    },
+    "sae_l1 window=+/-0 C=0.03": {
+      "correct": "330/340",
+      "acc": 0.971,
+      "degraders": "15/15",
+      "acc_top50": 0.994,
+      "acc_top75": 0.996,
+      "median_nonzero_features": 7
+    },
+    "sae_l1 window=+/-0 C=0.1": {
+      "correct": "338/340",
+      "acc": 0.994,
+      "degraders": "15/15",
+      "acc_top50": 1.0,
+      "acc_top75": 1.0,
+      "median_nonzero_features": 10
+    },
+    "sae_l1 window=+/-0 C=0.3": {
+      "correct": "338/340",
+      "acc": 0.994,
+      "degraders": "15/15",
+      "acc_top50": 1.0,
+      "acc_top75": 1.0,
+      "median_nonzero_features": 17
+    },
+    "sae_l1 window=+/-3 C=0.03": {
+      "correct": "338/340",
+      "acc": 0.994,
+      "degraders": "15/15",
+      "acc_top50": 1.0,
+      "acc_top75": 1.0,
+      "median_nonzero_features": 7
+    },
+    "sae_l1 window=+/-3 C=0.1": {
+      "correct": "338/340",
+      "acc": 0.994,
+      "degraders": "15/15",
+      "acc_top50": 1.0,
+      "acc_top75": 1.0,
+      "median_nonzero_features": 9
+    },
+    "sae_l1 window=+/-3 C=0.3": {
+      "correct": "338/340",
+      "acc": 0.994,
+      "degraders": "15/15",
+      "acc_top50": 1.0,
+      "acc_top75": 1.0,
+      "median_nonzero_features": 17
+    },
+    "sae_l1 window=+/-6 C=0.03": {
+      "correct": "338/340",
+      "acc": 0.994,
+      "degraders": "15/15",
+      "acc_top50": 1.0,
+      "acc_top75": 1.0,
+      "median_nonzero_features": 8
+    },
+    "sae_l1 window=+/-6 C=0.1": {
+      "correct": "338/340",
+      "acc": 0.994,
+      "degraders": "15/15",
+      "acc_top50": 1.0,
+      "acc_top75": 1.0,
+      "median_nonzero_features": 12
+    },
+    "sae_l1 window=+/-6 C=0.3": {
+      "correct": "338/340",
+      "acc": 0.994,
+      "degraders": "15/15",
+      "acc_top50": 1.0,
+      "acc_top75": 1.0,
+      "median_nonzero_features": 18
+    }
+  }
+}

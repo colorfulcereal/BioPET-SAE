@@ -1,0 +1,42 @@
+{
+  "unique_ids": true,
+  "sequences_in_more_than_one_split": 0,
+  "v1_1_rows_with_changed_label_or_sequence": 0,
+  "v1_1_rows_missing_from_v1_2": [],
+  "positives_v1_1_vs_v1_2": [
+    404,
+    404
+  ],
+  "group_counts": {
+    "ab_hydrolase_hard_negative": 450,
+    "naive_control": 237,
+    "tRNA_processing_no_ser_nucleophile": 99,
+    "ec311_wrong_fold": 36,
+    "positive": 404
+  },
+  "split_counts": {
+    "train": 789,
+    "val": 237,
+    "test": 200
+  },
+  "uniprot_resample": {
+    "n": 30,
+    "failures": [],
+    "all_pass": true
+  },
+  "mmseqs_cluster_0.40_spanning_splits": {
+    "n_clusters": 507,
+    "n_spanning": 2,
+    "examples": [
+      [
+        "A0R4Y3",
+        "P9WPP3"
+      ],
+      [
+        "O60095",
+        "O74430",
+        "P78898"
+      ]
+    ]
+  }
+}

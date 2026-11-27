@@ -1,0 +1,28 @@
+{
+  "query": "reviewed:true AND xref:interpro-IPR029058 AND ec:3.1.1.-",
+  "n_fetched": 1172,
+  "uniprot_release": null,
+  "fetched": "2026-11-25",
+  "funnel": [
+    [
+      "UniProt query (reviewed, IPR029058, EC 3.1.1.-)",
+      1172
+    ],
+    [
+      "not already in the dataset",
+      1103
+    ],
+    [
+      "standard residues only, length 100-1022",
+      1090
+    ],
+    [
+      "curated active site with Ser, His and Asp",
+      687
+    ],
+    [
+      "not plastic-linked (EC / name / keyword)",
+      628
+    ]
+  ]
+}

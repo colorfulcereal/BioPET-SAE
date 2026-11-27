@@ -1,0 +1,146 @@
+{
+ "BPS0054": {
+  "acc": "P52956",
+  "S": 125,
+  "D": 180,
+  "H": 193,
+  "split": "train",
+  "component": "BPS0049"
+ },
+ "BPS0072": {
+  "acc": "A0A060N399",
+  "S": 137,
+  "D": 192,
+  "H": 205,
+  "split": "train",
+  "component": "BPS0049"
+ },
+ "BPS0191": {
+  "acc": "G8GER6",
+  "S": 187,
+  "D": 233,
+  "H": 265,
+  "split": "train",
+  "component": "BPS0081"
+ },
+ "BPS0234": {
+  "acc": "Q47RJ6",
+  "S": 169,
+  "D": 215,
+  "H": 247,
+  "split": "train",
+  "component": "BPS0081"
+ },
+ "BPS0239": {
+  "acc": "F7IX06",
+  "S": 168,
+  "D": 214,
+  "H": 246,
+  "split": "train",
+  "component": "BPS0081"
+ },
+ "BPS0258": {
+  "acc": "D4Q9N1",
+  "S": 164,
+  "D": 210,
+  "H": 242,
+  "split": "train",
+  "component": "BPS0081"
+ },
+ "BPS0269": {
+  "acc": "G9BY57",
+  "S": 164,
+  "D": 209,
+  "H": 241,
+  "split": "train",
+  "component": "BPS0081"
+ },
+ "BPS0282": {
+  "acc": "A0A0K8P6T7",
+  "S": 159,
+  "D": 205,
+  "H": 236,
+  "split": "train",
+  "component": "BPS0081"
+ },
+ "BPS0327": {
+  "acc": "Q6A0I4",
+  "S": 131,
+  "D": 177,
+  "H": 209,
+  "split": "train",
+  "component": "BPS0081"
+ },
+ "BPS0344": {
+  "acc": "Q6A0I4",
+  "S": 130,
+  "D": 176,
+  "H": 208,
+  "split": "train",
+  "component": "BPS0081"
+ },
+ "BPS0345": {
+  "acc": "Q6A0I4",
+  "S": 130,
+  "D": 176,
+  "H": 208,
+  "split": "train",
+  "component": "BPS0081"
+ },
+ "BPS0381": {
+  "acc": "A0A9P9DYB3",
+  "S": 147,
+  "D": 202,
+  "H": 215,
+  "split": "train",
+  "component": "BPS0049"
+ },
+ "BPS0383": {
+  "acc": "P00590",
+  "S": 135,
+  "D": 190,
+  "H": 203,
+  "split": "train",
+  "component": "BPS0049"
+ },
+ "BPS0393": {
+  "acc": "A0A075B5G4",
+  "S": 104,
+  "D": 159,
+  "H": 172,
+  "split": "train",
+  "component": "BPS0049"
+ },
+ "BPS0016": {
+  "acc": "A0A0U5AS91",
+  "S": 330,
+  "D": 149,
+  "H": 180,
+  "split": "val",
+  "component": "BPS0016"
+ },
+ "BPS0179": {
+  "acc": "P41365",
+  "S": 129,
+  "D": 211,
+  "H": 248,
+  "split": "test",
+  "component": "BPS0179"
+ },
+ "BPS0379": {
+  "acc": "A0A090IVG8",
+  "S": 77,
+  "D": 176,
+  "H": 206,
+  "split": "test",
+  "component": "BPS0379"
+ },
+ "BPS0392": {
+  "acc": "V2XFA5",
+  "S": 119,
+  "D": 171,
+  "H": 184,
+  "split": "test",
+  "component": "BPS0392"
+ }
+}

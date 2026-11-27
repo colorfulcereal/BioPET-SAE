@@ -1,0 +1,14 @@
+phylum,train,val,test,all
+Chordata,46,37,33,116
+Streptophyta,57,16,22,95
+Ascomycota,22,32,27,81
+Pseudomonadati,46,4,5,55
+Actinomycetota,13,14,11,38
+Basidiomycota,13,2,8,23
+Ecdysozoa,19,3,0,22
+Bacillati,2,2,1,5
+Bacillota,2,0,2,4
+Pseudomonadota,3,0,1,4
+Evosea,2,0,1,3
+Mucoromycota,0,2,0,2
+Thermotogati,0,0,2,2

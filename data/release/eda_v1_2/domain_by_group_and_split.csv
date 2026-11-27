@@ -1,0 +1,12 @@
+domain,group,train,val,test,all
+Bacteria,ab_hydrolase_hard_negative,66,20,22,108
+Bacteria,ec311_wrong_fold,23,5,5,33
+Bacteria,naive_control,160,35,35,230
+Bacteria,positive,257,30,23,310
+Bacteria,tRNA_processing_no_ser_nucleophile,56,40,3,99
+Eukaryota,ab_hydrolase_hard_negative,159,92,91,342
+Eukaryota,ec311_wrong_fold,2,1,0,3
+Eukaryota,naive_control,6,0,1,7
+Eukaryota,positive,14,0,2,16
+other,positive,0,0,4,4
+unknown,positive,46,14,14,74

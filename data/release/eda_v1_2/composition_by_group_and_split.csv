@@ -1,0 +1,7 @@
+group,train,val,test,all
+positive,317,44,43,404
+ab_hydrolase_hard_negative,225,112,113,450
+ec311_wrong_fold,25,6,5,36
+tRNA_processing_no_ser_nucleophile,56,40,3,99
+naive_control,166,35,36,237
+total,789,237,200,1226

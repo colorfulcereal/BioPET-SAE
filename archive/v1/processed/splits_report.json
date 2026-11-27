@@ -1,0 +1,81 @@
+{
+  "threshold": 0.3,
+  "seed": 42,
+  "dropped_near_duplicate_negatives": [],
+  "cross_cluster_violations_before_merge": 20085,
+  "n_clusters_at_threshold": 358,
+  "n_components": 278,
+  "largest_component_sizes": [
+    289,
+    109,
+    46,
+    25,
+    12,
+    9,
+    7,
+    6,
+    6,
+    6
+  ],
+  "n_mixed_class_components": 20,
+  "split_composition": {
+    "train|1_pet": 290,
+    "train|2_other_polyester": 42,
+    "train|3_fold_matched_esterase": 72,
+    "train|4_naive_control": 166,
+    "val|1_pet": 15,
+    "val|2_other_polyester": 15,
+    "val|3_fold_matched_esterase": 68,
+    "val|4_naive_control": 36,
+    "test|1_pet": 15,
+    "test|2_other_polyester": 11,
+    "test|3_fold_matched_esterase": 45,
+    "test|4_naive_control": 36,
+    "heldout|heldout_pha": 36
+  },
+  "max_cross_split_identity": {
+    "test|train": {
+      "a": "A3Q5H1",
+      "b": "BPS0113",
+      "class_a": "3_fold_matched_esterase",
+      "class_b": "1_pet",
+      "global_identity": 0.2917
+    },
+    "train|val": {
+      "a": "BPS0336",
+      "b": "BPS0245",
+      "class_a": "1_pet",
+      "class_b": "1_pet",
+      "global_identity": 0.2996
+    },
+    "heldout|train": {
+      "a": "Q54809",
+      "b": "BPS0430",
+      "class_a": "3_fold_matched_esterase",
+      "class_b": "heldout_pha",
+      "global_identity": 0.3055
+    },
+    "heldout|val": {
+      "a": "BPS0110",
+      "b": "BPS0425",
+      "class_a": "1_pet",
+      "class_b": "heldout_pha",
+      "global_identity": 0.7168
+    },
+    "heldout|test": {
+      "a": "BPS0388",
+      "b": "BPS0431",
+      "class_a": "1_pet",
+      "class_b": "heldout_pha",
+      "global_identity": 0.289
+    },
+    "test|val": {
+      "a": "P9WQD9",
+      "b": "P06968",
+      "class_a": "4_naive_control",
+      "class_b": "4_naive_control",
+      "global_identity": 0.2829
+    }
+  },
+  "bound_satisfied": true
+}

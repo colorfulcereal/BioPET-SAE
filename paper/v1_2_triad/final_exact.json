@@ -1,0 +1,85 @@
+{
+  "rule": "max activation >= 0.3 and argmax residue == annotated catalytic residue",
+  "n": {
+    "trainval": 340,
+    "trainval_degraders": 15,
+    "test": 105,
+    "test_degraders": 3,
+    "trainval_families": 88,
+    "test_families": 47,
+    "test_degrader_families": 3
+  },
+  "residues": {
+    "S": {
+      "latent": 2925,
+      "trainval": "340/340 (100.0%)",
+      "trainval_degraders": "15/15 (100.0%)",
+      "trainval_hard": "325/325 (100.0%)",
+      "draws_first": 1000,
+      "runner_up": {
+        "latent": 323,
+        "trainval": "114/340 (33.5%)",
+        "draws_first": 0
+      },
+      "median_latent_trainval": 0.0,
+      "test": "104/105 (99.0%)",
+      "test_degraders": "3/3 (100.0%)",
+      "test_hard": "101/102 (99.0%)",
+      "latents_better_on_test": 0,
+      "latents_equal_on_test": 0,
+      "median_latent_test": 0.0,
+      "same_rule_on_test_picks": 2925,
+      "that_latent_test": "104/105 (99.0%)"
+    },
+    "D": {
+      "latent": 157,
+      "trainval": "217/340 (63.8%)",
+      "trainval_degraders": "10/15 (66.7%)",
+      "trainval_hard": "207/325 (63.7%)",
+      "draws_first": 1000,
+      "runner_up": {
+        "latent": 6644,
+        "trainval": "165/340 (48.5%)",
+        "draws_first": 0
+      },
+      "median_latent_trainval": 0.0,
+      "test": "50/105 (47.6%)",
+      "test_degraders": "1/3 (33.3%)",
+      "test_hard": "49/102 (48.0%)",
+      "latents_better_on_test": 0,
+      "latents_equal_on_test": 0,
+      "median_latent_test": 0.0,
+      "same_rule_on_test_picks": 157,
+      "that_latent_test": "50/105 (47.6%)"
+    },
+    "H": {
+      "latent": 3927,
+      "trainval": "336/340 (98.8%)",
+      "trainval_degraders": "15/15 (100.0%)",
+      "trainval_hard": "321/325 (98.8%)",
+      "draws_first": 1000,
+      "runner_up": {
+        "latent": 7244,
+        "trainval": "164/340 (48.2%)",
+        "draws_first": 0
+      },
+      "median_latent_trainval": 0.0,
+      "test": "102/105 (97.1%)",
+      "test_degraders": "3/3 (100.0%)",
+      "test_hard": "99/102 (97.1%)",
+      "latents_better_on_test": 0,
+      "latents_equal_on_test": 0,
+      "median_latent_test": 0.0,
+      "same_rule_on_test_picks": 3927,
+      "that_latent_test": "102/105 (97.1%)"
+    }
+  },
+  "all_three": {
+    "trainval": "214/340 (62.9%)",
+    "trainval_degraders": "10/15 (66.7%)",
+    "trainval_hard": "204/325 (62.8%)",
+    "test": "50/105 (47.6%)",
+    "test_degraders": "1/3 (33.3%)",
+    "test_hard": "49/102 (48.0%)"
+  }
+}

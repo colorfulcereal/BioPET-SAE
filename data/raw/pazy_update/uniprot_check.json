@@ -1,0 +1,461 @@
+{
+ "bbPET0069": {
+  "pazy_id": 523,
+  "pazy_organism": "Unidentified soil bacterium (bbPET0069 source)",
+  "uniparc": [],
+  "n_uniprot": 0,
+  "entries": []
+ },
+ "HaloPETase1": {
+  "pazy_id": 524,
+  "pazy_organism": "Pseudomonadales bacterium",
+  "uniparc": [
+   "UPI000C8FBD34"
+  ],
+  "n_uniprot": 2,
+  "entries": [
+   {
+    "accession": "A0A2D4XUS0",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A3D0UE89",
+    "error": "inactive: DELETED"
+   }
+  ]
+ },
+ "HaloPETase2": {
+  "pazy_id": 525,
+  "pazy_organism": "Halopseudomonas sabulinigri",
+  "uniparc": [
+   "UPI0006371E67"
+  ],
+  "n_uniprot": 1,
+  "entries": [
+   {
+    "accession": "A0A0F9T831",
+    "error": "inactive: DELETED"
+   }
+  ]
+ },
+ "HaloPETase3": {
+  "pazy_id": 526,
+  "pazy_organism": "Halopseudomonas sabulinigri",
+  "uniparc": [
+   "UPI00063A6166"
+  ],
+  "n_uniprot": 2,
+  "entries": [
+   {
+    "accession": "A0A0F9VZC2",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A7C1LD79",
+    "error": "inactive: DELETED"
+   }
+  ]
+ },
+ "HaloPETase4": {
+  "pazy_id": 527,
+  "pazy_organism": "Halopseudomonas sabulinigri",
+  "uniparc": [
+   "UPI000635E900"
+  ],
+  "n_uniprot": 2,
+  "entries": [
+   {
+    "accession": "A0A0F9SW58",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A7C1L801",
+    "error": "inactive: DELETED"
+   }
+  ]
+ },
+ "HaloPETase5": {
+  "pazy_id": 528,
+  "pazy_organism": "Halopseudomonas sabulinigri",
+  "uniparc": [
+   "UPI000636C98A"
+  ],
+  "n_uniprot": 2,
+  "entries": [
+   {
+    "accession": "A0A0F9UIZ8",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A7V1KCB1",
+    "error": "inactive: DELETED"
+   }
+  ]
+ },
+ "HaloPETase6": {
+  "pazy_id": 529,
+  "pazy_organism": "Halopseudomonas sabulinigri",
+  "uniparc": [
+   "UPI0006307115"
+  ],
+  "n_uniprot": 2,
+  "entries": [
+   {
+    "accession": "A0A0F9UNI5",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A7V1KCX1",
+    "error": "inactive: DELETED"
+   }
+  ]
+ },
+ "BhEstB": {
+  "pazy_id": 530,
+  "pazy_organism": "Bacillus halotolerans",
+  "uniparc": [
+   "UPI00075054F2"
+  ],
+  "n_uniprot": 2,
+  "entries": [
+   {
+    "accession": "A0A132BLL3",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A1E4XWN8",
+    "error": "inactive: DELETED"
+   }
+  ]
+ },
+ "LactoPETase": {
+  "pazy_id": 531,
+  "pazy_organism": "Lactobacillus johnsonii",
+  "uniparc": [
+   "UPI0001CDE674"
+  ],
+  "n_uniprot": 4,
+  "entries": [
+   {
+    "accession": "A0A0L8RRC9",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A7D9N824",
+    "reviewed": false,
+    "name": "Alpha/beta hydrolase",
+    "organism": "Lactobacillus johnsonii N6.2",
+    "ec": [],
+    "interpro": [
+     "IPR022742:ABHD17C-like",
+     "IPR029058:AB_hydrolase_fold",
+     "IPR053145:AB_hydrolase_Est10"
+    ],
+    "pfam": [
+     "PF12146"
+    ],
+    "act_sites": [],
+    "same_sequence": true,
+    "annotation_score": 1.0
+   },
+   {
+    "accession": "D3YEX6",
+    "reviewed": false,
+    "name": "Cinnamoyl esterase",
+    "organism": "Lactobacillus johnsonii",
+    "ec": [],
+    "interpro": [
+     "IPR022742:ABHD17C-like",
+     "IPR029058:AB_hydrolase_fold",
+     "IPR053145:AB_hydrolase_Est10"
+    ],
+    "pfam": [
+     "PF12146"
+    ],
+    "act_sites": [],
+    "same_sequence": true,
+    "annotation_score": 1.0
+   },
+   {
+    "accession": "V5P534",
+    "error": "inactive: DELETED"
+   }
+  ]
+ },
+ "LipBv": {
+  "pazy_id": 532,
+  "pazy_organism": "Bacillus sp. MSP13",
+  "uniparc": [
+   "UPI000288FA24"
+  ],
+  "n_uniprot": 2,
+  "entries": [
+   {
+    "accession": "A0A2M9W233",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A410WKJ3",
+    "error": "inactive: DELETED"
+   }
+  ]
+ },
+ "LipSh1": {
+  "pazy_id": 533,
+  "pazy_organism": "Staphylococcus hominis",
+  "uniparc": [
+   "UPI001160C938"
+  ],
+  "n_uniprot": 1,
+  "entries": [
+   {
+    "accession": "A0A549XW58",
+    "error": "inactive: DELETED"
+   }
+  ]
+ },
+ "LipSh2": {
+  "pazy_id": 534,
+  "pazy_organism": "Staphylococcus hominis",
+  "uniparc": [
+   "UPI0002E6561A"
+  ],
+  "n_uniprot": 14,
+  "entries": [
+   {
+    "accession": "A0A178N5Y0",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A1E9Q7R3",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A1E9QMX1",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A1E9RDB8",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A1E9SUB8",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A1F0XGK1",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A1F1BWH3",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A1F1NAH8",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A1F2GTE3",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A1J3ZMJ3",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A1J6DT90",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A2I1W1P8",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A3S7GV39",
+    "reviewed": false,
+    "name": "triacylglycerol lipase",
+    "organism": "Staphylococcus hominis",
+    "ec": [
+     "3.1.1.3"
+    ],
+    "interpro": [
+     "IPR005877:YSIRK_signal_dom",
+     "IPR029058:AB_hydrolase_fold",
+     "IPR056304:Lip-like_C"
+    ],
+    "pfam": [
+     "PF04650",
+     "PF24708"
+    ],
+    "act_sites": [],
+    "same_sequence": true,
+    "annotation_score": 2.0
+   },
+   {
+    "accession": "Y5NMK0",
+    "error": "inactive: DELETED"
+   }
+  ]
+ },
+ "LipSh3": {
+  "pazy_id": 535,
+  "pazy_organism": "Staphylococcus hominis",
+  "uniparc": [
+   "UPI00115CC5B0"
+  ],
+  "n_uniprot": 1,
+  "entries": [
+   {
+    "accession": "A0A549VWW3",
+    "error": "inactive: DELETED"
+   }
+  ]
+ },
+ "SM0281": {
+  "pazy_id": 536,
+  "pazy_organism": "Sinorhizobium meliloti",
+  "uniparc": [
+   "UPI00000CBB75"
+  ],
+  "n_uniprot": 21,
+  "entries": [
+   {
+    "accession": "A0A077HMA7",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A0E0UHY3",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A0F4XZI9",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A1Z1ETM0",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A222JMF7",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A2T3F201",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A560DSI4",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0A560GKM1",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0AA90W1E7",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0AAP6TQU3",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "A0AAW9TMK3",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "E0JBN9",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "E0K693",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "F6BW72",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "F6DXZ2",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "F7X4K8",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "K0P7Y7",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "M4I8U7",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "M4MNI9",
+    "error": "inactive: DELETED"
+   },
+   {
+    "accession": "Q92KS5",
+    "reviewed": false,
+    "name": "Palmitoyl-protein thioesterase ABHD10, mitochondrial",
+    "organism": "Rhizobium meliloti (strain 1021)",
+    "ec": [
+     "3.1.1.93",
+     "3.1.2.22"
+    ],
+    "interpro": [
+     "IPR000073:AB_hydrolase_1",
+     "IPR029058:AB_hydrolase_fold",
+     "IPR052382:ABHD10_acyl-thioesterase"
+    ],
+    "pfam": [
+     "PF12697"
+    ],
+    "act_sites": [],
+    "same_sequence": true,
+    "annotation_score": 2.0
+   },
+   {
+    "accession": "W0X7J1",
+    "error": "inactive: DELETED"
+   }
+  ]
+ },
+ "NmCut": {
+  "pazy_id": 537,
+  "pazy_organism": "Neptunicella plasticusilytica",
+  "uniparc": [
+   "UPI003A4DA2E5"
+  ],
+  "n_uniprot": 0,
+  "entries": []
+ },
+ "R75estA": {
+  "pazy_id": 538,
+  "pazy_organism": "Stutzerimonas sp. R75",
+  "uniparc": [
+   "UPI000DFE6726"
+  ],
+  "n_uniprot": 1,
+  "entries": [
+   {
+    "accession": "A0A365PUA9",
+    "reviewed": false,
+    "name": "Alpha/beta hydrolase",
+    "organism": "Stutzerimonas zhaodongensis",
+    "ec": [],
+    "interpro": [
+     "IPR029058:AB_hydrolase_fold",
+     "IPR041127:PET_hydrolase/cutinase-like"
+    ],
+    "pfam": [
+     "PF12740"
+    ],
+    "act_sites": [],
+    "same_sequence": true,
+    "annotation_score": 1.0
+   }
+  ]
+ }
+}

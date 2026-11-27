@@ -1,0 +1,100 @@
+{
+  "seed": 42,
+  "restarts": 20000,
+  "fractions": {
+    "pos_pet": [
+      0.79,
+      0.105,
+      0.105
+    ],
+    "pos_other": [
+      0.6,
+      0.2,
+      0.2
+    ],
+    "hard": [
+      0.5,
+      0.25,
+      0.25
+    ],
+    "wrongfold": [
+      0.7,
+      0.15,
+      0.15
+    ],
+    "trna": [
+      0.7,
+      0.15,
+      0.15
+    ],
+    "naive": [
+      0.7,
+      0.15,
+      0.15
+    ]
+  },
+  "totals": {
+    "naive": 237,
+    "trna": 99,
+    "hard": 450,
+    "wrongfold": 36,
+    "pos_other": 68,
+    "pos_pet": 336
+  },
+  "targets": {
+    "train|pos_pet": 265.4,
+    "val|pos_pet": 35.3,
+    "test|pos_pet": 35.3,
+    "train|pos_other": 40.8,
+    "val|pos_other": 13.6,
+    "test|pos_other": 13.6,
+    "train|hard": 225.0,
+    "val|hard": 112.5,
+    "test|hard": 112.5,
+    "train|wrongfold": 25.2,
+    "val|wrongfold": 5.4,
+    "test|wrongfold": 5.4,
+    "train|trna": 69.3,
+    "val|trna": 14.8,
+    "test|trna": 14.8,
+    "train|naive": 165.9,
+    "val|naive": 35.5,
+    "test|naive": 35.5
+  },
+  "achieved": {
+    "train": {
+      "pos_pet": 276,
+      "pos_other": 41,
+      "hard": 225,
+      "wrongfold": 25,
+      "trna": 56,
+      "naive": 166
+    },
+    "val": {
+      "pos_pet": 30,
+      "pos_other": 14,
+      "hard": 112,
+      "wrongfold": 6,
+      "trna": 40,
+      "naive": 35
+    },
+    "test": {
+      "pos_pet": 30,
+      "pos_other": 13,
+      "hard": 113,
+      "wrongfold": 5,
+      "trna": 3,
+      "naive": 36
+    }
+  },
+  "score": 0.6287819155280066,
+  "n_components": 466,
+  "components_that_bridge_v1_1_components": 0,
+  "max_cross_split_identity": {
+    "test|train": 0.3982,
+    "train|val": 0.3967,
+    "test|val": 0.3967
+  },
+  "bound_below_0.40": true,
+  "rows": 1226
+}

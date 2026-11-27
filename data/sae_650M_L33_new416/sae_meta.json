@@ -1,0 +1,15 @@
+{
+  "esm_model": "facebook/esm2_t33_650M_UR50D",
+  "sae_repo": "Elana/InterPLM-esm2-650m",
+  "layer": 33,
+  "weights": "ae_normalized.pt",
+  "d_in": 1280,
+  "d_sae": 10240,
+  "n_sequences": 419,
+  "truncated": 0,
+  "device": "mps",
+  "mean_frac_active_per_residue": 0.013866244815289974,
+  "mean_latents_active_per_sequence": 6731.751789976133,
+  "mean_reconstruction_cosine": 0.8926502466201782,
+  "elapsed_seconds": 247.7
+}

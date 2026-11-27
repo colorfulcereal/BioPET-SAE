@@ -36,6 +36,15 @@ probe/SAE result) refers to it. v1.1 is built by `src/biopet_sae/add_pazy_update
   and 8 polyamide entries from the same update are excluded as non-ester.
 - Not done for the 16: UniProt cross-checks, InterPro fold annotation.
 
+## v1.2 (2026-11-25): 400 more hard negatives, new split
+
+`biopet_sae_dataset_v1_2.{tsv,fasta}`: 1,226 rows (404 positives; 450 hard negatives = 50 existing + 400
+from UniProt; 36 wrong-fold, 99 tRNA-processing, 237 naive). New 40%-identity split: train 789 / val 237 /
+test 200, hard negatives 225 / 112 / 113. **Test is not comparable to v1 or v1.1.** The new hard negatives are
+76% eukaryotic while positives are mostly bacterial; taxonomy alone gives AU-ROC 0.80-0.88 on the hard cell,
+so report the bacteria-only cell and the taxonomy baseline. Full record: `paper/v1.2.md` section 12 and
+`data/release/eda_v1_2/EDA_v1_2.md`. The tables below describe v1.1.
+
 Files in `data/release/`:
 
 | file | contents |

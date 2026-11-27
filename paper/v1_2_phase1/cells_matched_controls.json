@@ -1,0 +1,457 @@
+{
+  "selected": "C=1e-02,eta=1e-04",
+  "C": 0.01,
+  "eta0": 0.0001,
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "val_thresholds": [
+    0.1506,
+    0.1511,
+    0.1506,
+    0.15,
+    0.15
+  ],
+  "cells": {
+    "test": {
+      "all negatives": {
+        "n_pos": 43,
+        "n_neg": 157,
+        "prevalence": 0.215,
+        "probe_au_roc": [
+          0.9319,
+          0.0
+        ],
+        "probe_au_prc": [
+          0.8439,
+          0.0001
+        ],
+        "probe_au_roc_ci95_component_on_seed_mean": [
+          0.873,
+          0.973
+        ],
+        "n_components_pos_neg": [
+          32,
+          92
+        ],
+        "blastp_au_roc": 0.7912,
+        "blastp_au_prc": 0.5452,
+        "domain_only_au_roc": 0.6558,
+        "domain_only_au_prc": 0.2879,
+        "length_only_au_roc": 0.6284,
+        "length_only_au_prc": 0.2915
+      },
+      "all hard negatives": {
+        "n_pos": 43,
+        "n_neg": 113,
+        "prevalence": 0.276,
+        "probe_au_roc": [
+          0.9214,
+          0.0
+        ],
+        "probe_au_prc": [
+          0.8593,
+          0.0001
+        ],
+        "probe_au_roc_ci95_component_on_seed_mean": [
+          0.854,
+          0.969
+        ],
+        "n_components_pos_neg": [
+          32,
+          50
+        ],
+        "blastp_au_roc": 0.7266,
+        "blastp_au_prc": 0.5524,
+        "domain_only_au_roc": 0.8012,
+        "domain_only_au_prc": 0.516,
+        "length_only_au_roc": 0.6815,
+        "length_only_au_prc": 0.525
+      },
+      "BACTERIAL hard negatives (all positives)": {
+        "n_pos": 43,
+        "n_neg": 22,
+        "prevalence": 0.662,
+        "probe_au_roc": [
+          0.7949,
+          0.0
+        ],
+        "probe_au_prc": [
+          0.9031,
+          0.0
+        ],
+        "probe_au_roc_ci95_component_on_seed_mean": [
+          0.651,
+          0.91
+        ],
+        "n_components_pos_neg": [
+          32,
+          17
+        ],
+        "blastp_au_roc": 0.657,
+        "blastp_au_prc": 0.8007,
+        "domain_only_au_roc": 0.2674,
+        "domain_only_au_prc": 0.5699,
+        "length_only_au_roc": 0.6348,
+        "length_only_au_prc": 0.7743
+      },
+      "EUKARYOTIC hard negatives (all positives)": {
+        "n_pos": 43,
+        "n_neg": 91,
+        "prevalence": 0.321,
+        "probe_au_roc": [
+          0.952,
+          0.0001
+        ],
+        "probe_au_prc": [
+          0.9257,
+          0.0001
+        ],
+        "probe_au_roc_ci95_component_on_seed_mean": [
+          0.898,
+          0.987
+        ],
+        "n_components_pos_neg": [
+          32,
+          33
+        ],
+        "blastp_au_roc": 0.7434,
+        "blastp_au_prc": 0.6146,
+        "domain_only_au_roc": 0.9302,
+        "domain_only_au_prc": 0.9052,
+        "length_only_au_roc": 0.6928,
+        "length_only_au_prc": 0.6057
+      },
+      "MATCHED: bacterial positives vs bacterial hard neg.": {
+        "n_pos": 23,
+        "n_neg": 22,
+        "prevalence": 0.511,
+        "probe_au_roc": [
+          0.7569,
+          0.0
+        ],
+        "probe_au_prc": [
+          0.8264,
+          0.0
+        ],
+        "probe_au_roc_ci95_component_on_seed_mean": [
+          0.554,
+          0.925
+        ],
+        "n_components_pos_neg": [
+          16,
+          17
+        ],
+        "blastp_au_roc": 0.6838,
+        "blastp_au_prc": 0.7267,
+        "domain_only_au_roc": 0.5,
+        "domain_only_au_prc": 0.5111,
+        "length_only_au_roc": 0.6779,
+        "length_only_au_prc": 0.7051
+      },
+      "wrong-fold": {
+        "n_pos": 43,
+        "n_neg": 5,
+        "prevalence": 0.896,
+        "probe_au_roc": [
+          0.8698,
+          0.0
+        ],
+        "probe_au_prc": [
+          0.9841,
+          0.0
+        ],
+        "probe_au_roc_ci95_component_on_seed_mean": [
+          0.713,
+          0.979
+        ],
+        "n_components_pos_neg": [
+          32,
+          5
+        ],
+        "blastp_au_roc": 0.914,
+        "blastp_au_prc": 0.9891,
+        "domain_only_au_roc": 0.2674,
+        "domain_only_au_prc": 0.8512,
+        "length_only_au_roc": 0.3907,
+        "length_only_au_prc": 0.8776
+      },
+      "tRNA-processing": {
+        "n_pos": 43,
+        "n_neg": 3,
+        "prevalence": 0.935,
+        "probe_au_roc": [
+          0.969,
+          0.0
+        ],
+        "probe_au_prc": [
+          0.9979,
+          0.0
+        ],
+        "probe_au_roc_ci95_component_on_seed_mean": [
+          0.908,
+          1.0
+        ],
+        "n_components_pos_neg": [
+          32,
+          1
+        ],
+        "blastp_au_roc": 0.9922,
+        "blastp_au_prc": 0.9995,
+        "domain_only_au_roc": 0.2674,
+        "domain_only_au_prc": 0.9048,
+        "length_only_au_roc": 0.0194,
+        "length_only_au_prc": 0.8259
+      },
+      "naive controls": {
+        "n_pos": 43,
+        "n_neg": 36,
+        "prevalence": 0.544,
+        "probe_au_roc": [
+          0.9703,
+          0.0
+        ],
+        "probe_au_prc": [
+          0.9753,
+          0.0
+        ],
+        "probe_au_roc_ci95_component_on_seed_mean": [
+          0.931,
+          0.998
+        ],
+        "n_components_pos_neg": [
+          32,
+          36
+        ],
+        "blastp_au_roc": 0.9603,
+        "blastp_au_prc": 0.9641,
+        "domain_only_au_roc": 0.2859,
+        "domain_only_au_prc": 0.4554,
+        "length_only_au_roc": 0.5452,
+        "length_only_au_prc": 0.5384
+      }
+    },
+    "val": {
+      "all negatives": {
+        "n_pos": 44,
+        "n_neg": 193,
+        "prevalence": 0.186,
+        "probe_au_roc": [
+          0.9719,
+          0.0001
+        ],
+        "probe_au_prc": [
+          0.8993,
+          0.0003
+        ],
+        "probe_au_roc_ci95_component_on_seed_mean": [
+          0.928,
+          0.99
+        ],
+        "n_components_pos_neg": [
+          28,
+          85
+        ],
+        "blastp_au_roc": 0.8632,
+        "blastp_au_prc": 0.5708,
+        "domain_only_au_roc": 0.6585,
+        "domain_only_au_prc": 0.2546,
+        "length_only_au_roc": 0.5571,
+        "length_only_au_prc": 0.1944
+      },
+      "all hard negatives": {
+        "n_pos": 44,
+        "n_neg": 112,
+        "prevalence": 0.282,
+        "probe_au_roc": [
+          0.9608,
+          0.0001
+        ],
+        "probe_au_prc": [
+          0.9127,
+          0.0002
+        ],
+        "probe_au_roc_ci95_component_on_seed_mean": [
+          0.906,
+          0.987
+        ],
+        "n_components_pos_neg": [
+          28,
+          43
+        ],
+        "blastp_au_roc": 0.7992,
+        "blastp_au_prc": 0.5775,
+        "domain_only_au_roc": 0.8823,
+        "domain_only_au_prc": 0.6278,
+        "length_only_au_roc": 0.7522,
+        "length_only_au_prc": 0.5357
+      },
+      "BACTERIAL hard negatives (all positives)": {
+        "n_pos": 44,
+        "n_neg": 20,
+        "prevalence": 0.688,
+        "probe_au_roc": [
+          0.8509,
+          0.0006
+        ],
+        "probe_au_prc": [
+          0.9339,
+          0.0002
+        ],
+        "probe_au_roc_ci95_component_on_seed_mean": [
+          0.673,
+          0.946
+        ],
+        "n_components_pos_neg": [
+          28,
+          14
+        ],
+        "blastp_au_roc": 0.7648,
+        "blastp_au_prc": 0.8581,
+        "domain_only_au_roc": 0.3409,
+        "domain_only_au_prc": 0.6278,
+        "length_only_au_roc": 0.6648,
+        "length_only_au_prc": 0.8124
+      },
+      "EUKARYOTIC hard negatives (all positives)": {
+        "n_pos": 44,
+        "n_neg": 92,
+        "prevalence": 0.324,
+        "probe_au_roc": [
+          0.9847,
+          0.0
+        ],
+        "probe_au_prc": [
+          0.9688,
+          0.0
+        ],
+        "probe_au_roc_ci95_component_on_seed_mean": [
+          0.955,
+          0.998
+        ],
+        "n_components_pos_neg": [
+          28,
+          29
+        ],
+        "blastp_au_roc": 0.8067,
+        "blastp_au_prc": 0.625,
+        "domain_only_au_roc": 1.0,
+        "domain_only_au_prc": 1.0,
+        "length_only_au_roc": 0.7712,
+        "length_only_au_prc": 0.6052
+      },
+      "MATCHED: bacterial positives vs bacterial hard neg.": {
+        "n_pos": 30,
+        "n_neg": 20,
+        "prevalence": 0.6,
+        "probe_au_roc": [
+          0.869,
+          0.0004
+        ],
+        "probe_au_prc": [
+          0.9261,
+          0.0002
+        ],
+        "probe_au_roc_ci95_component_on_seed_mean": [
+          0.643,
+          0.961
+        ],
+        "n_components_pos_neg": [
+          17,
+          14
+        ],
+        "blastp_au_roc": 0.83,
+        "blastp_au_prc": 0.8452,
+        "domain_only_au_roc": 0.5,
+        "domain_only_au_prc": 0.6,
+        "length_only_au_roc": 0.6967,
+        "length_only_au_prc": 0.7421
+      },
+      "wrong-fold": {
+        "n_pos": 44,
+        "n_neg": 6,
+        "prevalence": 0.88,
+        "probe_au_roc": [
+          0.9205,
+          0.0
+        ],
+        "probe_au_prc": [
+          0.9874,
+          0.0
+        ],
+        "probe_au_roc_ci95_component_on_seed_mean": [
+          0.742,
+          1.0
+        ],
+        "n_components_pos_neg": [
+          28,
+          6
+        ],
+        "blastp_au_roc": 0.9432,
+        "blastp_au_prc": 0.993,
+        "domain_only_au_roc": 0.4508,
+        "domain_only_au_prc": 0.8701,
+        "length_only_au_roc": 0.4318,
+        "length_only_au_prc": 0.8291
+      },
+      "tRNA-processing": {
+        "n_pos": 44,
+        "n_neg": 40,
+        "prevalence": 0.524,
+        "probe_au_roc": [
+          0.9994,
+          0.0
+        ],
+        "probe_au_prc": [
+          0.9995,
+          0.0
+        ],
+        "probe_au_roc_ci95_component_on_seed_mean": [
+          0.998,
+          1.0
+        ],
+        "n_components_pos_neg": [
+          28,
+          1
+        ],
+        "blastp_au_roc": 0.9537,
+        "blastp_au_prc": 0.9721,
+        "domain_only_au_roc": 0.3409,
+        "domain_only_au_prc": 0.4589,
+        "length_only_au_roc": 0.0207,
+        "length_only_au_prc": 0.3351
+      },
+      "naive controls": {
+        "n_pos": 44,
+        "n_neg": 35,
+        "prevalence": 0.557,
+        "probe_au_roc": [
+          0.9847,
+          0.0002
+        ],
+        "probe_au_prc": [
+          0.9881,
+          0.0001
+        ],
+        "probe_au_roc_ci95_component_on_seed_mean": [
+          0.958,
+          0.998
+        ],
+        "n_components_pos_neg": [
+          28,
+          35
+        ],
+        "blastp_au_roc": 0.9506,
+        "blastp_au_prc": 0.9725,
+        "domain_only_au_roc": 0.3409,
+        "domain_only_au_prc": 0.4919,
+        "length_only_au_roc": 0.5669,
+        "length_only_au_prc": 0.5562
+      }
+    }
+  }
+}

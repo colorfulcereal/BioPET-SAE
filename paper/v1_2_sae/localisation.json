@@ -1,0 +1,821 @@
+{
+  "n": {
+    "test hard negatives": 102,
+    "test positives": 1,
+    "train+val positives (NOT held out)": 7
+  },
+  "n_offset_fit": 332,
+  "regression": [
+    82,
+    82
+  ],
+  "residues": {
+    "S": {
+      "test hard negatives": {
+        "n": 102,
+        "null_median": 0.00980392156862745,
+        "null_p95": 0.17647058823529413,
+        "null_max": 0.9901960784313726,
+        "latents": {
+          "1817": {
+            "offset": -8,
+            "offset_consistency": "36/332",
+            "rate": 0.029,
+            "exact": 0.029,
+            "percentile": 63.05,
+            "n_higher": 3027,
+            "firing": 0.02
+          },
+          "5325": {
+            "offset": -23,
+            "offset_consistency": "38/332",
+            "rate": 0.029,
+            "exact": 0.02,
+            "percentile": 63.05,
+            "n_higher": 3027,
+            "firing": 0.0
+          },
+          "3688": {
+            "offset": 81,
+            "offset_consistency": "27/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 6266,
+            "firing": 0.157
+          },
+          "7820": {
+            "offset": 81,
+            "offset_consistency": "27/332",
+            "rate": 0.039,
+            "exact": 0.0,
+            "percentile": 70.44,
+            "n_higher": 2503,
+            "firing": 0.127
+          },
+          "2919": {
+            "offset": 81,
+            "offset_consistency": "27/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 6266,
+            "firing": 0.049
+          },
+          "9529": {
+            "offset": 1,
+            "offset_consistency": "331/332",
+            "rate": 0.99,
+            "exact": 0.99,
+            "percentile": 99.89,
+            "n_higher": 0,
+            "firing": 1.0
+          },
+          "7018": {
+            "offset": -36,
+            "offset_consistency": "15/332",
+            "rate": 0.01,
+            "exact": 0.0,
+            "percentile": 38.81,
+            "n_higher": 4758,
+            "firing": 0.059
+          },
+          "2661": {
+            "offset": -123,
+            "offset_consistency": "33/332",
+            "rate": 0.108,
+            "exact": 0.01,
+            "percentile": 89.74,
+            "n_higher": 936,
+            "firing": 0.765
+          },
+          "7734": {
+            "offset": -152,
+            "offset_consistency": "25/332",
+            "rate": 0.069,
+            "exact": 0.01,
+            "percentile": 82.64,
+            "n_higher": 1532,
+            "firing": 0.765
+          }
+        }
+      },
+      "test positives": {
+        "n": 1,
+        "null_median": 0.0,
+        "null_p95": 1.0,
+        "null_max": 1.0,
+        "latents": {
+          "1817": {
+            "offset": -8,
+            "offset_consistency": "36/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 540,
+            "firing": 0.0
+          },
+          "5325": {
+            "offset": -23,
+            "offset_consistency": "38/332",
+            "rate": 1.0,
+            "exact": 0.0,
+            "percentile": 94.73,
+            "n_higher": 0,
+            "firing": 0.0
+          },
+          "3688": {
+            "offset": 81,
+            "offset_consistency": "27/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 540,
+            "firing": 0.0
+          },
+          "7820": {
+            "offset": 81,
+            "offset_consistency": "27/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 540,
+            "firing": 0.0
+          },
+          "2919": {
+            "offset": 81,
+            "offset_consistency": "27/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 540,
+            "firing": 0.0
+          },
+          "9529": {
+            "offset": 1,
+            "offset_consistency": "331/332",
+            "rate": 1.0,
+            "exact": 1.0,
+            "percentile": 94.73,
+            "n_higher": 0,
+            "firing": 1.0
+          },
+          "7018": {
+            "offset": -36,
+            "offset_consistency": "15/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 540,
+            "firing": 0.0
+          },
+          "2661": {
+            "offset": -123,
+            "offset_consistency": "33/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 540,
+            "firing": 1.0
+          },
+          "7734": {
+            "offset": -152,
+            "offset_consistency": "25/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 540,
+            "firing": 1.0
+          }
+        }
+      },
+      "train+val positives (NOT held out)": {
+        "n": 7,
+        "null_median": 0.0,
+        "null_p95": 0.14285714285714285,
+        "null_max": 1.0,
+        "latents": {
+          "1817": {
+            "offset": -8,
+            "offset_consistency": "36/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 1108,
+            "firing": 0.286
+          },
+          "5325": {
+            "offset": -23,
+            "offset_consistency": "38/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 1108,
+            "firing": 0.143
+          },
+          "3688": {
+            "offset": 81,
+            "offset_consistency": "27/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 1108,
+            "firing": 1.0
+          },
+          "7820": {
+            "offset": 81,
+            "offset_consistency": "27/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 1108,
+            "firing": 1.0
+          },
+          "2919": {
+            "offset": 81,
+            "offset_consistency": "27/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 1108,
+            "firing": 1.0
+          },
+          "9529": {
+            "offset": 1,
+            "offset_consistency": "331/332",
+            "rate": 0.857,
+            "exact": 0.857,
+            "percentile": 99.38,
+            "n_higher": 9,
+            "firing": 0.857
+          },
+          "7018": {
+            "offset": -36,
+            "offset_consistency": "15/332",
+            "rate": 0.143,
+            "exact": 0.0,
+            "percentile": 89.18,
+            "n_higher": 498,
+            "firing": 1.0
+          },
+          "2661": {
+            "offset": -123,
+            "offset_consistency": "33/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 1108,
+            "firing": 0.714
+          },
+          "7734": {
+            "offset": -152,
+            "offset_consistency": "25/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 1108,
+            "firing": 0.857
+          }
+        }
+      }
+    },
+    "D": {
+      "test hard negatives": {
+        "n": 102,
+        "null_median": 0.029411764705882353,
+        "null_p95": 0.10784313725490197,
+        "null_max": 0.7156862745098039,
+        "latents": {
+          "1817": {
+            "offset": 117,
+            "offset_consistency": "24/332",
+            "rate": 0.01,
+            "exact": 0.0,
+            "percentile": 13.57,
+            "n_higher": 7176,
+            "firing": 0.02
+          },
+          "5325": {
+            "offset": 102,
+            "offset_consistency": "26/332",
+            "rate": 0.039,
+            "exact": 0.01,
+            "percentile": 73.91,
+            "n_higher": 1841,
+            "firing": 0.0
+          },
+          "3688": {
+            "offset": 206,
+            "offset_consistency": "29/332",
+            "rate": 0.02,
+            "exact": 0.0,
+            "percentile": 29.92,
+            "n_higher": 5479,
+            "firing": 0.157
+          },
+          "7820": {
+            "offset": 206,
+            "offset_consistency": "29/332",
+            "rate": 0.029,
+            "exact": 0.0,
+            "percentile": 46.49,
+            "n_higher": 2672,
+            "firing": 0.127
+          },
+          "2919": {
+            "offset": 206,
+            "offset_consistency": "29/332",
+            "rate": 0.01,
+            "exact": 0.0,
+            "percentile": 13.57,
+            "n_higher": 7176,
+            "firing": 0.049
+          },
+          "9529": {
+            "offset": 126,
+            "offset_consistency": "33/332",
+            "rate": 0.029,
+            "exact": 0.0,
+            "percentile": 46.49,
+            "n_higher": 2672,
+            "firing": 1.0
+          },
+          "7018": {
+            "offset": 11,
+            "offset_consistency": "17/332",
+            "rate": 0.01,
+            "exact": 0.0,
+            "percentile": 13.57,
+            "n_higher": 7176,
+            "firing": 0.059
+          },
+          "2661": {
+            "offset": 2,
+            "offset_consistency": "187/332",
+            "rate": 0.716,
+            "exact": 0.559,
+            "percentile": 99.99,
+            "n_higher": 0,
+            "firing": 0.765
+          },
+          "7734": {
+            "offset": -27,
+            "offset_consistency": "61/332",
+            "rate": 0.324,
+            "exact": 0.069,
+            "percentile": 99.47,
+            "n_higher": 49,
+            "firing": 0.765
+          }
+        }
+      },
+      "test positives": {
+        "n": 1,
+        "null_median": 0.0,
+        "null_p95": 1.0,
+        "null_max": 1.0,
+        "latents": {
+          "1817": {
+            "offset": 117,
+            "offset_consistency": "24/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 558,
+            "firing": 0.0
+          },
+          "5325": {
+            "offset": 102,
+            "offset_consistency": "26/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 558,
+            "firing": 0.0
+          },
+          "3688": {
+            "offset": 206,
+            "offset_consistency": "29/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 558,
+            "firing": 0.0
+          },
+          "7820": {
+            "offset": 206,
+            "offset_consistency": "29/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 558,
+            "firing": 0.0
+          },
+          "2919": {
+            "offset": 206,
+            "offset_consistency": "29/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 558,
+            "firing": 0.0
+          },
+          "9529": {
+            "offset": 126,
+            "offset_consistency": "33/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 558,
+            "firing": 1.0
+          },
+          "7018": {
+            "offset": 11,
+            "offset_consistency": "17/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 558,
+            "firing": 0.0
+          },
+          "2661": {
+            "offset": 2,
+            "offset_consistency": "187/332",
+            "rate": 1.0,
+            "exact": 1.0,
+            "percentile": 94.55,
+            "n_higher": 0,
+            "firing": 1.0
+          },
+          "7734": {
+            "offset": -27,
+            "offset_consistency": "61/332",
+            "rate": 1.0,
+            "exact": 0.0,
+            "percentile": 94.55,
+            "n_higher": 0,
+            "firing": 1.0
+          }
+        }
+      },
+      "train+val positives (NOT held out)": {
+        "n": 7,
+        "null_median": 0.0,
+        "null_p95": 0.2857142857142857,
+        "null_max": 1.0,
+        "latents": {
+          "1817": {
+            "offset": 117,
+            "offset_consistency": "24/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 4049,
+            "firing": 0.286
+          },
+          "5325": {
+            "offset": 102,
+            "offset_consistency": "26/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 4049,
+            "firing": 0.143
+          },
+          "3688": {
+            "offset": 206,
+            "offset_consistency": "29/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 4049,
+            "firing": 1.0
+          },
+          "7820": {
+            "offset": 206,
+            "offset_consistency": "29/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 4049,
+            "firing": 1.0
+          },
+          "2919": {
+            "offset": 206,
+            "offset_consistency": "29/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 4049,
+            "firing": 1.0
+          },
+          "9529": {
+            "offset": 126,
+            "offset_consistency": "33/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 4049,
+            "firing": 0.857
+          },
+          "7018": {
+            "offset": 11,
+            "offset_consistency": "17/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 4049,
+            "firing": 1.0
+          },
+          "2661": {
+            "offset": 2,
+            "offset_consistency": "187/332",
+            "rate": 0.857,
+            "exact": 0.714,
+            "percentile": 99.84,
+            "n_higher": 3,
+            "firing": 0.714
+          },
+          "7734": {
+            "offset": -27,
+            "offset_consistency": "61/332",
+            "rate": 0.286,
+            "exact": 0.0,
+            "percentile": 71.77,
+            "n_higher": 305,
+            "firing": 0.857
+          }
+        }
+      }
+    },
+    "H": {
+      "test hard negatives": {
+        "n": 102,
+        "null_median": 0.0196078431372549,
+        "null_p95": 0.11813725490195365,
+        "null_max": 0.9901960784313726,
+        "latents": {
+          "1817": {
+            "offset": 145,
+            "offset_consistency": "23/332",
+            "rate": 0.01,
+            "exact": 0.0,
+            "percentile": 13.42,
+            "n_higher": 6966,
+            "firing": 0.02
+          },
+          "5325": {
+            "offset": 130,
+            "offset_consistency": "25/332",
+            "rate": 0.039,
+            "exact": 0.0,
+            "percentile": 72.71,
+            "n_higher": 2133,
+            "firing": 0.0
+          },
+          "3688": {
+            "offset": 234,
+            "offset_consistency": "28/332",
+            "rate": 0.01,
+            "exact": 0.0,
+            "percentile": 13.42,
+            "n_higher": 6966,
+            "firing": 0.157
+          },
+          "7820": {
+            "offset": 234,
+            "offset_consistency": "28/332",
+            "rate": 0.029,
+            "exact": 0.0,
+            "percentile": 62.76,
+            "n_higher": 2795,
+            "firing": 0.127
+          },
+          "2919": {
+            "offset": 234,
+            "offset_consistency": "28/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 8866,
+            "firing": 0.049
+          },
+          "9529": {
+            "offset": 154,
+            "offset_consistency": "31/332",
+            "rate": 0.059,
+            "exact": 0.01,
+            "percentile": 83.75,
+            "n_higher": 1322,
+            "firing": 1.0
+          },
+          "7018": {
+            "offset": 39,
+            "offset_consistency": "17/332",
+            "rate": 0.01,
+            "exact": 0.0,
+            "percentile": 13.42,
+            "n_higher": 6966,
+            "firing": 0.059
+          },
+          "2661": {
+            "offset": 30,
+            "offset_consistency": "73/332",
+            "rate": 0.48,
+            "exact": 0.098,
+            "percentile": 99.67,
+            "n_higher": 32,
+            "firing": 0.765
+          },
+          "7734": {
+            "offset": 1,
+            "offset_consistency": "255/332",
+            "rate": 0.98,
+            "exact": 0.931,
+            "percentile": 99.98,
+            "n_higher": 1,
+            "firing": 0.765
+          }
+        }
+      },
+      "test positives": {
+        "n": 1,
+        "null_median": 0.0,
+        "null_p95": 0.0,
+        "null_max": 1.0,
+        "latents": {
+          "1817": {
+            "offset": 145,
+            "offset_consistency": "23/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 426,
+            "firing": 0.0
+          },
+          "5325": {
+            "offset": 130,
+            "offset_consistency": "25/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 426,
+            "firing": 0.0
+          },
+          "3688": {
+            "offset": 234,
+            "offset_consistency": "28/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 426,
+            "firing": 0.0
+          },
+          "7820": {
+            "offset": 234,
+            "offset_consistency": "28/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 426,
+            "firing": 0.0
+          },
+          "2919": {
+            "offset": 234,
+            "offset_consistency": "28/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 426,
+            "firing": 0.0
+          },
+          "9529": {
+            "offset": 154,
+            "offset_consistency": "31/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 426,
+            "firing": 1.0
+          },
+          "7018": {
+            "offset": 39,
+            "offset_consistency": "17/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 426,
+            "firing": 0.0
+          },
+          "2661": {
+            "offset": 30,
+            "offset_consistency": "73/332",
+            "rate": 1.0,
+            "exact": 0.0,
+            "percentile": 95.84,
+            "n_higher": 0,
+            "firing": 1.0
+          },
+          "7734": {
+            "offset": 1,
+            "offset_consistency": "255/332",
+            "rate": 1.0,
+            "exact": 1.0,
+            "percentile": 95.84,
+            "n_higher": 0,
+            "firing": 1.0
+          }
+        }
+      },
+      "train+val positives (NOT held out)": {
+        "n": 7,
+        "null_median": 0.0,
+        "null_p95": 0.14285714285714285,
+        "null_max": 1.0,
+        "latents": {
+          "1817": {
+            "offset": 145,
+            "offset_consistency": "23/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 3845,
+            "firing": 0.286
+          },
+          "5325": {
+            "offset": 130,
+            "offset_consistency": "25/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 3845,
+            "firing": 0.143
+          },
+          "3688": {
+            "offset": 234,
+            "offset_consistency": "28/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 3845,
+            "firing": 1.0
+          },
+          "7820": {
+            "offset": 234,
+            "offset_consistency": "28/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 3845,
+            "firing": 1.0
+          },
+          "2919": {
+            "offset": 234,
+            "offset_consistency": "28/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 3845,
+            "firing": 1.0
+          },
+          "9529": {
+            "offset": 154,
+            "offset_consistency": "31/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 3845,
+            "firing": 0.857
+          },
+          "7018": {
+            "offset": 39,
+            "offset_consistency": "17/332",
+            "rate": 0.0,
+            "exact": 0.0,
+            "percentile": 0.0,
+            "n_higher": 3845,
+            "firing": 1.0
+          },
+          "2661": {
+            "offset": 30,
+            "offset_consistency": "73/332",
+            "rate": 0.143,
+            "exact": 0.0,
+            "percentile": 62.45,
+            "n_higher": 506,
+            "firing": 0.714
+          },
+          "7734": {
+            "offset": 1,
+            "offset_consistency": "255/332",
+            "rate": 0.857,
+            "exact": 0.714,
+            "percentile": 99.84,
+            "n_higher": 6,
+            "firing": 0.857
+          }
+        }
+      }
+    }
+  }
+}
